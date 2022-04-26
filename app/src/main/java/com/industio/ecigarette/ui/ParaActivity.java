@@ -7,18 +7,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.industio.ecigarette.R;
+import com.industio.ecigarette.databinding.ActivityMainBinding;
+import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.view.CusSeek;
 
 public class ParaActivity extends AppCompatActivity {
-    private CusSeek cusSeek;
-    private TextView textValue;
+
+    private ActivityParaBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_para);
-        cusSeek = findViewById(R.id.cusSeek);
-        textValue = findViewById(R.id.textValue);
-        cusSeek.setOnSeekBarChangeListener((seekBar, progress) -> textValue.setText("" + progress));
+        binding = ActivityParaBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.cusSeek.setOnSeekBarChangeListener((seekBar, progress) ->  binding.textValue.setText("" + progress));
     }
 }
