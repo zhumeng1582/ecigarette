@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dip_40"
+    tools:context=".ui.MainActivity">
+
+    <TextView
+        android:id="@+id/textValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <com.industio.ecigarette.view.CusSeek
+        android:id="@+id/cusSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:minValue="300"
+        app:maxValue="400"
+        app:seekBarStep="5"
+        app:buttonStep="1"
+        app:layout_constraintTop_toBottomOf="@+id/textValue" />
+</androidx.constraintlayout.widget.ConstraintLayout>
