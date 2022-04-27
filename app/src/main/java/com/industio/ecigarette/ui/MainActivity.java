@@ -2,21 +2,26 @@ package com.industio.ecigarette.ui;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.util.Strings;
-import com.industio.ecigarette.view.DragTopLayout;
+import com.industio.ecigarette.view.ViewAnimate;
 
 import org.ido.iface.SerialControl;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
+    private GestureDetector mGestureDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,25 +33,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 binding.btnSetPara,
         }, this);
 
-        initController();
+        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                // if (Math.abs(e1.getRawX() - e2.getRawX()) > 250) {
+                // // System.out.println("水平方向移动距离过大");
+                // return true;
+                // }
+                if (Math.abs(velocityY) < 100) {
+                    // System.out.println("手指移动的太慢了");
+                    return true;
+                }
+
+                // 手势向下 down
+                if ((e2.getRawY() - e1.getRawY()) > 200) {
+                    ViewAnimate.animateOpen(binding.topView, 580);
+
+                    return true;
+                }
+                // 手势向上 up
+                if ((e1.getRawY() - e2.getRawY()) > 200) {
+                    closeController();
+                    return true;
+                }
+                return super.onFling(e1, e2, velocityX, velocityY);
+            }
+        });
+
+        closeController();
     }
 
-    private void initController() {
-        DragTopLayout.from(this)
-                .setRefreshRadio(1.4f)
-                .listener(new DragTopLayout.SimplePanelListener() {
-                    @Override
-                    public void onSliding(float radio) {
+    private void closeController() {
+        ViewAnimate.animateClose(binding.topView, new ViewAnimate.AnimaionLoadEndListener() {
+            @Override
+            public void onLoadEnd() {
+            }
+        });
+    }
 
-                    }
-                }).setup(binding.dragLayout);
-
+    //2.让手势识别器 工作起来
+//当activity被触摸的时候调用的方法.
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
 
