@@ -24,6 +24,12 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
         }
     }
 
+    private ItemOnClick itemOnClick;
+
+    public NormalAdapter(ItemOnClick itemOnClick) {
+        this.itemOnClick = itemOnClick;
+    }
+
     private List<String> mDatas = new ArrayList<String>(18) {{
         add("1");
         add("2");
@@ -53,6 +59,7 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
             @Override
             public void onClick(View v) {
                 //item 点击事件
+                itemOnClick.itemOnClick(holder.title.getText().toString());
             }
         });
     }
@@ -67,5 +74,9 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
         //LayoutInflater.from指定写法
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         return new VH(v);
+    }
+
+    public interface ItemOnClick {
+        void itemOnClick(String text);
     }
 }
