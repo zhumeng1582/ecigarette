@@ -1,38 +1,30 @@
 package com.industio.ecigarette.ui;
 
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
+import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.Utils;
 import com.industio.ecigarette.R;
-import com.industio.ecigarette.databinding.ActivityMainBinding;
+import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
-import com.industio.ecigarette.view.CusSeek;
+import com.industio.ecigarette.util.CacheDataUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParaActivity extends AppCompatActivity {
+public class ParaActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityParaBinding binding;
+    private DevicePara devicePara;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +32,34 @@ public class ParaActivity extends AppCompatActivity {
         binding = ActivityParaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.cusSeek.setOnSeekBarChangeListener((seekBar, progress) -> binding.textValue.setText("" + progress));
+        binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textPreheatValue.setText("" + progress + "℃"));
+        binding.cusSeekPreheatTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textPreheatTimeValue.setText("" + progress + "s"));
+        binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textConstantTemperatureValue.setText("" + progress + " ℃"));
+        binding.cusSeekConstantTemperatureTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textConstantTemperatureTimeValue.setText("" + progress + "s"));
+        binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textNoOperationValue.setText("" + progress + "s"));
+
         initLineChart();
+        devicePara = CacheDataUtils.getDevicePara(0);
+
+        showDevicePara();
+
+        ClickUtils.applySingleDebouncing(new View[]{
+                binding.btnSave,
+                binding.btnSaveAs,
+                binding.btnExit,
+                binding.btnReset
+        }, this);
+
     }
 
     private void initLineChart() {
         binding.chart1.setExtraOffsets(5, 10, 5, 10);
         binding.chart1.getDescription().setEnabled(false); // 不显示描述
         binding.chart1.getLegend().setEnabled(false);  // 不显示图例
+        binding.chart1.animate();
+
+        binding.chart1.animateX(1500);
+
         setAxis(); // 设置坐标轴
         setData(); // 设置数据
     }
@@ -99,14 +111,48 @@ public class ParaActivity extends AppCompatActivity {
         YAxis yAxis_right = binding.chart1.getAxisRight();
         yAxis_right.setAxisMinimum(0);
         yAxis_right.setAxisMaximum(570);
-        yAxis_right.setLabelCount(4,true);
+        yAxis_right.setLabelCount(4, true);
         yAxis_right.setTextSize(10f);
 
         // 左y轴
         YAxis yAxis_left = binding.chart1.getAxisLeft();
         yAxis_left.setAxisMinimum(0);
         yAxis_left.setAxisMaximum(570);
-        yAxis_left.setLabelCount(4,true);
+        yAxis_left.setLabelCount(4, true);
         yAxis_left.setTextSize(10f);
+    }
+
+    private void showDevicePara() {
+        binding.cusSeekPreheatValue.setProgress(devicePara.getPreheatValue());
+        binding.cusSeekPreheatTimeValue.setProgress(devicePara.getPreheatTimeValue());
+        binding.cusSeekConstantTemperatureValue.setProgress(devicePara.getConstantTemperatureValue());
+        binding.cusSeekConstantTemperatureTimeValue.setProgress(devicePara.getConstantTemperatureTimeValue());
+        binding.cusSeekNoOperationValue.setProgress(devicePara.getNoOperationValue());
+    }
+
+    private void saveDevicePara() {
+        devicePara.setPreheatValue(binding.cusSeekPreheatValue.getProgress());
+        devicePara.setPreheatTimeValue(binding.cusSeekPreheatTimeValue.getProgress());
+        devicePara.setConstantTemperatureValue(binding.cusSeekConstantTemperatureValue.getProgress());
+        devicePara.setConstantTemperatureTimeValue(binding.cusSeekConstantTemperatureTimeValue.getProgress());
+        devicePara.setNoOperationValue(binding.cusSeekNoOperationValue.getProgress());
+
+        CacheDataUtils.saveDevicePara(devicePara);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == binding.btnSave) {
+            saveDevicePara();
+            ToastUtils.showShort("保存成功");
+        } else if (view == binding.btnExit) {
+            finish();
+        } else if (view == binding.btnSaveAs) {
+        } else if (view == binding.btnReset) {
+            devicePara = CacheDataUtils.getDefaultDevicePara(devicePara.getId());
+            CacheDataUtils.saveDevicePara(devicePara);
+            showDevicePara();
+        }
     }
 }

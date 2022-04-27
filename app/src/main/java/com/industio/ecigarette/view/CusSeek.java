@@ -100,6 +100,17 @@ public class CusSeek extends LinearLayout {
 
     }
 
+    public void setProgress(int progress) {
+        seekBar.setProgress(progress);
+        if (onSeekBarChangeListener != null) {
+            onSeekBarChangeListener.onProgressChanged(seekBar, progress);
+        }
+    }
+
+    public int getProgress() {
+        return seekBar.getProgress();
+    }
+
     private void refreshView(SeekBar seekBar) {
         int progress = seekBar.getProgress();//当前滑动到的值
 
