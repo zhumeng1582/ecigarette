@@ -4,16 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
+import com.industio.ecigarette.util.Strings;
 
 import org.ido.iface.SerialControl;
 
@@ -48,7 +44,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SerialControl mErrLogSerialControl = new SerialControl() {
             @Override
             protected void read(byte[] buf, int len) {
-
+                switch (buf[4]) {
+                    case 0x00:break;//显示主界面;
+                    case 0x01:
+                        if (buf[5]<=0x0C) {
+                            binding.textAlarm.setText(Strings.RECEVICE_TIPS[buf[5]]);
+                        }
+                        break;
+                    case 0x10:
+                        //相应的电池符号;
+                        //buf[5]（电量）
+                        break;
+                    default:
+                        break;
+                }
             }
         };
 
@@ -60,4 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
+
+
 }

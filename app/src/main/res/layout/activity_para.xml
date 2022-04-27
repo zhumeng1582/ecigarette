@@ -4,23 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/dip_40"
-    tools:context=".ui.MainActivity">
+    android:padding="@dimen/dip_15"
+    tools:context=".ui.MainActivity"
+    tools:ignore="MissingConstraints">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_200"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/chart1" />
 
     <com.industio.ecigarette.view.CusSeek
         android:id="@+id/cusSeek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:minValue="300"
-        app:maxValue="400"
-        app:seekBarStep="5"
         app:buttonStep="1"
-        app:layout_constraintTop_toBottomOf="@+id/textValue" />
+        app:layout_constraintTop_toBottomOf="@+id/textValue"
+        app:maxValue="400"
+        app:minValue="300"
+        app:seekBarStep="5" />
 </androidx.constraintlayout.widget.ConstraintLayout>
