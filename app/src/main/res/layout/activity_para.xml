@@ -157,6 +157,89 @@
             app:seekBarStep="5" />
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dip_20"
+            android:text="DIY模式" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dip_10"
+            android:background="@drawable/bg_wrap"
+            android:orientation="vertical"
+            android:padding="@dimen/dip_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dip_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="口数设置: " />
+
+                <TextView
+                    android:id="@+id/textCountValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12" />
+
+                <com.industio.ecigarette.view.CusSeek
+                    android:id="@+id/cusSeekCountValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:buttonStep="1"
+                    app:layout_constraintTop_toBottomOf="@+id/textValue"
+                    app:maxValue="18"
+                    app:minValue="10"
+                    app:seekBarStep="1" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dip_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textTemperatureValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="调整温度: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12" />
+
+                <com.industio.ecigarette.view.CusSeek
+                    android:id="@+id/cusSeekTemperatureValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:buttonStep="1"
+                    app:layout_constraintTop_toBottomOf="@+id/textValue"
+                    app:maxValue="30"
+                    app:minValue="-30"
+                    app:seekBarStep="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

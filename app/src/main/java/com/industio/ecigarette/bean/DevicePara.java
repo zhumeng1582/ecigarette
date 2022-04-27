@@ -8,11 +8,31 @@ public class DevicePara implements Serializable {
     }
 
     private int id;
-    private int preheatValue = 300;
-    private int preheatTimeValue = 15;
-    private int constantTemperatureValue = 300;
-    private int constantTemperatureTimeValue = 150;
+    //初始化数值：预热温度350；预热时长20；恒温330；恒温时长220;无操作保护60；口数12；DIY口数选择到第一口位置；调整温度0℃
+    private int preheatValue = 350;
+    private int preheatTimeValue = 20;
+    private int constantTemperatureValue = 330;
+    private int constantTemperatureTimeValue = 220;
     private int noOperationValue = 60;
+    private int count = 12;
+    private int[] temperature = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int[] getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(int[] temperature) {
+        this.temperature = temperature;
+    }
+
 
     public int getId() {
         return id;

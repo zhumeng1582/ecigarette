@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -14,9 +15,11 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.industio.ecigarette.R;
+import com.industio.ecigarette.adapter.NormalAdapter;
 import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.util.CacheDataUtils;
+import com.industio.ecigarette.view.GridSpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,8 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
     private ActivityParaBinding binding;
     private DevicePara devicePara;
+    private int selectIndex = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,20 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textConstantTemperatureValue.setText("" + progress + " ℃"));
         binding.cusSeekConstantTemperatureTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textConstantTemperatureTimeValue.setText("" + progress + "s"));
         binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textNoOperationValue.setText("" + progress + "s"));
+        binding.cusSeekTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textTemperatureValue.setText("" + progress + "℃");
+            devicePara.getTemperature()[selectIndex] = progress;
+        });
+
+        binding.cusSeekCountValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textCountValue.setText("" + progress);
+            if (progress < selectIndex) {
+                selectIndex = progress;
+            }
+            //TODO 刷新RecyclerView
+        });
+
+        initAdapter();
 
         initLineChart();
         devicePara = CacheDataUtils.getDevicePara(0);
@@ -49,6 +68,16 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
                 binding.btnExit,
                 binding.btnReset
         }, this);
+
+    }
+
+    private void initAdapter() {
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 30, 20));
+
+        NormalAdapter adapter = new NormalAdapter();
+        binding.recyclerView.setAdapter(adapter);
 
     }
 
