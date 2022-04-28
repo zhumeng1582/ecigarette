@@ -50,7 +50,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
         binding.cusSeekCountValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textCountValue.setText("" + progress);
-            if (selectIndex > progress) {
+            if (selectIndex >= progress) {
                 selectIndex = 0;
             }
             adapter.setCountNum(progress);
