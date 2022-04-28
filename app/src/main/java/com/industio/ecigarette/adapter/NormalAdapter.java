@@ -3,8 +3,10 @@ package com.industio.ecigarette.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.industio.ecigarette.R;
@@ -14,15 +16,26 @@ import java.util.List;
 
 // ① 创建Adapter
 public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
+    public void setCountNum(int countNum) {
+        this.countNum = countNum;
+    }
+
     //② 创建ViewHolder
     public static class VH extends RecyclerView.ViewHolder {
-        public final TextView title;
+        public AppCompatCheckedTextView title;
 
         public VH(View v) {
             super(v);
-            title = (TextView) v.findViewById(R.id.title);
+            title = v.findViewById(R.id.title);
         }
     }
+
+    public void setSelectIndex(int selectIndex) {
+        this.selectIndex = selectIndex;
+    }
+
+    private int selectIndex = 0;
+    private int countNum = 12;
 
     private ItemOnClick itemOnClick;
 
@@ -55,11 +68,22 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
     @Override
     public void onBindViewHolder(VH holder, int position) {
         holder.title.setText(mDatas.get(position));
+        if (position < countNum) {
+            holder.title.setEnabled(true);
+            if (position == selectIndex) {
+                holder.title.setBackgroundResource(R.color.color_check);
+            } else {
+                holder.title.setBackgroundResource(R.color.color_uncheck);
+            }
+        } else {
+            holder.title.setEnabled(false);
+            holder.title.setBackgroundResource(R.color.color_enable);
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //item 点击事件
-                itemOnClick.itemOnClick(holder.title.getText().toString());
+                itemOnClick.itemOnClick(holder.getAdapterPosition());
             }
         });
     }
@@ -77,6 +101,6 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
     }
 
     public interface ItemOnClick {
-        void itemOnClick(String text);
+        void itemOnClick(int index);
     }
 }

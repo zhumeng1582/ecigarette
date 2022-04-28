@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -29,7 +30,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     private ActivityParaBinding binding;
     private DevicePara devicePara;
     private int selectIndex = 0;
-
+    private NormalAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +50,12 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
         binding.cusSeekCountValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textCountValue.setText("" + progress);
-            if (progress < selectIndex) {
-                selectIndex = progress;
+            if (selectIndex > progress) {
+                selectIndex = 0;
             }
-            //TODO 刷新RecyclerView
+            adapter.setCountNum(progress);
+            adapter.setSelectIndex(selectIndex);
+            adapter.notifyDataSetChanged();
         });
 
         initAdapter();
@@ -76,7 +79,11 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 30, 20));
 
-        NormalAdapter adapter = new NormalAdapter();
+        adapter = new NormalAdapter(index -> {
+            selectIndex = index;
+            adapter.setSelectIndex(selectIndex);
+            adapter.notifyDataSetChanged();
+        });
         binding.recyclerView.setAdapter(adapter);
 
     }
