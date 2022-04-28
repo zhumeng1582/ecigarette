@@ -4,176 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/dip_15"
-    tools:context=".ui.MainActivity"
-    tools:ignore="MissingConstraints">
+    android:orientation="vertical">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart1"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_200"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_10"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="预 热: " />
-
-        <TextView
-            android:id="@+id/textPreheatValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="380C" />
-
-        <com.industio.ecigarette.view.CusSeek
-            android:id="@+id/cusSeekPreheatValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:buttonStep="1"
-            app:maxValue="400"
-            app:minValue="300"
-            app:seekBarStep="5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_5"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="预热时长: " />
-
-        <TextView
-            android:id="@+id/textPreheatTimeValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="25s" />
-
-        <com.industio.ecigarette.view.CusSeek
-            android:id="@+id/cusSeekPreheatTimeValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:buttonStep="1"
-            app:maxValue="45"
-            app:minValue="15"
-            app:seekBarStep="5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_5"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="恒温: " />
-
-        <TextView
-            android:id="@+id/textConstantTemperatureValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="380C" />
-
-        <com.industio.ecigarette.view.CusSeek
-            android:id="@+id/cusSeekConstantTemperatureValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:buttonStep="1"
-            app:maxValue="400"
-            app:minValue="300"
-            app:seekBarStep="5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_5"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="恒温时长: " />
-
-        <TextView
-            android:id="@+id/textConstantTemperatureTimeValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="25s" />
-
-        <com.industio.ecigarette.view.CusSeek
-            android:id="@+id/cusSeekConstantTemperatureTimeValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:buttonStep="1"
-            app:layout_constraintTop_toBottomOf="@+id/textValue"
-            app:maxValue="300"
-            app:minValue="150"
-            app:seekBarStep="5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_5"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="无操作保护: " />
-
-        <TextView
-            android:id="@+id/textNoOperationValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="90S" />
-
-        <com.industio.ecigarette.view.CusSeek
-            android:id="@+id/cusSeekNoOperationValue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:buttonStep="1"
-            app:layout_constraintTop_toBottomOf="@+id/textValue"
-            app:maxValue="120"
-            app:minValue="60"
-            app:seekBarStep="5" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dip_20"
-            android:text="DIY模式" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dip_10"
-            android:background="@drawable/bg_wrap"
             android:orientation="vertical"
-            android:padding="@dimen/dip_10">
+            android:padding="@dimen/dip_15">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dip_200"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dip_10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预 热: " />
+
+                <TextView
+                    android:id="@+id/textPreheatValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="380C" />
+
+                <com.industio.ecigarette.view.CusSeek
+                    android:id="@+id/cusSeekPreheatValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:buttonStep="1"
+                    app:maxValue="400"
+                    app:minValue="300"
+                    app:seekBarStep="5" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -185,29 +61,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="口数设置: " />
+                    android:text="预热时长: " />
 
                 <TextView
-                    android:id="@+id/textCountValue"
+                    android:id="@+id/textPreheatTimeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12" />
+                    android:text="25s" />
 
                 <com.industio.ecigarette.view.CusSeek
-                    android:id="@+id/cusSeekCountValue"
+                    android:id="@+id/cusSeekPreheatTimeValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:buttonStep="1"
-                    app:layout_constraintTop_toBottomOf="@+id/textValue"
-                    app:maxValue="18"
-                    app:minValue="10"
-                    app:seekBarStep="1" />
+                    app:maxValue="45"
+                    app:minValue="15"
+                    app:seekBarStep="5" />
             </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -217,33 +87,180 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textTemperatureValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="调整温度: " />
+                    android:text="恒温: " />
+
+                <TextView
+                    android:id="@+id/textConstantTemperatureValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="380C" />
+
+                <com.industio.ecigarette.view.CusSeek
+                    android:id="@+id/cusSeekConstantTemperatureValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:buttonStep="1"
+                    app:maxValue="400"
+                    app:minValue="300"
+                    app:seekBarStep="5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dip_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12" />
+                    android:text="恒温时长: " />
+
+                <TextView
+                    android:id="@+id/textConstantTemperatureTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25s" />
 
                 <com.industio.ecigarette.view.CusSeek
-                    android:id="@+id/cusSeekTemperatureValue"
+                    android:id="@+id/cusSeekConstantTemperatureTimeValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:buttonStep="1"
                     app:layout_constraintTop_toBottomOf="@+id/textValue"
-                    app:maxValue="30"
-                    app:minValue="-30"
-                    app:seekBarStep="1" />
+                    app:maxValue="300"
+                    app:minValue="150"
+                    app:seekBarStep="5" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dip_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无操作保护: " />
+
+                <TextView
+                    android:id="@+id/textNoOperationValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="90S" />
+
+                <com.industio.ecigarette.view.CusSeek
+                    android:id="@+id/cusSeekNoOperationValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:buttonStep="1"
+                    app:layout_constraintTop_toBottomOf="@+id/textValue"
+                    app:maxValue="120"
+                    app:minValue="60"
+                    app:seekBarStep="5" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dip_10"
+                    android:background="@drawable/bg_wrap"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dip_10">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dip_5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="口数设置: " />
+
+                        <TextView
+                            android:id="@+id/textCountValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12" />
+
+                        <com.industio.ecigarette.view.CusSeek
+                            android:id="@+id/cusSeekCountValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:buttonStep="1"
+                            app:layout_constraintTop_toBottomOf="@+id/textValue"
+                            app:maxValue="18"
+                            app:minValue="10"
+                            app:seekBarStep="1" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dip_5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="调整温度: " />
+
+                        <TextView
+                            android:id="@+id/textTemperatureValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12" />
+
+                        <com.industio.ecigarette.view.CusSeek
+                            android:id="@+id/cusSeekTemperatureValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:buttonStep="1"
+                            app:layout_constraintTop_toBottomOf="@+id/textValue"
+                            app:maxValue="30"
+                            app:minValue="-30"
+                            app:seekBarStep="1" />
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dip_20"
+                    android:paddingLeft="@dimen/dip_5"
+                    android:paddingRight="@dimen/dip_5"
+                    android:background="@color/white"
+                    android:text="DIY模式" />
+            </FrameLayout>
         </LinearLayout>
-    </FrameLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="@dimen/dip_15"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView

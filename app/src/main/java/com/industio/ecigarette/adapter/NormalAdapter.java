@@ -70,11 +70,8 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
         holder.title.setText(mDatas.get(position));
         if (position < countNum) {
             holder.title.setEnabled(true);
-            if (position == selectIndex) {
-                holder.title.setBackgroundResource(R.color.color_check);
-            } else {
-                holder.title.setBackgroundResource(R.color.color_uncheck);
-            }
+            holder.title.setChecked(position == selectIndex);
+            holder.title.setBackgroundResource(R.drawable.bg_item);
         } else {
             holder.title.setEnabled(false);
             holder.title.setBackgroundResource(R.color.color_enable);

@@ -58,12 +58,15 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             adapter.notifyDataSetChanged();
         });
 
+
         initAdapter();
-
         initLineChart();
-        devicePara = CacheDataUtils.getDevicePara(0);
+        initData();
 
-        showDevicePara();
+    }
+
+    private void initData() {
+        devicePara = CacheDataUtils.getDevicePara(0);
 
         ClickUtils.applySingleDebouncing(new View[]{
                 binding.btnSave,
@@ -72,6 +75,8 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
                 binding.btnReset
         }, this);
 
+        showDevicePara();
+        binding.cusSeekCountValue.setProgress(12);
     }
 
     private void initAdapter() {
@@ -83,6 +88,8 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             selectIndex = index;
             adapter.setSelectIndex(selectIndex);
             adapter.notifyDataSetChanged();
+
+            binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[selectIndex]);
         });
         binding.recyclerView.setAdapter(adapter);
 
