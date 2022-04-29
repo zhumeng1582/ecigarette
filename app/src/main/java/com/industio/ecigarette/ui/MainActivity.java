@@ -2,22 +2,31 @@ package com.industio.ecigarette.ui;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
+import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.Strings;
+import com.industio.ecigarette.util.WifiUtils;
 import com.industio.ecigarette.view.ViewAnimate;
 
 
@@ -54,6 +63,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initTop() {
+        PermissionUtils.permission(Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
+            @Override
+            public void onGranted() {
+                LogUtils.dTag("PermissionUtils", "-------->onGranted");
+            }
+
+            @Override
+            public void onDenied() {
+                LogUtils.dTag("PermissionUtils", "-------->onDenied");
+
+            }
+        }).request();
         binding.toggleWIFI.setChecked(NetworkUtils.getWifiEnabled());
         binding.toggleWIFI.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -64,9 +85,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.toggleBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                PermissionUtils.permission(Manifest.permission.BLUETOOTH_CONNECT).callback(new PermissionUtils.SimpleCallback() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onGranted() {
+                        if (b) {
+                            BluetoothUtils.offBlueTooth();
+                        } else {
+                            BluetoothUtils.onBlueTooth();
+                        }
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        LogUtils.dTag("PermissionUtils", "-------->onDenied");
+
+                    }
+                }).request();
 
             }
         });
+
+        binding.seekBar.setMin(0);
+        binding.seekBar.setMax(255);
+        binding.seekBar.setProgress(BrightnessUtils.getBrightness());
+        BrightnessUtils.setAutoBrightnessEnabled(false);
+
+        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                BrightnessUtils.setBrightness(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        WifiUtils.onWifiOpenDoing();
     }
 
     private void closeController() {
