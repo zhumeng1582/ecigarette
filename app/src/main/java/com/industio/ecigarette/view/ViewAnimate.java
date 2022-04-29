@@ -9,18 +9,26 @@ import android.view.ViewGroup;
 public class ViewAnimate {
     /**
      * View展开动画
+     *
      * @param v
      * @param mHiddenViewMeasuredHeight
      */
     public static void animateOpen(View v, int mHiddenViewMeasuredHeight) {
         v.setVisibility(View.VISIBLE);
-        ValueAnimator animator = createDropAnimator(v, 0,
-                mHiddenViewMeasuredHeight);
+        ValueAnimator animator = createDropAnimator(v, 0, mHiddenViewMeasuredHeight);
         animator.start();
+    }
+
+    public static void topOpen(View v, int mHiddenViewMeasuredHeight) {
+        v.setVisibility(View.VISIBLE);
+        ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+        layoutParams.height = mHiddenViewMeasuredHeight;
+        v.setLayoutParams(layoutParams);
     }
 
     /**
      * View折叠动画
+     *
      * @param view
      */
     public static void animateClose(final View view, final AnimaionLoadEndListener listener) {
@@ -51,7 +59,8 @@ public class ViewAnimate {
         });
         return animator;
     }
-    public interface AnimaionLoadEndListener{
+
+    public interface AnimaionLoadEndListener {
         void onLoadEnd();
     }
 }

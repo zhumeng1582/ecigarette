@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.Strings;
@@ -34,32 +38,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                // if (Math.abs(e1.getRawX() - e2.getRawX()) > 250) {
-                // // System.out.println("水平方向移动距离过大");
-                // return true;
-                // }
-                if (Math.abs(velocityY) < 100) {
-                    // System.out.println("手指移动的太慢了");
-                    return true;
-                }
-
-                // 手势向下 down
-                if ((e2.getRawY() - e1.getRawY()) > 200) {
-                    ViewAnimate.animateOpen(binding.topView, 580);
-
-                    return true;
-                }
-                // 手势向上 up
-                if ((e1.getRawY() - e2.getRawY()) > 200) {
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (e1.getRawY() < 300 && distanceY < 0) {
+                    ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
+                } else if (distanceY > 0) {
                     closeController();
-                    return true;
                 }
-                return super.onFling(e1, e2, velocityX, velocityY);
+                return super.onScroll(e1, e2, distanceX, distanceY);
             }
         });
 
         closeController();
+
+        initTop();
+    }
+
+    private void initTop() {
+        binding.toggleWIFI.setChecked(NetworkUtils.getWifiEnabled());
+        binding.toggleWIFI.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                NetworkUtils.setWifiEnabled(b);
+            }
+        });
+        binding.toggleBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            }
+        });
     }
 
     private void closeController() {
@@ -71,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //2.让手势识别器 工作起来
-//当activity被触摸的时候调用的方法.
+    // 当activity被触摸的时候调用的方法.
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mGestureDetector.onTouchEvent(event);

@@ -94,8 +94,8 @@
                     android:padding="@dimen/dip_7"
                     android:text="锁屏" />
 
-                <TextView
-                    style="@style/btn_main_style"
+                <androidx.appcompat.widget.AppCompatToggleButton
+                    android:id="@+id/toggleWIFI"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dip_20"
@@ -106,8 +106,8 @@
                     android:text="WIFI" />
 
 
-                <TextView
-                    style="@style/btn_main_style"
+                <androidx.appcompat.widget.AppCompatToggleButton
+                    android:id="@+id/toggleBluetooth"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
