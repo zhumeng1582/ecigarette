@@ -4,26 +4,23 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.industio.ecigarette.ui.MainActivity;
+
 /**
  * Lock Screen Receiver
  *
  * @author Andy
  */
 public class LockScreenReceiver extends BroadcastReceiver {
-    public static final String LOCK_SCREEN_ACTION = "android.intent.lockscreen";
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            Intent lockIntent = new Intent(LOCK_SCREEN_ACTION);
-            lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        String action = intent.getAction();
 
-            context.startActivity(lockIntent);
-        } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-            // do other things if you need
-        } else if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            // do other things if you need
+        //If the screen was just turned on or it just booted up, start your Lock Activity
+        if (action.equals(Intent.ACTION_SCREEN_OFF) || action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+            Intent i = new Intent(context, MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
         }
     }
 }

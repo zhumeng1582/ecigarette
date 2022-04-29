@@ -6,13 +6,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
-/**
- * Lock Screen Service
- *
- * @author Andy
- */
+import android.app.KeyguardManager;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.IBinder;
+
 public class LockScreenService extends Service {
-    private BroadcastReceiver mReceiver;
+
+    BroadcastReceiver receiver;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -20,22 +23,31 @@ public class LockScreenService extends Service {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onCreate() {
-        super.onCreate();
+        KeyguardManager.KeyguardLock key;
+        KeyguardManager km = (KeyguardManager)getSystemService(KEYGUARD_SERVICE);
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_ON);
+        //This is deprecated, but it is a simple way to disable the lockscreen in code
+        key = km.newKeyguardLock("IN");
+
+        key.disableKeyguard();
+
+        //Start listening for the Screen On, Screen Off, and Boot completed actions
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
 
-        mReceiver = new LockScreenReceiver();
-        registerReceiver(mReceiver, filter);
+        //Set up a receiver to listen for the Intents in this Service
+        receiver = new LockScreenReceiver();
+        registerReceiver(receiver, filter);
+
+        super.onCreate();
     }
-
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(receiver);
         super.onDestroy();
-
-        unregisterReceiver(mReceiver);
     }
 }
