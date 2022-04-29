@@ -11,13 +11,10 @@ import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.Strings;
 import com.industio.ecigarette.view.ViewAnimate;
-
-import org.ido.iface.SerialControl;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -106,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == binding.btnMode) {
             startActivity(new Intent(MainActivity.this, ParaActivity.class));
         } else if (view == binding.btnSetPara) {
+            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+
         }
     }
 

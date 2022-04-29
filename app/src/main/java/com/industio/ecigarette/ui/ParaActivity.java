@@ -191,6 +191,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == binding.btnExit) {
             finish();
         } else if (view == binding.btnSaveAs) {
+
         } else if (view == binding.btnReset) {
             devicePara = CacheDataUtils.getDefaultDevicePara(devicePara.getId());
             CacheDataUtils.saveDevicePara(devicePara);

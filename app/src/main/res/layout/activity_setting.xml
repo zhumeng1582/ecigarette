@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textBluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:padding="@dimen/dip_15"
+        android:text="蓝牙" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_1"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/textWIFI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:padding="@dimen/dip_15"
+        android:text="WIFI" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_1"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/textLock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:padding="@dimen/dip_15"
+        android:text="锁屏" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_1"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/textUnLock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:padding="@dimen/dip_15"
+        android:text="息屏" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_1"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/textLight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:padding="@dimen/dip_15"
+        android:text="亮度" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_1"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/textShoutDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:padding="@dimen/dip_15"
+        android:text="自动关机" />
+
+</LinearLayout>
