@@ -9,9 +9,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
+import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.Strings;
 import com.industio.ecigarette.view.ViewAnimate;
 
@@ -88,44 +90,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == binding.btnPlayMusic) {
+            //qq音乐
+            String qqmusic = "com.tencent.qqmusic";
+            //网易云音乐
+            String cloudmusic = "com.netease.cloudmusic";
+            //咪咕
+            String migu = "cmccwm.mobilemusic";
+            if (AppUtils.isAppInstalled(qqmusic)) {
+                AppUtils.launchApp(qqmusic);
+            } else if (AppUtils.isAppInstalled(cloudmusic)) {
+                AppUtils.launchApp(cloudmusic);
+            } else if (AppUtils.isAppInstalled(migu)) {
+                AppUtils.launchApp(migu);
+            }
         } else if (view == binding.btnMode) {
             startActivity(new Intent(MainActivity.this, ParaActivity.class));
         } else if (view == binding.btnSetPara) {
         }
     }
 
-    //初始化串口
-    private void initSerial() {
-
-        SerialControl mErrLogSerialControl = new SerialControl() {
-            @Override
-            protected void read(byte[] buf, int len) {
-                switch (buf[4]) {
-                    case 0x00:
-                        break;//显示主界面;
-                    case 0x01:
-                        if (buf[5] <= 0x0C) {
-                            binding.textAlarm.setText(Strings.RECEVICE_TIPS[buf[5]]);
-                        }
-                        break;
-                    case 0x10:
-                        //相应的电池符号;
-                        //buf[5]（电量）
-                        break;
-                    default:
-                        break;
-                }
+    private void registerSerial() {
+        SerialController.getInstance().registerSerialReadListener((buf, len) -> {
+            switch (buf[4]) {
+                case 0x00:
+                    break;//显示主界面;
+                case 0x01:
+                    if (buf[5] <= 0x0C) {
+                        binding.textAlarm.setText(Strings.RECEVICE_TIPS[buf[5]]);
+                    }
+                    break;
+                case 0x10:
+                    //相应的电池符号;
+                    //buf[5]（电量）
+                    break;
+                default:
+                    break;
             }
-        };
-
-        String portName = "";
-        if (mErrLogSerialControl.init(portName, 9600, 8, 'N', 1, 0, 10)) {
-            ToastUtils.showShort("打开成功:" + portName);
-        } else {
-            ToastUtils.showLong("打开失败:" + portName);
-        }
-
+        });
     }
-
 
 }

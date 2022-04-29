@@ -18,6 +18,7 @@ import java.util.List;
 public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
     public void setCountNum(int countNum) {
         this.countNum = countNum;
+        notifyDataSetChanged();
     }
 
     //② 创建ViewHolder
@@ -32,6 +33,11 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
 
     public void setSelectIndex(int selectIndex) {
         this.selectIndex = selectIndex;
+        notifyDataSetChanged();
+    }
+
+    public int getSelectIndex() {
+        return selectIndex;
     }
 
     private int selectIndex = 0;

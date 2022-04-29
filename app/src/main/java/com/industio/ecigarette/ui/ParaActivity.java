@@ -29,7 +29,6 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
     private ActivityParaBinding binding;
     private DevicePara devicePara;
-    private int selectIndex = 0;
     private NormalAdapter adapter;
 
     @Override
@@ -45,17 +44,17 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textNoOperationValue.setText("" + progress + "s"));
         binding.cusSeekTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textTemperatureValue.setText("" + progress + "℃");
-            devicePara.getTemperature()[selectIndex] = progress;
+            devicePara.getTemperature()[adapter.getSelectIndex()] = progress;
         });
 
         binding.cusSeekCountValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textCountValue.setText("" + progress);
-            if (selectIndex >= progress) {
-                selectIndex = 0;
+            if (adapter.getSelectIndex() >= progress) {
+                adapter.setSelectIndex(0);
             }
             adapter.setCountNum(progress);
-            adapter.setSelectIndex(selectIndex);
-            adapter.notifyDataSetChanged();
+            binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
+
         });
 
 
@@ -76,7 +75,6 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         }, this);
 
         showDevicePara();
-        binding.cusSeekCountValue.setProgress(12);
     }
 
     private void initAdapter() {
@@ -85,11 +83,8 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 30, 20));
 
         adapter = new NormalAdapter(index -> {
-            selectIndex = index;
-            adapter.setSelectIndex(selectIndex);
-            adapter.notifyDataSetChanged();
-
-            binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[selectIndex]);
+            adapter.setSelectIndex(index);
+            binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
         });
         binding.recyclerView.setAdapter(adapter);
 
@@ -171,6 +166,9 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         binding.cusSeekConstantTemperatureValue.setProgress(devicePara.getConstantTemperatureValue());
         binding.cusSeekConstantTemperatureTimeValue.setProgress(devicePara.getConstantTemperatureTimeValue());
         binding.cusSeekNoOperationValue.setProgress(devicePara.getNoOperationValue());
+
+        binding.cusSeekCountValue.setProgress(devicePara.getCount());
+
     }
 
     private void saveDevicePara() {
@@ -179,6 +177,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         devicePara.setConstantTemperatureValue(binding.cusSeekConstantTemperatureValue.getProgress());
         devicePara.setConstantTemperatureTimeValue(binding.cusSeekConstantTemperatureTimeValue.getProgress());
         devicePara.setNoOperationValue(binding.cusSeekNoOperationValue.getProgress());
+        devicePara.setCount(binding.cusSeekCountValue.getProgress());
 
         CacheDataUtils.saveDevicePara(devicePara);
 
