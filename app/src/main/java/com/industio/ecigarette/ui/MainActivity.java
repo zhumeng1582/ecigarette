@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-        WifiUtils.onWifiOpenDoing();
+//        WifiUtils.onWifiOpenDoing();
     }
 
     private void closeController() {

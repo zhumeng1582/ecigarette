@@ -29,14 +29,7 @@ public class BluetoothUtils {
         }
     }
 
-    /**
-     * 让用户去设置蓝牙
-     */
-    public static void setBlueTooth() {
-        if (checkBlueToothEnable()) {
-            Utils.getApp().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
-    }
+
 
     /**
      * 打开蓝牙
@@ -68,10 +61,5 @@ public class BluetoothUtils {
             }
         }
     }
-    public static void openWIFISettings() {
-        Utils.getApp().startActivity(
-                new Intent(Settings.ACTION_WIFI_SETTINGS)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        );
-    }
+
 }

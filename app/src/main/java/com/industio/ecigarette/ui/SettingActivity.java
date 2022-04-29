@@ -1,25 +1,16 @@
 package com.industio.ecigarette.ui;
 
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.NetworkUtils;
-import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
-import com.industio.ecigarette.serialcontroller.SerialController;
-import com.industio.ecigarette.util.BluetoothUtils;
-import com.industio.ecigarette.util.Strings;
-import com.industio.ecigarette.view.ViewAnimate;
-
+import com.industio.ecigarette.lockscreen.LockScreenService;
+import com.industio.ecigarette.util.SettingUtils;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySettingBinding binding;
@@ -44,17 +35,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view == binding.textBluetooth) {
-            BluetoothUtils.setBlueTooth();
+            SettingUtils.setBlueTooth();
         } else if (view == binding.textWIFI) {
-            BluetoothUtils.openWIFISettings();
+            SettingUtils.openWIFISettings();
         } else if (view == binding.textLock) {
+            startService(new Intent(this, LockScreenService.class));
         } else if (view == binding.textUnLock) {
+            BrightnessUtils.setBrightness(0);
         } else if (view == binding.textLight) {
-            Intent intent = new Intent(Settings.ACTION_DISPLAY_SETTINGS);
-            startActivity(intent);
+            SettingUtils.setDISPLAY();
         } else if (view == binding.textShoutDown) {
         }
     }
-
-
 }
