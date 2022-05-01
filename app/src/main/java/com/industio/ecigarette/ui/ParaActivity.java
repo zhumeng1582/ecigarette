@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -19,7 +18,9 @@ import com.industio.ecigarette.R;
 import com.industio.ecigarette.adapter.NormalAdapter;
 import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
+import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.CacheDataUtils;
+import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -35,16 +36,39 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityParaBinding.inflate(getLayoutInflater());
+        devicePara = CacheDataUtils.getDevicePara(0);
+
         setContentView(binding.getRoot());
 
-        binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textPreheatValue.setText("" + progress + "℃"));
-        binding.cusSeekPreheatTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textPreheatTimeValue.setText("" + progress + "s"));
-        binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textConstantTemperatureValue.setText("" + progress + " ℃"));
-        binding.cusSeekConstantTemperatureTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textConstantTemperatureTimeValue.setText("" + progress + "s"));
-        binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> binding.textNoOperationValue.setText("" + progress + "s"));
+        binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textPreheatValue.setText("" + progress + "℃");
+            devicePara.setPreheatValue(progress);
+            setChartData();
+        });
+        binding.cusSeekPreheatTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textPreheatTimeValue.setText("" + progress + "s");
+            devicePara.setPreheatTimeValue(progress);
+            setChartData();
+        });
+        binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textConstantTemperatureValue.setText("" + progress + " ℃");
+            devicePara.setConstantTemperatureValue(progress);
+            setChartData();
+        });
+        binding.cusSeekConstantTemperatureTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textConstantTemperatureTimeValue.setText("" + progress + "s");
+            devicePara.setConstantTemperatureTimeValue(progress);
+            setChartData();
+        });
+        binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> {
+            binding.textNoOperationValue.setText("" + progress + "s");
+            devicePara.setNoOperationValue(progress);
+            setChartData();
+        });
         binding.cusSeekTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textTemperatureValue.setText("" + progress + "℃");
             devicePara.getTemperature()[adapter.getSelectIndex()] = progress;
+            setChartData();
         });
 
         binding.cusSeekCountValue.setOnSeekBarChangeListener((seekBar, progress) -> {
@@ -54,7 +78,8 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             }
             adapter.setCountNum(progress);
             binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
-
+            devicePara.setCount(progress);
+            setChartData();
         });
 
 
@@ -65,7 +90,6 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initData() {
-        devicePara = CacheDataUtils.getDevicePara(0);
 
         ClickUtils.applySingleDebouncing(new View[]{
                 binding.btnSave,
@@ -97,7 +121,10 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         binding.chart1.animate();
 
         binding.chart1.animateX(1500);
+        setChartData();
+    }
 
+    private void setChartData() {
         setAxis(); // 设置坐标轴
         setData(); // 设置数据
     }
@@ -107,20 +134,44 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
         List<Entry> entries1 = new ArrayList<>();
         entries1.add(new Entry(0, 0));
-        entries1.add(new Entry(1, 380));
-        entries1.add(new Entry(2, 355));
-        entries1.add(new Entry(3, 350));
-        entries1.add(new Entry(4, 250));
-        entries1.add(new Entry(5, 280));
-        entries1.add(new Entry(6, 300));
-        entries1.add(new Entry(7, 320));
-        entries1.add(new Entry(8, 340));
-        entries1.add(new Entry(9, 380));
-        entries1.add(new Entry(10, 380));
-        entries1.add(new Entry(11, 360));
-        entries1.add(new Entry(12, 370));
-        entries1.add(new Entry(13, 380));
-        entries1.add(new Entry(14, 390));
+
+        entries1.add(new Entry(1, devicePara.getPreheatValue()));
+        entries1.add(new Entry(2, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[0]));
+        entries1.add(new Entry(3, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[1]));
+        entries1.add(new Entry(4, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[2]));
+        entries1.add(new Entry(5, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[3]));
+        entries1.add(new Entry(6, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[4]));
+        entries1.add(new Entry(7, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[5]));
+        entries1.add(new Entry(8, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[6]));
+        entries1.add(new Entry(9, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[7]));
+        entries1.add(new Entry(10, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[8]));
+        entries1.add(new Entry(11, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[9]));
+
+        if (adapter.getCountNum() > 10) {
+            entries1.add(new Entry(12, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[10]));
+        }
+        if (adapter.getCountNum() > 11) {
+            entries1.add(new Entry(13, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[11]));
+        }
+        if (adapter.getCountNum() > 12) {
+            entries1.add(new Entry(14, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[12]));
+        }
+        if (adapter.getCountNum() > 13) {
+            entries1.add(new Entry(15, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[13]));
+        }
+        if (adapter.getCountNum() > 14) {
+            entries1.add(new Entry(16, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[14]));
+        }
+        if (adapter.getCountNum() > 15) {
+            entries1.add(new Entry(17, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[15]));
+        }
+        if (adapter.getCountNum() > 16) {
+            entries1.add(new Entry(18, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[16]));
+        }
+        if (adapter.getCountNum() > 17) {
+            entries1.add(new Entry(19, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[17]));
+        }
+
         LineDataSet dataSet1 = new LineDataSet(entries1, "");
         dataSet1.setValueTextSize(9f);
         dataSet1.setDrawValues(true); // 不显示值
@@ -130,19 +181,22 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         sets.add(dataSet1);
 
         LineData lineData = new LineData(sets);
+        binding.chart1.clear();
         binding.chart1.setData(lineData);
         binding.chart1.setScaleEnabled(false); // 设置不能缩放
         binding.chart1.setTouchEnabled(false); // 设置不能触摸
 //        binding.chart1.setDrawBorders(true);
+
     }
 
     private void setAxis() {
         // x轴
         XAxis xAxis = binding.chart1.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMaximum(15);
+
+        xAxis.setAxisMaximum(adapter.getCountNum() + 1);
         xAxis.setAxisMinimum(0);
-        xAxis.setLabelCount(15);
+        xAxis.setLabelCount(adapter.getCountNum() + 1);
         xAxis.setTextSize(12f);
 
         // 右y轴
@@ -172,16 +226,19 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void saveDevicePara() {
-        devicePara.setPreheatValue(binding.cusSeekPreheatValue.getProgress());
-        devicePara.setPreheatTimeValue(binding.cusSeekPreheatTimeValue.getProgress());
-        devicePara.setConstantTemperatureValue(binding.cusSeekConstantTemperatureValue.getProgress());
-        devicePara.setConstantTemperatureTimeValue(binding.cusSeekConstantTemperatureTimeValue.getProgress());
-        devicePara.setNoOperationValue(binding.cusSeekNoOperationValue.getProgress());
-        devicePara.setCount(binding.cusSeekCountValue.getProgress());
+//        devicePara.setPreheatValue(binding.cusSeekPreheatValue.getProgress());
+//        devicePara.setPreheatTimeValue(binding.cusSeekPreheatTimeValue.getProgress());
+//        devicePara.setConstantTemperatureValue(binding.cusSeekConstantTemperatureValue.getProgress());
+//        devicePara.setConstantTemperatureTimeValue(binding.cusSeekConstantTemperatureTimeValue.getProgress());
+//        devicePara.setNoOperationValue(binding.cusSeekNoOperationValue.getProgress());
+//        devicePara.setCount(binding.cusSeekCountValue.getProgress());
 
         CacheDataUtils.saveDevicePara(devicePara);
 
+        SerialController.getInstance().send(DeviceConstant.startCmd);
+
     }
+
 
     @Override
     public void onClick(View view) {
@@ -197,5 +254,9 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             CacheDataUtils.saveDevicePara(devicePara);
             showDevicePara();
         }
+    }
+
+    public void sendDataToDevice() {
+        SerialController.getInstance().send(null);
     }
 }

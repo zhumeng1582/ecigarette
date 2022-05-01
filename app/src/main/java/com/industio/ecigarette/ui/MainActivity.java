@@ -2,14 +2,11 @@ package com.industio.ecigarette.ui;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,8 +22,7 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.BluetoothUtils;
-import com.industio.ecigarette.util.Strings;
-import com.industio.ecigarette.util.WifiUtils;
+import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.ViewAnimate;
 
 
@@ -61,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initTop();
     }
+
+
 
     private void initTop() {
         PermissionUtils.permission(Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
@@ -109,12 +107,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.seekBar.setMin(0);
         binding.seekBar.setMax(255);
         binding.seekBar.setProgress(BrightnessUtils.getBrightness());
-        BrightnessUtils.setAutoBrightnessEnabled(false);
+//        BrightnessUtils.setAutoBrightnessEnabled(false);
 
         binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                BrightnessUtils.setBrightness(i);
+                PermissionUtils.permission(Manifest.permission.WRITE_SETTINGS).callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        BrightnessUtils.setBrightness(i);
+
+                    }
+
+                    @Override
+                    public void onDenied() {
+
+                    }
+                }).request();
             }
 
             @Override
@@ -183,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;//显示主界面;
                 case 0x01:
                     if (buf[5] <= 0x0C) {
-                        binding.textAlarm.setText(Strings.RECEVICE_TIPS[buf[5]]);
+                        binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]]);
                     }
                     break;
                 case 0x10:

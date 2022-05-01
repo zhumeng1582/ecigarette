@@ -2,7 +2,6 @@ package com.industio.ecigarette.serialcontroller;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.industio.ecigarette.util.Strings;
 
 import org.ido.iface.SerialControl;
 
@@ -61,12 +60,12 @@ public class SerialController {
         }
     }
 
-    public void send(String text) {
+    public void send(byte[] buf) {
         if (serialControl == null) {
             initSerial();
         }
         if (serialControl != null) {
-            serialControl.write(text.getBytes());//发送
+            serialControl.write(buf);//发送
         }
     }
 

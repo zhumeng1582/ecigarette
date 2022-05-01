@@ -41,6 +41,11 @@ public class NormalAdapter extends RecyclerView.Adapter<NormalAdapter.VH> {
     }
 
     private int selectIndex = 0;
+
+    public int getCountNum() {
+        return countNum;
+    }
+
     private int countNum = 12;
 
     private ItemOnClick itemOnClick;

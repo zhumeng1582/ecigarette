@@ -68,7 +68,7 @@ public class CusSeek extends LinearLayout {
             }
 
             if (onSeekBarChangeListener != null) {
-                onSeekBarChangeListener.onProgressChanged(seekBar, progress);
+                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress());
             }
         });
         btnPlus.setOnClickListener(view -> {
@@ -77,7 +77,7 @@ public class CusSeek extends LinearLayout {
                 seekBar.setProgress(progress + buttonStep);
             }
             if (onSeekBarChangeListener != null) {
-                onSeekBarChangeListener.onProgressChanged(seekBar, progress);
+                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress());
             }
         });
 
