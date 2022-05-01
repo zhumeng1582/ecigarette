@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -19,11 +20,14 @@ import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.ViewAnimate;
+import com.kennyc.bottomsheet.BottomSheetListener;
+import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -57,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initTop();
     }
-
 
 
     private void initTop() {
@@ -178,7 +181,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 AppUtils.launchApp(migu);
             }
         } else if (view == binding.btnMode) {
-            startActivity(new Intent(MainActivity.this, ParaActivity.class));
+            new BottomSheetMenuDialogFragment.Builder(this)
+                    .setSheet(R.menu.list_sheet)
+                    .setTitle("")
+                    .setListener(new BottomSheetListener() {
+                        @Override
+                        public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
+                        }
+
+                        @Override
+                        public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
+                            if (menuItem.getItemId() == R.id.classics) {
+                                ParaActivity.newInstance(MainActivity.this, ParaActivity.classics);
+                            } else if (menuItem.getItemId() == R.id.elegant) {
+                                ParaActivity.newInstance(MainActivity.this, ParaActivity.elegant);
+                            } else {
+                                ParaActivity.newInstance(MainActivity.this, ParaActivity.strong);
+                            }
+                        }
+
+                        @Override
+                        public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
+
+                        }
+                    })
+                    .show(getSupportFragmentManager());
+
         } else if (view == binding.btnSetPara) {
             startActivity(new Intent(MainActivity.this, SettingActivity.class));
 

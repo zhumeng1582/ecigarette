@@ -26,6 +26,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="加热模式:" />
+
+                <TextView
+                    android:id="@+id/textModeChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="经典（默认）" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dip_10"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -168,6 +185,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -240,13 +258,14 @@
                             app:seekBarStep="1" />
                     </LinearLayout>
                 </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dip_20"
+                    android:background="@color/white"
                     android:paddingLeft="@dimen/dip_5"
                     android:paddingRight="@dimen/dip_5"
-                    android:background="@color/white"
                     android:text="DIY模式" />
             </FrameLayout>
         </LinearLayout>
