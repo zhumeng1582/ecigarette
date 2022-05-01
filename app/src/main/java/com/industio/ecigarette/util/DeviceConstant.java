@@ -21,7 +21,7 @@ public class DeviceConstant {
     public static byte[] saveCmd = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55};
     public static byte[] sleepCmd = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55};
 
-    enum CMD {
+    public enum CMD {
         预热温度(0x01),
         预热时长(0x02),
         恒温温度(0x03),
@@ -37,16 +37,16 @@ public class DeviceConstant {
 
     public static byte[] sendData(CMD cmd, int para) {
         byte para1 = (byte) (para >> 16 & 0xFF);
-        byte para2 = (byte) (para >> 8 & 0xFF );
+        byte para2 = (byte) (para >> 8 & 0xFF);
         byte para3 = (byte) (para & 0xFF);
         return new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x02, cmd.value, para1, para2, para3, 0x00, 0x00, 0x55};
     }
 
-    public static int[] sendCount(int count, int para) {
+    public static byte[] sendCount(int count, int para) {
         int para1 = para > 0 ? 0x01 : 0x00;
         para = Math.abs(para);
-        int para2 = para & 0xFF00 >> 8;
-        int para3 = para & 0x00FF;
-        return new int[]{0x55, 0xFF, 0xCE, 0xAA, 0x03, count, para1, para2, para3, 0x00, 0x00, 0x55};
+        int para2 = para >> 8 & 0xFF;
+        int para3 = para & 0xFF;
+        return new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x03, (byte) count, (byte) para1, (byte) para2, (byte) para3, 0x00, 0x00, 0x55};
     }
 }

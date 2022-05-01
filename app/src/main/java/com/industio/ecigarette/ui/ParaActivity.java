@@ -82,7 +82,6 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             setChartData();
         });
 
-
         initAdapter();
         initLineChart();
         initData();
@@ -136,40 +135,11 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         entries1.add(new Entry(0, 0));
 
         entries1.add(new Entry(1, devicePara.getPreheatValue()));
-        entries1.add(new Entry(2, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[0]));
-        entries1.add(new Entry(3, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[1]));
-        entries1.add(new Entry(4, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[2]));
-        entries1.add(new Entry(5, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[3]));
-        entries1.add(new Entry(6, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[4]));
-        entries1.add(new Entry(7, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[5]));
-        entries1.add(new Entry(8, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[6]));
-        entries1.add(new Entry(9, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[7]));
-        entries1.add(new Entry(10, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[8]));
-        entries1.add(new Entry(11, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[9]));
 
-        if (adapter.getCountNum() > 10) {
-            entries1.add(new Entry(12, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[10]));
-        }
-        if (adapter.getCountNum() > 11) {
-            entries1.add(new Entry(13, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[11]));
-        }
-        if (adapter.getCountNum() > 12) {
-            entries1.add(new Entry(14, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[12]));
-        }
-        if (adapter.getCountNum() > 13) {
-            entries1.add(new Entry(15, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[13]));
-        }
-        if (adapter.getCountNum() > 14) {
-            entries1.add(new Entry(16, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[14]));
-        }
-        if (adapter.getCountNum() > 15) {
-            entries1.add(new Entry(17, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[15]));
-        }
-        if (adapter.getCountNum() > 16) {
-            entries1.add(new Entry(18, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[16]));
-        }
-        if (adapter.getCountNum() > 17) {
-            entries1.add(new Entry(19, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[17]));
+        for (int i = 0; i < 18; i++) {
+            if (adapter.getCountNum() > i) {
+                entries1.add(new Entry(i+2, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[i]));
+            }
         }
 
         LineDataSet dataSet1 = new LineDataSet(entries1, "");
@@ -235,8 +205,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
         CacheDataUtils.saveDevicePara(devicePara);
 
-        SerialController.getInstance().send(DeviceConstant.startCmd);
-
+//        sendDataToDevice();
     }
 
 
@@ -257,6 +226,18 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void sendDataToDevice() {
-        SerialController.getInstance().send(null);
+        SerialController.getInstance().send(DeviceConstant.startCmd);
+        SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.预热温度, devicePara.getPreheatValue()));
+        SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.预热时长, devicePara.getPreheatTimeValue()));
+        SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.恒温温度, devicePara.getConstantTemperatureValue()));
+        SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.恒温时长, devicePara.getConstantTemperatureTimeValue()));
+        SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.休眠时长, devicePara.getNoOperationValue()));
+        SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.发送口数, devicePara.getCount()));
+        for (int i = 0; i < 18; i++) {
+            if(i<devicePara.getCount()){
+                SerialController.getInstance().send(DeviceConstant.sendCount(i+1, devicePara.getTemperature()[i]));
+            }
+        }
+
     }
 }
