@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else if (view == binding.btnMode) {
             new BottomSheetMenuDialogFragment.Builder(this)
-                    .setSheet(R.menu.list_sheet)
+                    .setSheet(R.menu.list_mode)
                     .setTitle("")
                     .setListener(new BottomSheetListener() {
                         @Override

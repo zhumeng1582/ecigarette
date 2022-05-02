@@ -104,7 +104,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 new BottomSheetMenuDialogFragment.Builder(ParaActivity.this)
-                        .setSheet(R.menu.list_sheet)
+                        .setSheet(R.menu.list_mode)
                         .setTitle("")
                         .setListener(new BottomSheetListener() {
                             @Override
