@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.MenuRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -105,7 +106,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 new BottomSheetMenuDialogFragment.Builder(ParaActivity.this)
                         .setSheet(R.menu.list_mode)
-                        .setTitle("")
+                        .setTitle("选择模式")
                         .setListener(new BottomSheetListener() {
                             @Override
                             public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
@@ -205,6 +206,9 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         dataSet1.setColor(getColor(R.color.red));
         dataSet1.setCircleHoleColor(getColor(R.color.white));
         dataSet1.setCircleColor(getColor(R.color.red));
+        dataSet1.setLineWidth(1);
+        dataSet1.setCircleHoleRadius(2);
+        dataSet1.setCircleRadius(4);
         sets.add(dataSet1);
 
         LineData lineData = new LineData(sets);
@@ -267,12 +271,53 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == binding.btnExit) {
             finish();
         } else if (view == binding.btnSaveAs) {
-
+            saveAs();
         } else if (view == binding.btnReset) {
             devicePara = CacheDataUtils.getDefaultDevicePara(devicePara.getId());
             CacheDataUtils.saveDevicePara(devicePara);
             showDevicePara();
         }
+    }
+
+    private void saveAs() {
+        @MenuRes int id;
+        if (devicePara.getId() == ParaActivity.classics) {
+            id = R.menu.list_classics;
+        } else if (devicePara.getId() == ParaActivity.elegant) {
+            id = R.menu.list_elegant;
+        } else {
+            id = R.menu.list_strong;
+        }
+
+        new BottomSheetMenuDialogFragment.Builder(ParaActivity.this)
+                .setSheet(id)
+                .setTitle("另存为")
+                .setListener(new BottomSheetListener() {
+                    @Override
+                    public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
+                    }
+
+                    @Override
+                    public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
+                        if (menuItem.getItemId() == R.id.classics) {
+                            devicePara.setId(ParaActivity.classics);
+                            binding.textModeChange.setText("经典（默认）");
+                        } else if (menuItem.getItemId() == R.id.elegant) {
+                            devicePara.setId(ParaActivity.elegant);
+                            binding.textModeChange.setText("淡雅");
+                        } else {
+                            devicePara.setId(ParaActivity.strong);
+                            binding.textModeChange.setText("浓郁");
+                        }
+                        saveDevicePara();
+                    }
+
+                    @Override
+                    public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
+
+                    }
+                })
+                .show(getSupportFragmentManager());
     }
 
     public void sendDataToDevice() {

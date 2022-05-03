@@ -12,8 +12,11 @@
         <entry key="app/src/main/res/layout/activity_setting.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/view_cus_seek.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/list_classisc.xml" value="0.52125" />
+        <entry key="app/src/main/res/menu/list_elegant.xml" value="0.52125" />
         <entry key="app/src/main/res/menu/list_mode.xml" value="0.26979166666666665" />
         <entry key="app/src/main/res/menu/list_sheet.xml" value="0.18697916666666667" />
+        <entry key="app/src/main/res/menu/list_strong.xml" value="0.52125" />
       </map>
     </option>
   </component>

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         closeController();
 
         initTop();
+//        registerSerial();
     }
 
 
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == binding.btnMode) {
             new BottomSheetMenuDialogFragment.Builder(this)
                     .setSheet(R.menu.list_mode)
-                    .setTitle("")
+                    .setTitle("选择模式")
                     .setListener(new BottomSheetListener() {
                         @Override
                         public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
