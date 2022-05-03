@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.industio.ecigarette.R;
 
 public class CusSeek extends LinearLayout {
@@ -55,8 +56,8 @@ public class CusSeek extends LinearLayout {
         buttonStep = typedArray.getInt(R.styleable.CusSeek_buttonStep, 1);
 
         seekBar = findViewById(R.id.seekBar);
-        seekBar.setMax(maxValue);
-        seekBar.setMin(minValue);
+        seekBar.setMax(maxValue - minValue);
+//        seekBar.setMin(minValue);
 
         btnMinus = findViewById(R.id.btnMinus);
         btnPlus = findViewById(R.id.btnPlus);
@@ -68,7 +69,7 @@ public class CusSeek extends LinearLayout {
             }
 
             if (onSeekBarChangeListener != null) {
-                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress());
+                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress() + minValue);
             }
         });
         btnPlus.setOnClickListener(view -> {
@@ -77,7 +78,7 @@ public class CusSeek extends LinearLayout {
                 seekBar.setProgress(progress + buttonStep);
             }
             if (onSeekBarChangeListener != null) {
-                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress());
+                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress() + minValue);
             }
         });
 
@@ -101,17 +102,18 @@ public class CusSeek extends LinearLayout {
     }
 
     public void setProgress(int progress) {
-        seekBar.setProgress(progress);
+        seekBar.setProgress(progress - minValue);
         if (onSeekBarChangeListener != null) {
             onSeekBarChangeListener.onProgressChanged(seekBar, progress);
         }
     }
 
     public int getProgress() {
-        return seekBar.getProgress();
+        return seekBar.getProgress() + minValue;
     }
 
     private void refreshView(SeekBar seekBar) {
+
         int progress = seekBar.getProgress();//当前滑动到的值
 
         if (progress % seekBarStep > 0 && progress != maxValue) {
@@ -122,10 +124,9 @@ public class CusSeek extends LinearLayout {
                 progress = seekBarStep * (progress / seekBarStep);
             }
             seekBar.setProgress(progress);
-
         }
         if (onSeekBarChangeListener != null) {
-            onSeekBarChangeListener.onProgressChanged(seekBar, progress);
+            onSeekBarChangeListener.onProgressChanged(seekBar, progress + minValue);
         }
     }
 
