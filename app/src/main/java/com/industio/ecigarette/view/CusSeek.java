@@ -16,8 +16,6 @@ import com.industio.ecigarette.R;
 
 public class CusSeek extends LinearLayout {
     private SeekBar seekBar;
-    private Button btnMinus;
-    private Button btnPlus;
 
     private int minValue;
     private int maxValue;
@@ -59,10 +57,7 @@ public class CusSeek extends LinearLayout {
         seekBar.setMax(maxValue - minValue);
 //        seekBar.setMin(minValue);
 
-        btnMinus = findViewById(R.id.btnMinus);
-        btnPlus = findViewById(R.id.btnPlus);
-
-        btnMinus.setOnClickListener(view -> {
+        findViewById(R.id.btnMinus).setOnClickListener(view -> {
             int progress = seekBar.getProgress();
             if (progress > minValue) {
                 seekBar.setProgress(progress - buttonStep);
@@ -72,7 +67,7 @@ public class CusSeek extends LinearLayout {
                 onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress() + minValue);
             }
         });
-        btnPlus.setOnClickListener(view -> {
+        findViewById(R.id.btnPlus).setOnClickListener(view -> {
             int progress = seekBar.getProgress();
             if (progress < maxValue) {
                 seekBar.setProgress(progress + buttonStep);

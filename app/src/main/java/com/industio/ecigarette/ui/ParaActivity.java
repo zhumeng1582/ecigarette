@@ -49,12 +49,12 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int mode = getIntent().getIntExtra("mode", ParaActivity.classics);
 
         binding = ActivityParaBinding.inflate(getLayoutInflater());
-        devicePara = CacheDataUtils.getDevicePara(mode);
-
         setContentView(binding.getRoot());
+
+        int mode = getIntent().getIntExtra("mode", ParaActivity.classics);
+        devicePara = CacheDataUtils.getDevicePara(mode);
 
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textPreheatValue.setText("" + progress + "℃");
@@ -114,11 +114,14 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
                                 if (menuItem.getItemId() == R.id.classics) {
+                                    binding.textModeChange.setText("经典（默认）");
                                     devicePara = CacheDataUtils.getDevicePara(ParaActivity.classics);
                                 } else if (menuItem.getItemId() == R.id.elegant) {
                                     devicePara = CacheDataUtils.getDevicePara(ParaActivity.elegant);
+                                    binding.textModeChange.setText("淡雅");
                                 } else {
                                     devicePara = CacheDataUtils.getDevicePara(ParaActivity.strong);
+                                    binding.textModeChange.setText("浓郁");
                                 }
                                 initData();
                             }
@@ -131,6 +134,11 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
                         .show(getSupportFragmentManager());
             }
         });
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 30, 20));
+
         initData();
 
         initEvent();
@@ -154,10 +162,6 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initAdapter() {
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
-        binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 30, 20));
-
         adapter = new NormalAdapter(index -> {
             adapter.setSelectIndex(index);
             binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
