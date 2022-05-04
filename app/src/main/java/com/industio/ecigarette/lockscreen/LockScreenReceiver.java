@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.industio.ecigarette.ui.MainActivity;
 
 /**
@@ -22,5 +23,6 @@ public class LockScreenReceiver extends BroadcastReceiver {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }
+        LogUtils.d("------------>LockScreenReceiver");
     }
 }

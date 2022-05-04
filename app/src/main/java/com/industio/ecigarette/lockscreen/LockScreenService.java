@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+import com.blankj.utilcode.util.LogUtils;
+
 public class LockScreenService extends Service {
 
     BroadcastReceiver receiver;
@@ -23,7 +25,6 @@ public class LockScreenService extends Service {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onCreate() {
         KeyguardManager.KeyguardLock key;
         KeyguardManager km = (KeyguardManager)getSystemService(KEYGUARD_SERVICE);
@@ -41,6 +42,7 @@ public class LockScreenService extends Service {
         //Set up a receiver to listen for the Intents in this Service
         receiver = new LockScreenReceiver();
         registerReceiver(receiver, filter);
+        LogUtils.d("------------>LockScreenService");
 
         super.onCreate();
     }
