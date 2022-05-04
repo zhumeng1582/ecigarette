@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (e1.getRawY() < 300 && distanceY < 0) {
+                    binding.toggleWIFI.setChecked(NetworkUtils.getWifiEnabled());
+                    binding.toggleBluetooth.setChecked(BluetoothUtils.isBlueOn());
+                    binding.seekBar.setProgress(BrightnessUtils.getBrightness());
+
                     ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
                 } else if (distanceY > 0) {
                     closeController();
@@ -73,19 +77,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initTop() {
-        PermissionUtils.permission(Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
-            @Override
-            public void onGranted() {
-                LogUtils.dTag("PermissionUtils", "-------->onGranted");
-            }
 
-            @Override
-            public void onDenied() {
-                LogUtils.dTag("PermissionUtils", "-------->onDenied");
 
-            }
-        }).request();
-        binding.toggleWIFI.setChecked(NetworkUtils.getWifiEnabled());
         binding.toggleWIFI.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -118,8 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         binding.seekBar.setMin(0);
         binding.seekBar.setMax(255);
-        binding.seekBar.setProgress(BrightnessUtils.getBrightness());
-//        BrightnessUtils.setAutoBrightnessEnabled(false);
+
 
         binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -148,7 +140,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-//        WifiUtils.onWifiOpenDoing();
+    }
+
+    private void permission() {
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied() {
+
+            }
+        }).request();
     }
 
     private void closeController() {
@@ -170,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        permission();
     }
 
 

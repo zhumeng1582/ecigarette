@@ -20,15 +20,8 @@ public class BluetoothUtils {
      */
     public static boolean checkBlueToothEnable() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
-            ToastUtils.showShort("该设备不支持蓝牙");
-            return false;
-        } else {
-            ToastUtils.showShort("该设备能支持蓝牙");
-            return true;
-        }
+        return bluetoothAdapter != null;
     }
-
 
 
     /**
@@ -60,6 +53,17 @@ public class BluetoothUtils {
                 ToastUtils.showShort("蓝牙已关闭，不用在点了~");
             }
         }
+    }
+
+    /**
+     * 关闭蓝牙
+     */
+    public static boolean isBlueOn() {
+        if (checkBlueToothEnable()) {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            return bluetoothAdapter.isEnabled();
+        }
+        return false;
     }
 
 }
