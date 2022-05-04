@@ -55,6 +55,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                closeController();
+                return super.onSingleTapUp(e);
+            }
+
+
         });
 
         closeController();
