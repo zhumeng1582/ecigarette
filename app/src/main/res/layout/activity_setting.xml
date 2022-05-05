@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,73 +9,91 @@
         android:id="@+id/textBluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="蓝牙" />
+        android:text="蓝牙"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_bluetooth"
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_1"
+        android:layout_height="@dimen/dip_0.5"
         android:background="@color/grey" />
 
     <TextView
         android:id="@+id/textWIFI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="WIFI" />
+        android:text="WIFI"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_wifi"
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_1"
+        android:layout_height="@dimen/dip_0.5"
         android:background="@color/grey" />
 
     <TextView
         android:id="@+id/textLock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="锁屏" />
+        android:text="锁屏"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_lock"
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_1"
+        android:layout_height="@dimen/dip_0.5"
         android:background="@color/grey" />
 
     <TextView
         android:id="@+id/textUnLock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="息屏" />
+        android:text="息屏"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_dormancy"
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_1"
+        android:layout_height="@dimen/dip_0.5"
         android:background="@color/grey" />
 
     <TextView
         android:id="@+id/textLight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="亮度" />
+        android:text="亮度"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_light"
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_1"
+        android:layout_height="@dimen/dip_0.5"
         android:background="@color/grey" />
 
     <TextView
         android:id="@+id/textShoutDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableRight="@android:drawable/ic_menu_zoom"
+        android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="自动关机" />
+        android:text="自动关机"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_shutdown"
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
 
 </LinearLayout>
