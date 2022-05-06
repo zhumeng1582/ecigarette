@@ -65,5 +65,15 @@ public class BluetoothUtils {
         }
         return false;
     }
+    /**
+     * 关闭蓝牙
+     */
+    public static int getState() {
+        if (checkBlueToothEnable()) {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            return bluetoothAdapter.getState();
+        }
+        return BluetoothAdapter.STATE_OFF;
+    }
 
 }

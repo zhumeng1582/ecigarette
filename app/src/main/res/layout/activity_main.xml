@@ -66,69 +66,8 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <com.industio.ecigarette.view.ToggleToolWidget
         android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="@dimen/dip_20"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-                <TextView
-                    style="@style/btn_main_style"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/dip_7"
-                    android:text="锁屏" />
-
-                <androidx.appcompat.widget.AppCompatToggleButton
-                    android:id="@+id/toggleWIFI"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dip_20"
-                    android:layout_marginRight="@dimen/dip_20"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/dip_7"
-                    android:text="WIFI" />
-
-
-                <androidx.appcompat.widget.AppCompatToggleButton
-                    android:id="@+id/toggleBluetooth"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/dip_7"
-                    android:text="蓝牙" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/dip_20">
-
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 </FrameLayout>

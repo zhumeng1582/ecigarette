@@ -49,11 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                LogUtils.d("----------->onScroll:"+e1.getRawY());
                 if (e1.getRawY() < 300 && distanceY < 0) {
-                    binding.toggleWIFI.setChecked(NetworkUtils.getWifiEnabled());
-                    binding.toggleBluetooth.setChecked(BluetoothUtils.isBlueOn());
-                    binding.seekBar.setProgress(BrightnessUtils.getBrightness());
-
                     ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
                 } else if (distanceY > 0) {
                     closeController();
@@ -71,84 +68,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         closeController();
-
-        initTop();
-//        registerSerial();
-
-        byte[] dd = Crc16Utils.getData(new byte[]{0x01, 0x06, 0x0F, (byte) 0xA4, 0x00, 0x01});
-        String str = Crc16Utils.byteTo16String(dd).toUpperCase();
-        LogUtils.d("---------->>"+str);
     }
 
-
-    private void initTop() {
-
-
-        binding.toggleWIFI.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                NetworkUtils.setWifiEnabled(b);
-            }
-        });
-        binding.toggleBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                PermissionUtils.permission(Manifest.permission.BLUETOOTH_CONNECT).callback(new PermissionUtils.SimpleCallback() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onGranted() {
-                        if (b) {
-                            BluetoothUtils.offBlueTooth();
-                        } else {
-                            BluetoothUtils.onBlueTooth();
-                        }
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        LogUtils.dTag("PermissionUtils", "-------->onDenied");
-
-                    }
-                }).request();
-
-            }
-        });
-
-        binding.seekBar.setMin(0);
-        binding.seekBar.setMax(255);
-
-
-        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                PermissionUtils.permission(Manifest.permission.WRITE_SETTINGS).callback(new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        BrightnessUtils.setBrightness(i);
-
-                    }
-
-                    @Override
-                    public void onDenied() {
-
-                    }
-                }).request();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-    }
 
     private void permission() {
-        PermissionUtils.permission(Manifest.permission.BLUETOOTH_CONNECT,Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH,Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
 
