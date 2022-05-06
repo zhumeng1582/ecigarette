@@ -13,6 +13,7 @@
         android:background="@mipmap/bg_main"
         android:padding="@dimen/dip_40">
 
+
         <TextView
             android:id="@+id/textAlarm"
             android:layout_width="match_parent"
@@ -69,5 +70,14 @@
     <com.industio.ecigarette.view.ToggleToolWidget
         android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/imagePower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/dip_20"
+        android:visibility="gone"
+        android:src="@mipmap/icon_power4" />
 </FrameLayout>

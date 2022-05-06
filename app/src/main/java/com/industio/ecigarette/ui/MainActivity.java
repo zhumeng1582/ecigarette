@@ -4,27 +4,20 @@ package com.industio.ecigarette.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
-import com.industio.ecigarette.util.BluetoothUtils;
-import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -49,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                LogUtils.d("----------->onScroll:"+e1.getRawY());
+                LogUtils.d("----------->onScroll:" + e1.getRawY());
                 if (e1.getRawY() < 300 && distanceY < 0) {
                     ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
                 } else if (distanceY > 0) {
@@ -72,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void permission() {
-        PermissionUtils.permission(Manifest.permission.BLUETOOTH,Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
 
@@ -158,9 +151,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerSerial() {
+//        binding.imagePower.setVisibility(View.GONE);
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
             switch (buf[4]) {
                 case 0x00:
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                     break;//显示主界面;
                 case 0x01:
                     if (buf[5] <= 0x0C) {
@@ -168,8 +163,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
                 case 0x10:
+                    binding.imagePower.setVisibility(View.VISIBLE);
                     //相应的电池符号;
-                    //buf[5]（电量）
+                    if (buf[6] > 75) {
+                        binding.imagePower.setImageResource(R.mipmap.icon_power4);
+                        binding.imagePower.setColorFilter(getColor(R.color.main_color));
+                    } else if (buf[6] > 50) {
+                        binding.imagePower.setImageResource(R.mipmap.icon_power3);
+                        binding.imagePower.setColorFilter(getColor(R.color.main_color));
+                    } else if (buf[6] > 25) {
+                        binding.imagePower.setImageResource(R.mipmap.icon_power2);
+                        binding.imagePower.setColorFilter(getColor(R.color.red));
+                    } else if (buf[6] > 0) {
+                        binding.imagePower.setImageResource(R.mipmap.icon_power1);
+                        binding.imagePower.setColorFilter(getColor(R.color.red_low_power));
+                    }
+                    //buf[6]（电量）
                     break;
                 default:
                     break;

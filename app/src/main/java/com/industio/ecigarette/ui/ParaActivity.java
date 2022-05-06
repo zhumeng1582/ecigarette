@@ -276,6 +276,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
             devicePara = CacheDataUtils.getDefaultDevicePara(devicePara.getId());
             CacheDataUtils.saveDevicePara(devicePara);
             showDevicePara();
+            SerialController.getInstance().send(DeviceConstant.resetCmd);
         }
     }
 
@@ -321,7 +322,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void sendDataToDevice() {
-        SerialController.getInstance().send(DeviceConstant.startCmd);
+        SerialController.getInstance().send(DeviceConstant.saveCmd);
         SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.预热温度, devicePara.getPreheatValue()));
         SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.预热时长, devicePara.getPreheatTimeValue()));
         SerialController.getInstance().send(DeviceConstant.sendData(DeviceConstant.CMD.恒温温度, devicePara.getConstantTemperatureValue()));
