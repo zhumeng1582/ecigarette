@@ -1,6 +1,10 @@
 package com.industio.ecigarette.util;
 
+import com.blankj.utilcode.util.ArrayUtils;
+
 public class DeviceConstant {
+    public static byte[] header = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA};
+
     public static String[] RECEVICE_TIPS = new String[]{"",
             "低电保护 \n请尽快充电",
             "过充保护",
@@ -15,11 +19,15 @@ public class DeviceConstant {
             "预热温度",
             "温度、口数、时间",
     };
-    public static byte[] startCmd = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x00, 0x01, 0x45, 0x67, (byte) 0x89, 0x00, 0x00, 0x55};
 
-    public static byte[] resetCmd = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x05, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55};
-    public static byte[] saveCmd = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55};
-    public static byte[] sleepCmd = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55};
+    public static byte[] startCmd = getCommonCmd(new byte[]{0x00, 0x01, 0x45, 0x67, (byte) 0x89, 0x00});
+    public static byte[] resetCmd = getCommonCmd(new byte[]{0x05,0x01, 0x00, 0x00, 0x00, 0x00});
+    public static byte[] saveCmd = getCommonCmd(new byte[]{0x06,0x01, 0x00, 0x00, 0x00, 0x00});
+    public static byte[] sleepCmd = getCommonCmd(new byte[]{0x07,0x01, 0x00, 0x00, 0x00, 0x00});
+
+    public static byte[] getCommonCmd(byte[] data) {
+        return Crc16Utils.getData(ArrayUtils.add(header, data));
+    }
 
     public enum CMD {
         预热温度(0x01),
@@ -39,7 +47,7 @@ public class DeviceConstant {
         byte para1 = (byte) (para >> 16 & 0xFF);
         byte para2 = (byte) (para >> 8 & 0xFF);
         byte para3 = (byte) (para & 0xFF);
-        return new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x02, cmd.value, para1, para2, para3, 0x00, 0x00, 0x55};
+        return getCommonCmd(new byte[]{0x02, cmd.value, para1, para2, para3, 0x00});
     }
 
     public static byte[] sendCount(int count, int para) {
@@ -47,6 +55,6 @@ public class DeviceConstant {
         para = Math.abs(para);
         int para2 = para >> 8 & 0xFF;
         int para3 = para & 0xFF;
-        return new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA, 0x03, (byte) count, (byte) para1, (byte) para2, (byte) para3, 0x00, 0x00, 0x55};
+        return getCommonCmd(new byte[]{0x03, (byte) count, (byte) para1, (byte) para2, (byte) para3, 0x00});
     }
 }

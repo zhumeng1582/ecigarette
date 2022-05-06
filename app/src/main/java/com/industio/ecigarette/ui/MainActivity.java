@@ -24,6 +24,7 @@ import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.BluetoothUtils;
+import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -73,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initTop();
 //        registerSerial();
+
+        byte[] dd = Crc16Utils.getData(new byte[]{0x01, 0x06, 0x0F, (byte) 0xA4, 0x00, 0x01});
+        String str = Crc16Utils.byteTo16String(dd).toUpperCase();
+        LogUtils.d("---------->>"+str);
     }
 
 
