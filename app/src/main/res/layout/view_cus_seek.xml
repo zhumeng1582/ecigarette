@@ -3,32 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dip_2"
-    android:paddingBottom="@dimen/dip_2"
-    android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/dip_2">
 
-    <TextView
+    <ImageView
         android:id="@+id/btnMinus"
-        android:layout_width="@dimen/dip_40"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:gravity="center"
-        android:text="-"
-        android:textSize="@dimen/sp_20" />
+        android:paddingLeft="@dimen/dip_10"
+        app:tint="@color/main_color"
+        android:src="@mipmap/icon_minus" />
 
     <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:progressDrawable="@drawable/seekbar_style"
+        android:thumb="@drawable/seekbar_thumb" />
 
-    <TextView
+    <ImageView
         android:id="@+id/btnPlus"
-        android:layout_width="@dimen/dip_40"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:text="+"
-        android:textSize="@dimen/sp_20" />
+        android:paddingRight="@dimen/dip_10"
+        app:tint="@color/main_color"
+        android:src="@mipmap/icon_add" />
 </LinearLayout>

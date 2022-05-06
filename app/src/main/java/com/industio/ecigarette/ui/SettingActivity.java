@@ -44,28 +44,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         } else if (view == binding.textWIFI) {
             SettingUtils.openWIFISettings();
         } else if (view == binding.textLock) {
-            sysLock();
+            SettingUtils.sysLock(this);
 //            startService(new Intent(this, LockScreenService.class));
         } else if (view == binding.textUnLock) {
             BrightnessUtils.setBrightness(0);
         } else if (view == binding.textLight) {
             SettingUtils.setDISPLAY();
         } else if (view == binding.textShoutDown) {
-        }
-    }
-
-    /**
-     * 调用系统锁方法实现
-     */
-    private void sysLock() {
-        //取得系统服务
-        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        ComponentName componentName = new ComponentName(this, AdminReceiver.class);
-
-        boolean active = dpm.isAdminActive(componentName);
-
-        if (active) {
-            dpm.lockNow();
         }
     }
 

@@ -37,6 +37,7 @@ import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.util.BluetoothUtils;
+import com.industio.ecigarette.util.SettingUtils;
 
 public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 
@@ -47,6 +48,7 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
     protected ImageView iv_bluetooth = null;
     protected ImageView iv_wifi = null;
     protected ImageView iv_brightness = null;
+    protected ImageView iv_lock = null;
     protected SeekBar seekBar = null;
 
     protected WifiManager wifiManager = null;
@@ -116,6 +118,8 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 
             }
         });
+        iv_lock = findViewById(R.id.lock);
+        iv_lock.setOnClickListener(this);
     }
 
     private void initBrightnessImage(int currentBrightness) {
@@ -160,6 +164,8 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 
             setBrightness(currentBrightness);
             seekBar.setProgress(currentBrightness);
+        } else if (v.getId() == R.id.lock) {
+            SettingUtils.sysLock(getContext());
         }
     }
 

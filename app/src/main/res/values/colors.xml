@@ -14,8 +14,8 @@
     <color name="grey_color">#cdcdcd</color>
     <color name="red">#DC445D</color>
     <color name="color_main_button">#a2c888</color>
-    <color name="color_uncheck">#FF018786</color>
-    <color name="color_check">#FF03DAC5</color>
+    <color name="color_uncheck">#88a2c888</color>
+    <color name="color_check">#a2c888</color>
     <color name="color_enable">#666666</color>
 
 </resources>
