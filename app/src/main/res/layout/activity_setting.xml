@@ -5,6 +5,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetLeft="@dimen/dip_0"
+        app:contentInsetStart="@dimen/dip_0"
+        app:contentInsetStartWithNavigation="@dimen/dip_0"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@mipmap/btn_head_back"
+        app:title="设置" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dip_0.5"
+        android:background="@color/grey" />
+
     <TextView
         android:id="@+id/textBluetooth"
         android:layout_width="match_parent"
@@ -13,8 +29,8 @@
         android:padding="@dimen/dip_15"
         android:text="蓝牙"
         android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_bluetooth"
-        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow"
+        app:drawableStartCompat="@mipmap/icon_bluetooth" />
 
     <View
         android:layout_width="match_parent"
@@ -29,8 +45,8 @@
         android:padding="@dimen/dip_15"
         android:text="WIFI"
         android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_wifi"
-        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow"
+        app:drawableStartCompat="@mipmap/icon_wifi" />
 
     <View
         android:layout_width="match_parent"
@@ -45,8 +61,8 @@
         android:padding="@dimen/dip_15"
         android:text="锁屏"
         android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_lock"
-        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow"
+        app:drawableStartCompat="@mipmap/icon_lock" />
 
     <View
         android:layout_width="match_parent"
@@ -61,8 +77,8 @@
         android:padding="@dimen/dip_15"
         android:text="息屏"
         android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_dormancy"
-        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow"
+        app:drawableStartCompat="@mipmap/icon_dormancy" />
 
     <View
         android:layout_width="match_parent"
@@ -77,8 +93,8 @@
         android:padding="@dimen/dip_15"
         android:text="亮度"
         android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_light"
-        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow"
+        app:drawableStartCompat="@mipmap/icon_light" />
 
     <View
         android:layout_width="match_parent"
@@ -93,7 +109,7 @@
         android:padding="@dimen/dip_15"
         android:text="自动关机"
         android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_shutdown"
-        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow"
+        app:drawableStartCompat="@mipmap/icon_shutdown" />
 
 </LinearLayout>

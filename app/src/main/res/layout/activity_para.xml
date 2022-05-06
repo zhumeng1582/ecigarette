@@ -32,7 +32,12 @@
                 android:id="@+id/textModeChange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="经典（默认）" />
+                android:text="经典（默认）"
+                android:layout_marginStart="@dimen/dip_15"
+                android:textColor="@color/red"
+                app:tint="@color/main_color"
+                android:drawablePadding="@dimen/dip_5"
+                app:drawableEndCompat="@mipmap/icon_down_tri" />
         </LinearLayout>
 
         <LinearLayout
@@ -264,7 +269,6 @@
                 android:text="DIY模式" />
         </FrameLayout>
     </LinearLayout>
-
 
 
     <LinearLayout

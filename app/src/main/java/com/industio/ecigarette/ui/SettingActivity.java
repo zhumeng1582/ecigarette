@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
 import com.industio.ecigarette.lockscreen.AdminReceiver;
 import com.industio.ecigarette.lockscreen.LockScreenService;
@@ -33,6 +34,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 binding.textLight,
                 binding.textShoutDown,
         }, this);
+
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
