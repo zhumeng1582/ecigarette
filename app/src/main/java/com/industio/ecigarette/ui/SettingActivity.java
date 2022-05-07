@@ -1,22 +1,16 @@
 package com.industio.ecigarette.ui;
 
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
-import com.industio.ecigarette.lockscreen.AdminReceiver;
-import com.industio.ecigarette.lockscreen.LockScreenService;
 import com.industio.ecigarette.util.SettingUtils;
+import com.industio.ecigarette.view.ToggleToolWidget;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySettingBinding binding;
@@ -42,6 +36,31 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        binding.seekBar.setMin(ToggleToolWidget.lowBrightness);
+        binding.seekBar.setMax(ToggleToolWidget.mostBrightness);
+
+        int currentBrightness = BrightnessUtils.getBrightness();
+        binding.seekBar.setProgress(currentBrightness);
+        ToggleToolWidget.initBrightnessImage(this, binding.brightness, currentBrightness);
+
+        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                ToggleToolWidget.setBrightness(SettingActivity.this, i);
+                ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
 
@@ -55,10 +74,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             SettingUtils.sysLock(this);
 //            startService(new Intent(this, LockScreenService.class));
         } else if (view == binding.textUnLock) {
-            BrightnessUtils.setBrightness(0);
+            int currentBrightness = 0;
+            binding.seekBar.setProgress(currentBrightness);
+            ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
+            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
         } else if (view == binding.textLight) {
             SettingUtils.setDISPLAY();
         } else if (view == binding.textShoutDown) {
+            SettingUtils.systemShutdown(this, true);
         }
     }
 

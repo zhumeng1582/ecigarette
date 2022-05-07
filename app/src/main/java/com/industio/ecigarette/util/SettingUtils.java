@@ -35,4 +35,10 @@ public class SettingUtils {
             dpm.lockNow();
         }
     }
+    //confirm:ture-直接关机，false-无弹框，直接关机
+    public static void systemShutdown(Context context,boolean confirm) {
+        Intent intent = new Intent("android.ido.intent.action.set.shutdown");
+        intent.putExtra("confirm", confirm);
+        context.sendBroadcast(intent);
+    }
 }

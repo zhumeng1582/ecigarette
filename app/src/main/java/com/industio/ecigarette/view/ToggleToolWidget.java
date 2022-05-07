@@ -53,9 +53,9 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 
     protected WifiManager wifiManager = null;
 
-    protected final static int mostBrightness = 255;//
-    protected final static int moreBrightness = 150;//
-    protected final static int lowBrightness = 50;//
+    public final static int mostBrightness = 255;//
+    public final static int moreBrightness = 150;//
+    public final static int lowBrightness = 50;//
 
     public ToggleToolWidget(Context context) {
         this(context, null);
@@ -69,13 +69,12 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.toggle_tools, this, true);
 
-        init(context, attrs);
-
+        init();
     }
 
-    public void init(Context context, AttributeSet attrs) {
+    public void init() {
 
-        iv_bluetooth = (ImageView) findViewById(R.id.bluetooth);//
+        iv_bluetooth = findViewById(R.id.bluetooth);//
         iv_bluetooth.setOnClickListener(this);
         IntentFilter intentFilter = new IntentFilter(
                 BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -83,14 +82,13 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         changeBluetoothImage();
 
         wifiManager = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
-        iv_wifi = (ImageView) findViewById(R.id.wifi);
+        iv_wifi = findViewById(R.id.wifi);
         iv_wifi.setOnClickListener(this);
-        IntentFilter wifiIntentFilter = new IntentFilter(
-                WifiManager.WIFI_STATE_CHANGED_ACTION);
+        IntentFilter wifiIntentFilter = new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
         getContext().registerReceiver(new WifiBroadcastReceiver(), wifiIntentFilter);
         changeWifiImage();
 
-        iv_brightness = (ImageView) findViewById(R.id.brightness);
+        iv_brightness = findViewById(R.id.brightness);
         iv_brightness.setOnClickListener(this);
         seekBar = findViewById(R.id.seekBar);
         seekBar.setMin(lowBrightness);
@@ -99,13 +97,13 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 
         int currentBrightness = BrightnessUtils.getBrightness();
         seekBar.setProgress(currentBrightness);
-        initBrightnessImage(currentBrightness);
+        initBrightnessImage(getContext(), iv_brightness, currentBrightness);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                setBrightness(i);
-                initBrightnessImage(i);
+                setBrightness(getContext(), i);
+                initBrightnessImage(getContext(), iv_brightness, i);
             }
 
             @Override
@@ -122,17 +120,17 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         iv_lock.setOnClickListener(this);
     }
 
-    private void initBrightnessImage(int currentBrightness) {
+    public static void initBrightnessImage(Context context, ImageView image, int currentBrightness) {
         int current = getNearestNumber(currentBrightness, mostBrightness, moreBrightness, lowBrightness);
         if (current == mostBrightness) {
-            iv_brightness.setImageResource(R.mipmap.brightness_most);
-            iv_brightness.setColorFilter(getContext().getColor(R.color.main_color));
+            image.setImageResource(R.mipmap.brightness_most);
+            image.setColorFilter(context.getColor(R.color.main_color));
         } else if (current == lowBrightness) {
-            iv_brightness.setImageResource(R.mipmap.brightness_low);
-            iv_brightness.setColorFilter(getContext().getColor(R.color.grey_color));
+            image.setImageResource(R.mipmap.brightness_low);
+            image.setColorFilter(context.getColor(R.color.grey_color));
         } else {
-            iv_brightness.setImageResource(R.mipmap.brightness_more);
-            iv_brightness.setColorFilter(getContext().getColor(R.color.main_color));
+            image.setImageResource(R.mipmap.brightness_more);
+            image.setColorFilter(context.getColor(R.color.main_color));
         }
     }
 
@@ -162,17 +160,17 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
                 currentBrightness = mostBrightness;
             }
 
-            setBrightness(currentBrightness);
+            setBrightness(getContext(), currentBrightness);
             seekBar.setProgress(currentBrightness);
         } else if (v.getId() == R.id.lock) {
             SettingUtils.sysLock(getContext());
         }
     }
 
-    private void setBrightness(int currentBrightness) {
-        WindowManager.LayoutParams lp = ((Activity) getContext()).getWindow().getAttributes();
+    public static void setBrightness(Context context, int currentBrightness) {
+        WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
         lp.screenBrightness = currentBrightness / 255f;
-        ((Activity) getContext()).getWindow().setAttributes(lp);
+        ((Activity) context).getWindow().setAttributes(lp);
         BrightnessUtils.setBrightness(currentBrightness);
     }
 
@@ -213,7 +211,7 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
     }
 
 
-    private int getNearestNumber(int destNumber, int... numbers) {
+    public static int getNearestNumber(int destNumber, int... numbers) {
         int diffValue = Integer.MAX_VALUE;
         int nearestNumber = numbers[0];
         for (int i = 0; i < numbers.length; i++) {
