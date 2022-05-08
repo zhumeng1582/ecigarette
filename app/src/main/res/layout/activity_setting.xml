@@ -103,7 +103,7 @@
         android:layout_marginBottom="@dimen/dip_10"
         android:orientation="horizontal">
 
-        <SeekBar
+        <com.industio.ecigarette.view.ProSeekBar
             android:id="@+id/seekBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

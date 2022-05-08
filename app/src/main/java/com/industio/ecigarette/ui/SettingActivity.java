@@ -36,14 +36,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        binding.seekBar.setMin(ToggleToolWidget.lowBrightness);
-        binding.seekBar.setMax(ToggleToolWidget.mostBrightness);
+        binding.seekBar.setMin1(ToggleToolWidget.lowBrightness);
+        binding.seekBar.setMax1(ToggleToolWidget.mostBrightness);
 
         int currentBrightness = BrightnessUtils.getBrightness();
-        binding.seekBar.setProgress(currentBrightness);
+        binding.seekBar.setProgress1(currentBrightness);
         ToggleToolWidget.initBrightnessImage(this, binding.brightness, currentBrightness);
 
-        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.seekBar.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 ToggleToolWidget.setBrightness(SettingActivity.this, i);
@@ -75,7 +75,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 //            startService(new Intent(this, LockScreenService.class));
         } else if (view == binding.textUnLock) {
             int currentBrightness = 0;
-            binding.seekBar.setProgress(currentBrightness);
+            binding.seekBar.setProgress1(currentBrightness);
             ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
             ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
         } else if (view == binding.textLight) {

@@ -66,7 +66,7 @@ public class BluetoothUtils {
         return false;
     }
     /**
-     * 关闭蓝牙
+     * 获取蓝牙状态
      */
     public static int getState() {
         if (checkBlueToothEnable()) {

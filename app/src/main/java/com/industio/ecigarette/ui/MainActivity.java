@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                LogUtils.d("----------->onScroll:" + e1.getRawY());
                 if (e1.getRawY() < 300 && distanceY < 0) {
+                    binding.topView.onStateDoing();
                     ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
                 } else if (distanceY > 0) {
                     closeController();
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void closeController() {
+        binding.topView.stop();
         ViewAnimate.animateClose(binding.topView, new ViewAnimate.AnimaionLoadEndListener() {
             @Override
             public void onLoadEnd() {

@@ -4,18 +4,15 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.industio.ecigarette.R;
 
 public class CusSeek extends LinearLayout {
-    private SeekBar seekBar;
+    private ProSeekBar seekBar;
 
     private int minValue;
     private int maxValue;
@@ -54,32 +51,32 @@ public class CusSeek extends LinearLayout {
         buttonStep = typedArray.getInt(R.styleable.CusSeek_buttonStep, 1);
 
         seekBar = findViewById(R.id.seekBar);
-        seekBar.setMax(maxValue - minValue);
-//        seekBar.setMin(minValue);
+        seekBar.setMin1(minValue);
+        seekBar.setMax1(maxValue);
 
         findViewById(R.id.btnMinus).setOnClickListener(view -> {
-            int progress = seekBar.getProgress();
+            int progress = seekBar.getProgress1();
             if (progress > minValue) {
-                seekBar.setProgress(progress - buttonStep);
+                seekBar.setProgress1(progress - buttonStep);
             }
 
             if (onSeekBarChangeListener != null) {
-                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress() + minValue);
+                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress1());
             }
         });
         findViewById(R.id.btnPlus).setOnClickListener(view -> {
-            int progress = seekBar.getProgress();
+            int progress = seekBar.getProgress1();
             if (progress < maxValue) {
-                seekBar.setProgress(progress + buttonStep);
+                seekBar.setProgress1(progress + buttonStep);
             }
             if (onSeekBarChangeListener != null) {
-                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress() + minValue);
+                onSeekBarChangeListener.onProgressChanged(seekBar, seekBar.getProgress1());
             }
         });
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
             }
 
@@ -90,26 +87,23 @@ public class CusSeek extends LinearLayout {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                refreshView(seekBar);
+                refreshView((ProSeekBar) seekBar);
             }
         });
 
     }
 
-    public void setProgress(int progress) {
-        seekBar.setProgress(progress - minValue);
+    public void setCurProgress(int progress) {
+        seekBar.setProgress1(progress);
         if (onSeekBarChangeListener != null) {
             onSeekBarChangeListener.onProgressChanged(seekBar, progress);
         }
     }
 
-    public int getProgress() {
-        return seekBar.getProgress() + minValue;
-    }
 
-    private void refreshView(SeekBar seekBar) {
+    private void refreshView(ProSeekBar seekBar) {
 
-        int progress = seekBar.getProgress();//当前滑动到的值
+        int progress = seekBar.getProgress1();//当前滑动到的值
 
         if (progress % seekBarStep > 0 && progress != maxValue) {
             int remainder = progress % seekBarStep;
@@ -118,14 +112,15 @@ public class CusSeek extends LinearLayout {
             } else {
                 progress = seekBarStep * (progress / seekBarStep);
             }
-            seekBar.setProgress(progress);
+            seekBar.setProgress1(progress);
         }
         if (onSeekBarChangeListener != null) {
-            onSeekBarChangeListener.onProgressChanged(seekBar, progress + minValue);
+            onSeekBarChangeListener.onProgressChanged(seekBar, progress);
         }
     }
 
     public interface OnSeekBarChangeListener {
-        void onProgressChanged(SeekBar seekBar, int progress);
+        void onProgressChanged(ProSeekBar seekBar, int progress);
     }
+
 }

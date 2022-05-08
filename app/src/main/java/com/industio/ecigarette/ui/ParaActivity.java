@@ -97,7 +97,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.setSelectIndex(0);
             }
             adapter.setCountNum(progress);
-            binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
+            binding.cusSeekTemperatureValue.setCurProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
             devicePara.setCount(progress);
             setChartData();
         });
@@ -165,7 +165,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     private void initAdapter() {
         adapter = new NormalAdapter(index -> {
             adapter.setSelectIndex(index);
-            binding.cusSeekTemperatureValue.setProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
+            binding.cusSeekTemperatureValue.setCurProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
         });
         binding.recyclerView.setAdapter(adapter);
 
@@ -246,13 +246,13 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showDevicePara() {
-        binding.cusSeekPreheatValue.setProgress(devicePara.getPreheatValue());
-        binding.cusSeekPreheatTimeValue.setProgress(devicePara.getPreheatTimeValue());
-        binding.cusSeekConstantTemperatureValue.setProgress(devicePara.getConstantTemperatureValue());
-        binding.cusSeekConstantTemperatureTimeValue.setProgress(devicePara.getConstantTemperatureTimeValue());
-        binding.cusSeekNoOperationValue.setProgress(devicePara.getNoOperationValue());
+        binding.cusSeekPreheatValue.setCurProgress(devicePara.getPreheatValue());
+        binding.cusSeekPreheatTimeValue.setCurProgress(devicePara.getPreheatTimeValue());
+        binding.cusSeekConstantTemperatureValue.setCurProgress(devicePara.getConstantTemperatureValue());
+        binding.cusSeekConstantTemperatureTimeValue.setCurProgress(devicePara.getConstantTemperatureTimeValue());
+        binding.cusSeekNoOperationValue.setCurProgress(devicePara.getNoOperationValue());
 
-        binding.cusSeekCountValue.setProgress(devicePara.getCount());
+        binding.cusSeekCountValue.setCurProgress(devicePara.getCount());
 
     }
 

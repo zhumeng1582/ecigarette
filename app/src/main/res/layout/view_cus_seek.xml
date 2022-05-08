@@ -16,7 +16,7 @@
         app:tint="@color/main_color"
         android:src="@mipmap/icon_minus" />
 
-    <SeekBar
+    <com.industio.ecigarette.view.ProSeekBar
         android:id="@+id/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -11,6 +11,7 @@
 
 
     <color name="main_color">#a2c888</color>
+    <color name="second_color">#88a2c888</color>
     <color name="grey_color">#cdcdcd</color>
     <color name="red_low_power">#D01010</color>
     <color name="red">#DC445D</color>
