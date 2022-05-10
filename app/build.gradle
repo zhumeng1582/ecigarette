@@ -16,12 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+
     signingConfigs {
         release {
             storeFile file("signk25.jks")
@@ -30,13 +25,15 @@ android {
             keyPassword 'k25_ky'
         }
 
-        debug {
-            storeFile file("signk25.jks")
-            storePassword 'k25_ky'
-            keyAlias 'signk25'
-            keyPassword 'k25_ky'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
