@@ -77,7 +77,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_margin="@dimen/dip_20"
-        android:visibility="gone"
+        android:layout_margin="@dimen/dip_10"
         android:src="@mipmap/icon_power4" />
 </FrameLayout>

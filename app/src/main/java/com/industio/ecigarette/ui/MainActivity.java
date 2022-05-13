@@ -4,7 +4,10 @@ package com.industio.ecigarette.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MenuItem;
@@ -27,6 +30,7 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
     private GestureDetector mGestureDetector;
+    private BatteryReceiver batteryReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         closeController();
 
         registerSerial();
+        initBatteryReceiver();
+    }
+
+    private void initBatteryReceiver() {
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        batteryReceiver = new BatteryReceiver();
+        registerReceiver(batteryReceiver, intentFilter);
     }
 
 
@@ -166,27 +177,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
                 case 0x10:
-                    binding.imagePower.setVisibility(View.VISIBLE);
-                    //相应的电池符号;
-                    if (buf[6] > 75) {
-                        binding.imagePower.setImageResource(R.mipmap.icon_power4);
-                        binding.imagePower.setColorFilter(getColor(R.color.main_color));
-                    } else if (buf[6] > 50) {
-                        binding.imagePower.setImageResource(R.mipmap.icon_power3);
-                        binding.imagePower.setColorFilter(getColor(R.color.main_color));
-                    } else if (buf[6] > 25) {
-                        binding.imagePower.setImageResource(R.mipmap.icon_power2);
-                        binding.imagePower.setColorFilter(getColor(R.color.red));
-                    } else if (buf[6] > 0) {
-                        binding.imagePower.setImageResource(R.mipmap.icon_power1);
-                        binding.imagePower.setColorFilter(getColor(R.color.red_low_power));
-                    }
+
                     //buf[6]（电量）
                     break;
                 default:
                     break;
             }
         });
+    }
+
+    private void setPower(int percent) {
+        //相应的电池符号;
+        if (percent > 75) {
+            binding.imagePower.setImageResource(R.mipmap.icon_power4);
+            binding.imagePower.setColorFilter(getColor(R.color.main_color));
+        } else if (percent > 50) {
+            binding.imagePower.setImageResource(R.mipmap.icon_power3);
+            binding.imagePower.setColorFilter(getColor(R.color.main_color));
+        } else if (percent > 25) {
+            binding.imagePower.setImageResource(R.mipmap.icon_power2);
+            binding.imagePower.setColorFilter(getColor(R.color.red));
+        } else if (percent > 0) {
+            binding.imagePower.setImageResource(R.mipmap.icon_power1);
+            binding.imagePower.setColorFilter(getColor(R.color.red_low_power));
+        }
+    }
+
+    class BatteryReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //判断它是否是为电量变化的Broadcast Action
+            if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                //获取当前电量
+                int current = intent.getIntExtra("level", 0);
+                //电量的总刻度
+                int total = intent.getIntExtra("scale", 100);
+                int percent = current * 100 / total;
+                setPower(percent);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //销毁广播
+        unregisterReceiver(batteryReceiver);
     }
 
 }
