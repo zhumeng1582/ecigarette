@@ -6,7 +6,7 @@ import java.io.File;
 public abstract class SerialControl {
     private static final String TAG="SerialCtrl";
 
-    private static final int MAX_RX_LEN = 10240;//一次接收的最大数据约10k
+    private static final int MAX_RX_LEN = 1024;//一次接收的最大数据约10k
 
     private volatile int send_wait_time = 10;//100ms内未再接收到数据则回调读接口
 
@@ -24,7 +24,7 @@ public abstract class SerialControl {
     public boolean init(String name,int speed) {
         File mFile = new File(name);
         mThreadRunning = true;
-        send_wait_time = 20;
+        send_wait_time = 2;
         if (mSerialPort == null) {
             mSerialPort = new SerialPort();
             if (mSerialPort.init(mFile,speed)) {
