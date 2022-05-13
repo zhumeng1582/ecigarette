@@ -8,7 +8,7 @@ public abstract class SerialControl {
 
     private static final int MAX_RX_LEN = 1024;//一次接收的最大数据约10k
 
-    private volatile int send_wait_time = 10;//100ms内未再接收到数据则回调读接口
+    private volatile int send_wait_time = 60;//100ms内未再接收到数据则回调读接口
 
     private SerialPort mSerialPort;
 
@@ -24,7 +24,6 @@ public abstract class SerialControl {
     public boolean init(String name,int speed) {
         File mFile = new File(name);
         mThreadRunning = true;
-        send_wait_time = 2;
         if (mSerialPort == null) {
             mSerialPort = new SerialPort();
             if (mSerialPort.init(mFile,speed)) {
@@ -77,7 +76,7 @@ public abstract class SerialControl {
                     return;
                 }
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(1);
                 } catch (Exception e) {
                 }
             }
