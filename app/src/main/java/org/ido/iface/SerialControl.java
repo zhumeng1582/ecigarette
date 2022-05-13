@@ -21,13 +21,13 @@ public abstract class SerialControl {
     //mdelay:unit 10ms,建议10，也就是100ms后未收到数据就会把收到的数据回调
     //当为0时，就在收到数据后会直接回调
     //接收的一组粘包数据会出现超时的情况
-    public boolean init(String name,int speed, int databits, int parity, int stopbits, int flow_ctrl,int mdelay) { //一次性最大获取10k，在获取数据后，等待mdelay后，如果未在收到数据就回调数据
+    public boolean init(String name,int speed) {
         File mFile = new File(name);
         mThreadRunning = true;
-        send_wait_time = mdelay;
+        send_wait_time = 20;
         if (mSerialPort == null) {
             mSerialPort = new SerialPort();
-            if (mSerialPort.init(mFile,speed, databits, parity, stopbits, flow_ctrl)) {
+            if (mSerialPort.init(mFile,speed)) {
                 Log.d(TAG, "Open " + mFile.getAbsolutePath() + " sucess");
             } else {
                 Log.d(TAG, "Open " + mFile.getAbsolutePath() + " failed!");

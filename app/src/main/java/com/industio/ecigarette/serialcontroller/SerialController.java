@@ -1,7 +1,10 @@
 package com.industio.ecigarette.serialcontroller;
 
+import android.util.Log;
+
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.industio.ecigarette.util.DeviceConstant;
 
 import org.ido.iface.SerialControl;
 
@@ -47,13 +50,15 @@ public class SerialController {
                 if (CollectionUtils.isNotEmpty(listSerialReadListener)) {
                     for (SerialReadListener serialReadListener : listSerialReadListener) {
                         serialReadListener.read(buf, len);
+                        Log.d("uart","rx:" + bytesToHexString(buf,len));
                     }
                 }
             }
         };
 
-        String portName = "";
-        if (serialControl.init(portName, 9600, 8, 'N', 1, 0, 10)) {
+        String portName = "/dev/ttyS2";
+        if (serialControl.init(portName, 9600)) {
+            serialControl.write(DeviceConstant.startCmd);
             ToastUtils.showShort("打开成功:" + portName);
         } else {
             ToastUtils.showLong("打开失败:" + portName);
@@ -71,5 +76,21 @@ public class SerialController {
 
     public interface SerialReadListener {
         void read(byte[] buf, int len);
+    }
+
+    private static String bytesToHexString(byte[] src, int len) {
+        StringBuilder stringBuilder = new StringBuilder("");
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < len; i++) {
+            int v = src[i] & 0xFF;
+            String hv = Integer.toHexString(v);
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        return stringBuilder.toString();
     }
 }

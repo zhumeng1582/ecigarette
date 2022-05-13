@@ -15,8 +15,8 @@ public class SerialPort {
 
     protected SerialPort(){}
 
-    protected boolean init(File device, int speed,int databits,int parity,int stopbits,int flow_ctrl) {
-        mFd = open(device.getAbsolutePath(), speed,databits,parity,stopbits,flow_ctrl);
+    protected boolean init(File device, int speed) {
+        mFd = open(device.getAbsolutePath(), speed);
         if (mFd == null) {
             return false;
         } else {
@@ -53,11 +53,7 @@ public class SerialPort {
 
     //path：设备节点
     //speed:最大4Mbps
-    //databits:数据位：5，6，7，8
-    //parity:'n'/'N':无校验位；'o'/'O':奇校验；'e'/'E':偶校验
-    //stopbits:停止位：1，2
-    //flow_ctrl:0：无流控；1：硬件流控；2：软件流控
-    private native FileDescriptor open(String path, int speed,int databits,int parity,int stopbits,int flow_ctrl);
+    private native FileDescriptor open(String path, int speed);
 
     private native void close();
 
