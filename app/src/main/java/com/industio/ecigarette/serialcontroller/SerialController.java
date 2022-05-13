@@ -90,6 +90,8 @@ public class SerialController {
                 stringBuilder.append(0);
             }
             stringBuilder.append(hv);
+
+            stringBuilder.append(" ");
         }
         return stringBuilder.toString();
     }
