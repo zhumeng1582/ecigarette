@@ -81,9 +81,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 initView();
             }
         });
-
-        binding.seekBarLockScreenTime.setMax1(60);
         binding.seekBarLockScreenTime.setMin1(10);
+        binding.seekBarLockScreenTime.setMax1(60);
+
         binding.seekBarLockScreenTime.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

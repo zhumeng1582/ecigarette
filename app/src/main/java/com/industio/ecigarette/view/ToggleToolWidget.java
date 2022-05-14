@@ -170,16 +170,20 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
     }
 
 
-
     protected void changeBluetoothImage() {
 
         int blueState = BluetoothUtils.getState();
         Log.d("ThreadUtils", "----------->blueState = " + blueState);
 
-        if (blueState == BluetoothAdapter.STATE_ON) {
+        if (blueState == BluetoothAdapter.STATE_CONNECTED) {
             iv_bluetooth.setImageResource(R.mipmap.bluetooth_on);
             iv_bluetooth.setColorFilter(getContext().getColor(R.color.main_color));
             textBluetooth.setText("已连接");
+            textBluetooth.setTextColor(getContext().getColor(R.color.main_color));
+        } else if (blueState == BluetoothAdapter.STATE_ON) {
+            iv_bluetooth.setImageResource(R.mipmap.bluetooth_on);
+            iv_bluetooth.setColorFilter(getContext().getColor(R.color.main_color));
+            textBluetooth.setText("已打开");
             textBluetooth.setTextColor(getContext().getColor(R.color.main_color));
         } else if (blueState == BluetoothAdapter.STATE_OFF) {
             iv_bluetooth.setImageResource(R.mipmap.bluetooth_off);
@@ -187,13 +191,19 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             textBluetooth.setText("已关闭");
             textBluetooth.setTextColor(getContext().getColor(R.color.grey_color));
         } else if (blueState == BluetoothAdapter.STATE_TURNING_OFF
-                || blueState == BluetoothAdapter.STATE_TURNING_ON) {
+                || blueState == BluetoothAdapter.STATE_TURNING_ON
+                || blueState == BluetoothAdapter.STATE_DISCONNECTING
+                || blueState == BluetoothAdapter.STATE_CONNECTING) {
             iv_bluetooth.setImageResource(R.mipmap.bluetooth_ing);
             iv_bluetooth.setColorFilter(getContext().getColor(R.color.second_color));
             if (blueState == BluetoothAdapter.STATE_TURNING_OFF) {
                 textBluetooth.setText("关闭中...");
-            } else {
-                textBluetooth.setText("链接中...");
+            } else if (blueState == BluetoothAdapter.STATE_TURNING_ON) {
+                textBluetooth.setText("打开中...");
+            } else if (blueState == BluetoothAdapter.STATE_DISCONNECTING) {
+                textBluetooth.setText("断开中...");
+            } else{
+                textBluetooth.setText("连接中...");
             }
             textBluetooth.setTextColor(getContext().getColor(R.color.second_color));
         }
@@ -206,7 +216,7 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
             iv_wifi.setImageResource(R.mipmap.wifi_enabled);
             iv_wifi.setColorFilter(getContext().getColor(R.color.main_color));
-            textWIFI.setText("已链接");
+            textWIFI.setText("已连接");
             textWIFI.setTextColor(getContext().getColor(R.color.main_color));
         } else if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
             iv_wifi.setImageResource(R.mipmap.wifi_disabled);
@@ -224,7 +234,7 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             if (wifiState == WifiManager.WIFI_STATE_DISABLING) {
                 textWIFI.setText("关闭中...");
             } else {
-                textWIFI.setText("链接中...");
+                textWIFI.setText("连接中...");
             }
             textWIFI.setTextColor(getContext().getColor(R.color.second_color));
         }
@@ -238,7 +248,6 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
     public void stop() {
         runing = false;
     }
-
 
 
     public static int getNearestNumber(int destNumber, int... numbers) {
