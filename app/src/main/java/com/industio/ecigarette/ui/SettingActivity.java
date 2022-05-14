@@ -1,6 +1,7 @@
 package com.industio.ecigarette.ui;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -8,9 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
+import com.industio.ecigarette.util.CacheDataUtils;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
+import com.kennyc.bottomsheet.BottomSheetListener;
+import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
+
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySettingBinding binding;
@@ -26,7 +32,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 binding.textLock,
                 binding.textUnLock,
                 binding.textLight,
-                binding.textShoutDown,
+                binding.llShoutDown,
         }, this);
 
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -61,6 +67,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
+
+        SettingUtils.systemShutdown(new Runnable() {
+            @Override
+            public void run() {
+                binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
+            }
+        });
     }
 
 
@@ -80,9 +94,39 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
         } else if (view == binding.textLight) {
             SettingUtils.setDISPLAY();
-        } else if (view == binding.textShoutDown) {
-            SettingUtils.systemShutdown(this, true);
+        } else if (view == binding.llShoutDown) {
+            new BottomSheetMenuDialogFragment.Builder(this)
+                    .setSheet(R.menu.list_time)
+                    .setTitle("选择关机时间")
+                    .setListener(new BottomSheetListener() {
+                        @Override
+                        public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
+                        }
+
+                        @Override
+                        public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
+                            if (menuItem.getItemId() == R.id.time5) {
+                                CacheDataUtils.setShoutDownTime(5 * 60);
+                            } else if (menuItem.getItemId() == R.id.time15) {
+                                CacheDataUtils.setShoutDownTime(15 * 60);
+                            } else if (menuItem.getItemId() == R.id.time30) {
+                                CacheDataUtils.setShoutDownTime(30 * 60);
+                            } else if (menuItem.getItemId() == R.id.time60) {
+                                CacheDataUtils.setShoutDownTime(60 * 60);
+                            } else if (menuItem.getItemId() == R.id.time120) {
+                                CacheDataUtils.setShoutDownTime(120 * 60);
+                            }
+                        }
+
+                        @Override
+                        public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
+
+                        }
+                    })
+                    .show(getSupportFragmentManager());
         }
     }
+
+
 
 }

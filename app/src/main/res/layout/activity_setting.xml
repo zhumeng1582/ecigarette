@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -124,16 +125,31 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dip_0.5"
         android:background="@color/grey" />
-
+<LinearLayout
+    android:id="@+id/llShoutDown"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:drawablePadding="@dimen/dip_10">
     <TextView
-        android:id="@+id/textShoutDown"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/dip_15"
+        android:drawablePadding="@dimen/dip_10"
+        android:text="自动关机"
+        android:textColor="#090D16"
+        app:drawableStartCompat="@mipmap/icon_shutdown" />
+    <TextView
+        android:id="@+id/textShoutDownTime"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/dip_10"
         android:padding="@dimen/dip_15"
-        android:text="自动关机"
+        tools:text="5分钟"
         android:textColor="#090D16"
-        app:drawableEndCompat="@mipmap/icon_right_arrow"
-        app:drawableStartCompat="@mipmap/icon_shutdown" />
+        app:drawableEndCompat="@mipmap/icon_right_arrow" />
+</LinearLayout>
+
 
 </LinearLayout>

@@ -86,7 +86,7 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         seekBar.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Log.d("onProgressChanged","onProgressChanged = "+i);
+                Log.d("onProgressChanged", "onProgressChanged = " + i);
                 setBrightness(getContext(), i);
                 initBrightnessImage(getContext(), iv_brightness, i);
             }
@@ -191,15 +191,21 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
     protected void changeWifiImage() {
         int wifiState = WifiUtils.getWifiState();
         Log.d("ThreadUtils", "----------->wifiState = " + wifiState);
-        if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
+
+        if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+            iv_wifi.setImageResource(R.mipmap.wifi_enabled);
+            iv_wifi.setColorFilter(getContext().getColor(R.color.main_color));
+            textWIFI.setText("已链接");
+            textWIFI.setTextColor(getContext().getColor(R.color.main_color));
+        } else if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
             iv_wifi.setImageResource(R.mipmap.wifi_disabled);
             iv_wifi.setColorFilter(getContext().getColor(R.color.grey_color));
             textWIFI.setText("已关闭");
             textWIFI.setTextColor(getContext().getColor(R.color.grey_color));
         } else if (wifiState == WifiManager.WIFI_STATE_ENABLED) {
-            iv_wifi.setImageResource(R.mipmap.wifi_enabled);
-            iv_wifi.setColorFilter(getContext().getColor(R.color.main_color));
-            textWIFI.setText("已连接");
+            iv_wifi.setImageResource(R.mipmap.wifi_enabling);
+            iv_wifi.setColorFilter(getContext().getColor(R.color.second_color));
+            textWIFI.setText("已打开");
             textWIFI.setTextColor(getContext().getColor(R.color.main_color));
         } else if (wifiState == WifiManager.WIFI_STATE_DISABLING || wifiState == WifiManager.WIFI_STATE_ENABLING) {
             iv_wifi.setImageResource(R.mipmap.wifi_enabling);

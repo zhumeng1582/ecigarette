@@ -19,4 +19,34 @@ public class CacheDataUtils {
     public static void saveDevicePara(DevicePara devicePara) {
         CacheDiskStaticUtils.put("DevicePara" + devicePara.getId(), devicePara);
     }
+
+    static int shoutDownTime = 0;
+
+    public static void setShoutDownTime(int time) {
+        shoutDownTime = time;
+    }
+
+    public static int getShoutDownTime() {
+        return shoutDownTime;
+    }
+
+    public static String getShoutDownTimeText() {
+        if (shoutDownTime <= 0) {
+            return "";
+        }
+        return transFom(shoutDownTime);
+    }
+
+    /**
+     * 秒转为时分秒  7200 -》 02:00:00
+     *
+     * @param time
+     * @return
+     */
+    public static String transFom(int time) {
+        int hh = time / 3600;
+        int mm = (time % 3600) / 60;
+        int ss = (time % 3600) % 60;
+        return (hh < 10 ? ("0" + hh) : hh) + ":" + (mm < 10 ? ("0" + mm) : mm) + ":" + (ss < 10 ? ("0" + ss) : ss);
+    }
 }

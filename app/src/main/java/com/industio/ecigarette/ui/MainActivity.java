@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -22,6 +23,7 @@ import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.DeviceConstant;
+import com.industio.ecigarette.view.ToggleToolWidget;
 import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
@@ -61,7 +63,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return super.onSingleTapUp(e);
             }
 
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                int currentBrightness = BrightnessUtils.getBrightness();
+                if (currentBrightness < 100) {
+                    ToggleToolWidget.setBrightness(MainActivity.this, 200);
+                }
 
+                return super.onDoubleTap(e);
+            }
         });
 
         closeController();
