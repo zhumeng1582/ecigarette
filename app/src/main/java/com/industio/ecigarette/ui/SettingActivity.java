@@ -3,6 +3,7 @@ package com.industio.ecigarette.ui;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
 import com.industio.ecigarette.util.CacheDataUtils;
 import com.industio.ecigarette.util.SettingUtils;
+import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
@@ -30,7 +32,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 binding.textBluetooth,
                 binding.textWIFI,
                 binding.textLock,
-                binding.textUnLock,
                 binding.textLight,
                 binding.llShoutDown,
         }, this);
@@ -45,14 +46,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.seekBar.setMin1(ToggleToolWidget.lowBrightness);
         binding.seekBar.setMax1(ToggleToolWidget.mostBrightness);
 
-        int currentBrightness = BrightnessUtils.getBrightness();
-        binding.seekBar.setProgress1(currentBrightness);
-        ToggleToolWidget.initBrightnessImage(this, binding.brightness, currentBrightness);
 
         binding.seekBar.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                ToggleToolWidget.setBrightness(SettingActivity.this, i);
+                SettingUtils.setBrightness(SettingActivity.this, i);
                 ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, i);
             }
 
@@ -68,15 +66,48 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
-
-        SettingUtils.systemShutdown(new Runnable() {
+        binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
+        TimerUtils.addTimers(new TimerUtils.iTimer() {
             @Override
-            public void run() {
+            public void timer() {
                 binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
+                binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
             }
         });
+        TimerUtils.addBrightnessLister(new TimerUtils.iBrightnessListener() {
+            @Override
+            public void brightnessListener() {
+                SettingUtils.setBrightness(SettingActivity.this, 0);
+                initView();
+            }
+        });
+
+        binding.seekBarLockScreenTime.setMax1(60);
+        binding.seekBarLockScreenTime.setMin1(10);
+        binding.seekBarLockScreenTime.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                CacheDataUtils.setLockScreenTime(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        initView();
     }
 
+    private void initView() {
+        int currentBrightness = BrightnessUtils.getBrightness();
+        binding.seekBar.setProgress1(currentBrightness);
+        ToggleToolWidget.initBrightnessImage(this, binding.brightness, currentBrightness);
+    }
 
     @Override
     public void onClick(View view) {
@@ -85,13 +116,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         } else if (view == binding.textWIFI) {
             SettingUtils.openWIFISettings();
         } else if (view == binding.textLock) {
-            SettingUtils.sysLock(this);
-//            startService(new Intent(this, LockScreenService.class));
-        } else if (view == binding.textUnLock) {
             int currentBrightness = 0;
             binding.seekBar.setProgress1(currentBrightness);
-            ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
+            SettingUtils.setBrightness(SettingActivity.this, currentBrightness);
             ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
+//        } else if (view == binding.textUnLock) {
+//            int currentBrightness = 0;
+//            binding.seekBar.setProgress1(currentBrightness);
+//            ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
+//            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
         } else if (view == binding.textLight) {
             SettingUtils.setDISPLAY();
         } else if (view == binding.llShoutDown) {
@@ -126,7 +159,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     .show(getSupportFragmentManager());
         }
     }
-
 
 
 }

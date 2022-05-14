@@ -23,6 +23,8 @@ import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.DeviceConstant;
+import com.industio.ecigarette.util.SettingUtils;
+import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
 import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -67,10 +69,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onDoubleTap(MotionEvent e) {
                 int currentBrightness = BrightnessUtils.getBrightness();
                 if (currentBrightness < 100) {
-                    ToggleToolWidget.setBrightness(MainActivity.this, 200);
+                    setBrightness(200);
+                } else if (currentBrightness >= 175) {
+                    setBrightness(0);
                 }
 
                 return super.onDoubleTap(e);
+            }
+        });
+        TimerUtils.addBrightnessLister(new TimerUtils.iBrightnessListener() {
+            @Override
+            public void brightnessListener() {
+                setBrightness(0);
             }
         });
 
@@ -78,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         registerSerial();
         initBatteryReceiver();
+        TimerUtils.init();
+    }
+
+    void setBrightness(int currentBrightness) {
+        SettingUtils.setBrightness(MainActivity.this, currentBrightness);
+        binding.topView.initView();
     }
 
     private void initBatteryReceiver() {
@@ -170,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (view == binding.btnSetPara) {
             startActivity(new Intent(MainActivity.this, SettingActivity.class));
-
         }
     }
 

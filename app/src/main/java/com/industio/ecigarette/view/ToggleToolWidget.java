@@ -79,15 +79,13 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         seekBar.setMin1(lowBrightness);
         seekBar.setMax1(mostBrightness);
 
-        int currentBrightness = BrightnessUtils.getBrightness();
-        seekBar.setProgress1(currentBrightness);
-        initBrightnessImage(getContext(), iv_brightness, currentBrightness);
+        initView();
 
         seekBar.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 Log.d("onProgressChanged", "onProgressChanged = " + i);
-                setBrightness(getContext(), i);
+                SettingUtils.setBrightness(getContext(), i);
                 initBrightnessImage(getContext(), iv_brightness, i);
             }
 
@@ -107,6 +105,12 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         ThreadUtils.executeBySingleAtFixRate(task, 1, TimeUnit.SECONDS);
     }
 
+    public void initView() {
+        int currentBrightness = BrightnessUtils.getBrightness();
+        seekBar.setProgress1(currentBrightness);
+        initBrightnessImage(getContext(), iv_brightness, currentBrightness);
+    }
+
     public static void initBrightnessImage(Context context, ImageView image, int currentBrightness) {
         int current = getNearestNumber(currentBrightness, mostBrightness, moreBrightness, lowBrightness);
         if (current == mostBrightness) {
@@ -120,6 +124,7 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             image.setColorFilter(context.getColor(R.color.main_color));
         }
     }
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -146,19 +151,15 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
                 currentBrightness = mostBrightness;
             }
 
-            setBrightness(getContext(), currentBrightness);
+            SettingUtils.setBrightness(getContext(), currentBrightness);
             seekBar.setProgress1(currentBrightness);
         } else if (v.getId() == R.id.lock) {
-            SettingUtils.sysLock(getContext());
+            SettingUtils.setBrightness(getContext(), 0);
+            initBrightnessImage(getContext(), iv_brightness, 0);
         }
     }
 
-    public static void setBrightness(Context context, int currentBrightness) {
-        WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
-        lp.screenBrightness = currentBrightness / 255f;
-        ((Activity) context).getWindow().setAttributes(lp);
-        BrightnessUtils.setBrightness(currentBrightness);
-    }
+
 
     protected void changeBluetoothImage() {
 

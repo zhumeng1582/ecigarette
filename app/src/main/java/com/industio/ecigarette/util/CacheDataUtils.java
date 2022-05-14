@@ -20,7 +20,8 @@ public class CacheDataUtils {
         CacheDiskStaticUtils.put("DevicePara" + devicePara.getId(), devicePara);
     }
 
-    static int shoutDownTime = 0;
+    private static int shoutDownTime = 0;
+    private static int lockScreenTime = 0;
 
     public static void setShoutDownTime(int time) {
         shoutDownTime = time;
@@ -30,11 +31,26 @@ public class CacheDataUtils {
         return shoutDownTime;
     }
 
+    public static void setLockScreenTime(int time) {
+        lockScreenTime = time;
+    }
+
+    public static int getLockScreenTime() {
+        return lockScreenTime;
+    }
+
     public static String getShoutDownTimeText() {
         if (shoutDownTime <= 0) {
             return "";
         }
         return transFom(shoutDownTime);
+    }
+
+    public static String getLockScreenTimeText() {
+        if (lockScreenTime <= 0) {
+            return "";
+        }
+        return "" + lockScreenTime + "秒";
     }
 
     /**
