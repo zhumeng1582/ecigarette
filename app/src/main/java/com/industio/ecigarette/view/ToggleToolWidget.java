@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.ThreadUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.SettingUtils;
+import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.util.WifiUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -100,9 +101,16 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             }
         });
         iv_lock = findViewById(R.id.lock);
-        iv_lock.setOnClickListener(this);
-
-        ThreadUtils.executeBySingleAtFixRate(task, 1, TimeUnit.SECONDS);
+        findViewById(R.id.llLock).setOnClickListener(this);
+        TimerUtils.addTimers(new TimerUtils.iTimer() {
+            @Override
+            public void timer() {
+                if (runing) {
+                    changeWifiImage();
+                    changeBluetoothImage();
+                }
+            }
+        });
     }
 
     public void initView() {
@@ -153,9 +161,11 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 
             SettingUtils.setBrightness(getContext(), currentBrightness);
             seekBar.setProgress1(currentBrightness);
-        } else if (v.getId() == R.id.lock) {
-            SettingUtils.setBrightness(getContext(), 0);
-            initBrightnessImage(getContext(), iv_brightness, 0);
+        } else if (v.getId() == R.id.llLock) {
+            int currentBrightness = 0;
+            SettingUtils.setBrightness(getContext(), currentBrightness);
+            initBrightnessImage(getContext(), iv_brightness, currentBrightness);
+            seekBar.setProgress1(currentBrightness);
         }
     }
 
@@ -229,32 +239,6 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
         runing = false;
     }
 
-    private final ThreadUtils.Task task = new ThreadUtils.Task<Object>() {
-        @Override
-        public Object doInBackground() throws Throwable {
-            return null;
-        }
-
-        @Override
-        public void onSuccess(Object result) {
-            if (runing) {
-                Log.d("ThreadUtils", "----------->ThreadUtils");
-                changeWifiImage();
-                changeBluetoothImage();
-            }
-
-        }
-
-        @Override
-        public void onCancel() {
-
-        }
-
-        @Override
-        public void onFail(Throwable t) {
-
-        }
-    };
 
 
     public static int getNearestNumber(int destNumber, int... numbers) {
