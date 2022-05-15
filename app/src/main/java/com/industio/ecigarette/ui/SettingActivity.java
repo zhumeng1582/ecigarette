@@ -32,7 +32,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 binding.textBluetooth,
                 binding.textWIFI,
                 binding.textLock,
-                binding.textLight,
                 binding.llShoutDown,
         }, this);
 
@@ -125,8 +124,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 //            binding.seekBar.setProgress1(currentBrightness);
 //            ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
 //            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
-        } else if (view == binding.textLight) {
-            SettingUtils.setDISPLAY();
+//        } else if (view == binding.textLight) {
+//            SettingUtils.setDISPLAY();
         } else if (view == binding.llShoutDown) {
             new BottomSheetMenuDialogFragment.Builder(this)
                     .setSheet(R.menu.list_time)
