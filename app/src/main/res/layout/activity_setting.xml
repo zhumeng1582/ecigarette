@@ -118,7 +118,6 @@
         android:padding="@dimen/dip_15"
         android:text="亮度"
         android:textColor="#090D16"
-        app:drawableEndCompat="@mipmap/icon_right_arrow"
         app:drawableStartCompat="@mipmap/icon_light" />
 
     <LinearLayout
