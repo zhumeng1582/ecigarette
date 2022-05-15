@@ -218,16 +218,16 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             iv_wifi.setColorFilter(getContext().getColor(R.color.main_color));
             textWIFI.setText("已连接");
             textWIFI.setTextColor(getContext().getColor(R.color.main_color));
+        } else if (wifiState == WifiManager.WIFI_STATE_ENABLED) {
+            iv_wifi.setImageResource(R.mipmap.wifi_enabled);
+            iv_wifi.setColorFilter(getContext().getColor(R.color.main_color));
+            textWIFI.setText("已打开");
+            textWIFI.setTextColor(getContext().getColor(R.color.main_color));
         } else if (wifiState == WifiManager.WIFI_STATE_DISABLED) {
             iv_wifi.setImageResource(R.mipmap.wifi_disabled);
             iv_wifi.setColorFilter(getContext().getColor(R.color.grey_color));
             textWIFI.setText("已关闭");
             textWIFI.setTextColor(getContext().getColor(R.color.grey_color));
-        } else if (wifiState == WifiManager.WIFI_STATE_ENABLED) {
-            iv_wifi.setImageResource(R.mipmap.wifi_enabling);
-            iv_wifi.setColorFilter(getContext().getColor(R.color.second_color));
-            textWIFI.setText("已打开");
-            textWIFI.setTextColor(getContext().getColor(R.color.main_color));
         } else if (wifiState == WifiManager.WIFI_STATE_DISABLING || wifiState == WifiManager.WIFI_STATE_ENABLING) {
             iv_wifi.setImageResource(R.mipmap.wifi_enabling);
             iv_wifi.setColorFilter(getContext().getColor(R.color.second_color));
