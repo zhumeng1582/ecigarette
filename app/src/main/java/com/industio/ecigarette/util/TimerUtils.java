@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TimerUtils {
-    private static List<iBrightnessListener> iBrightnessListeners = new ArrayList<>();
-    private static List<iTimer> iTimers = new ArrayList<>();
+    private static final List<iBrightnessListener> iBrightnessListeners = new ArrayList<>();
+    private static final List<iTimer> iTimers = new ArrayList<>();
 
     public static void init() {
         ThreadUtils.executeByCachedAtFixRate(timer, 1, TimeUnit.SECONDS);
