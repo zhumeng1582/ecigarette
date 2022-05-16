@@ -13,16 +13,15 @@
         android:background="@mipmap/bg_main"
         android:padding="@dimen/dip_40">
 
-        <ImageView
-            android:id="@+id/imageDevicePower"
-            android:layout_width="@dimen/dip_90"
-            android:layout_height="@dimen/dip_90"
-            android:layout_margin="@dimen/dip_10"
-            app:layout_constraintEnd_toEndOf="parent"
+        <com.industio.ecigarette.view.battery.BatteryView
+            android:id="@+id/batteryView"
+            android:layout_width="@dimen/dip_128"
+            android:layout_height="@dimen/dip_56"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/dip_40"
             app:layout_constraintBottom_toTopOf="@+id/textAlarm"
-            android:src="@mipmap/icon_power4" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textAlarm"

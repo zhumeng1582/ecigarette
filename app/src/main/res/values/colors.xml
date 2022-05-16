@@ -20,4 +20,8 @@
     <color name="color_check">#a2c888</color>
     <color name="color_enable">#666666</color>
 
+    <color name="low">#CC0000</color>
+    <color name="medium">#FFCC00</color>
+    <color name="high">#00CC00</color>
+
 </resources>

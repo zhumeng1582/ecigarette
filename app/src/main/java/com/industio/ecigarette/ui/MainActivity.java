@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         permission();
+
     }
 
 
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerSerial() {
-        binding.imageDevicePower.setVisibility(View.GONE);
+        binding.batteryView.setVisibility(View.GONE);
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
             switch (buf[4]) {
                 case 0x00:
@@ -245,20 +246,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setDevicePower(int power) {
-        binding.imageDevicePower.setVisibility(View.VISIBLE);
+        binding.batteryView.setVisibility(View.VISIBLE);
         if (power >= 5) {
-            binding.imageDevicePower.setImageResource(R.mipmap.icon_power4);
-            binding.imageDevicePower.setColorFilter(getColor(R.color.main_color));
+            binding.batteryView.setPower(100);
         } else if (power >= 4) {
-            binding.imageDevicePower.setImageResource(R.mipmap.icon_power3);
-            binding.imageDevicePower.setColorFilter(getColor(R.color.main_color));
+            binding.batteryView.setPower(80);
         } else if (power >= 3) {
-            binding.imageDevicePower.setImageResource(R.mipmap.icon_power2);
-            binding.imageDevicePower.setColorFilter(getColor(R.color.red));
+            binding.batteryView.setPower(60);
         } else if (power >= 2) {
-            binding.imageDevicePower.setImageResource(R.mipmap.icon_power1);
-            binding.imageDevicePower.setColorFilter(getColor(R.color.red_low_power));
+            binding.batteryView.setPower(20);
+        } else if (power >= 1) {
+            binding.batteryView.setPower(10);
+        } else if (power >= 0) {
+            binding.batteryView.setPower(0);
         }
+
     }
 
     class BatteryReceiver extends BroadcastReceiver {
