@@ -9,18 +9,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.CollectionUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
+import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
@@ -180,8 +185,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerSerial() {
-        binding.batteryView.setVisibility(View.GONE);
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
+            if (Crc16Utils.dataVerify(buf)) return;
+            Log.d("SerialReadListener",Crc16Utils.byteTo16String(ArrayUtils.subArray(buf,0,12)));
+
             switch (buf[4]) {
                 case 0x00:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
@@ -217,11 +224,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void setDevicePower(int power) {
-        binding.batteryView.setVisibility(View.VISIBLE);
 
+    private void setDevicePower(int power) {
         if (power <= 5) {
-            binding.batteryView.setPower(power *20);
+            binding.batteryView.setPower(power * 20);
         }
     }
 

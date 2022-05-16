@@ -17,7 +17,6 @@
             android:id="@+id/batteryView"
             android:layout_width="@dimen/dip_64"
             android:layout_height="@dimen/dip_28"
-            android:visibility="gone"
             android:layout_marginBottom="@dimen/dip_40"
             app:layout_constraintBottom_toTopOf="@+id/textAlarm"
             app:layout_constraintEnd_toEndOf="parent"

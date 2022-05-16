@@ -1,5 +1,6 @@
 package com.industio.ecigarette.util;
 
+
 /**
  * crc16校验
  *
@@ -109,6 +110,22 @@ public class Crc16Utils {
             buffer.append(Integer.toString(aa, 16)).append(" ");
         }
         return buffer.toString();
+    }
+
+    public static boolean dataVerify(byte[] buf) {
+
+        if (buf == null || buf.length < 2) {
+            return false;
+        }
+        byte[] temp = new byte[buf.length - 2];
+        System.arraycopy(buf, 0, temp, 0, temp.length);
+
+        byte[] crc = Crc16Utils.getCrc16(temp);
+
+        if (buf[buf.length - 2] == crc[0] && buf[buf.length - 1] == crc[1]) {
+            return true;
+        }
+        return false;
     }
 
 }
