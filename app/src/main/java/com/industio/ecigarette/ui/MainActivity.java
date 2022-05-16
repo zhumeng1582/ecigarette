@@ -17,7 +17,6 @@ import android.view.View;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
@@ -25,7 +24,6 @@ import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
-import com.industio.ecigarette.view.ToggleToolWidget;
 import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
@@ -34,7 +32,6 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
     private GestureDetector mGestureDetector;
-    private BatteryReceiver batteryReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         closeController();
 
         registerSerial();
-        initBatteryReceiver();
         TimerUtils.init();
     }
 
@@ -95,13 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SettingUtils.setBrightness(MainActivity.this, currentBrightness);
         binding.topView.initView();
     }
-
-    private void initBatteryReceiver() {
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        batteryReceiver = new BatteryReceiver();
-        registerReceiver(batteryReceiver, intentFilter);
-    }
-
 
     private void permission() {
         PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
@@ -228,61 +217,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void setPower(int percent) {
-        //相应的电池符号;
-        if (percent > 75) {
-            binding.imagePower.setImageResource(R.mipmap.icon_power4);
-            binding.imagePower.setColorFilter(getColor(R.color.main_color));
-        } else if (percent > 50) {
-            binding.imagePower.setImageResource(R.mipmap.icon_power3);
-            binding.imagePower.setColorFilter(getColor(R.color.main_color));
-        } else if (percent > 25) {
-            binding.imagePower.setImageResource(R.mipmap.icon_power2);
-            binding.imagePower.setColorFilter(getColor(R.color.red));
-        } else if (percent > 0) {
-            binding.imagePower.setImageResource(R.mipmap.icon_power1);
-            binding.imagePower.setColorFilter(getColor(R.color.red_low_power));
-        }
-    }
-
     private void setDevicePower(int power) {
         binding.batteryView.setVisibility(View.VISIBLE);
-        if (power >= 5) {
-            binding.batteryView.setPower(100);
-        } else if (power >= 4) {
-            binding.batteryView.setPower(80);
-        } else if (power >= 3) {
-            binding.batteryView.setPower(60);
-        } else if (power >= 2) {
-            binding.batteryView.setPower(20);
-        } else if (power >= 1) {
-            binding.batteryView.setPower(10);
-        } else if (power >= 0) {
-            binding.batteryView.setPower(0);
+
+        if (power <= 5) {
+            binding.batteryView.setPower(power *20);
         }
-
-    }
-
-    class BatteryReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //判断它是否是为电量变化的Broadcast Action
-            if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
-                //获取当前电量
-                int current = intent.getIntExtra("level", 0);
-                //电量的总刻度
-                int total = intent.getIntExtra("scale", 100);
-                int percent = current * 100 / total;
-                setPower(percent);
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //销毁广播
-        unregisterReceiver(batteryReceiver);
     }
 
 }
