@@ -58,20 +58,20 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         devicePara = CacheDataUtils.getDevicePara(mode);
 
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
-            binding.textPreheatValue.setText("" + progress + "℃");
+            binding.textPreheatValue.setText(progress + "℃");
             devicePara.setPreheatValue(progress);
             SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.预热温度, devicePara.getPreheatValue()));
             setChartData();
         });
         binding.cusSeekPreheatTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
-            binding.textPreheatTimeValue.setText("" + progress + "s");
+            binding.textPreheatTimeValue.setText(progress + "s");
             devicePara.setPreheatTimeValue(progress);
             SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.预热时长, devicePara.getPreheatTimeValue()));
             setChartData();
         });
 
         binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
-            binding.textConstantTemperatureValue.setText("" + progress + " ℃");
+            binding.textConstantTemperatureValue.setText(progress + " ℃");
             devicePara.setConstantTemperatureValue(progress);
             SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.恒温温度, devicePara.getConstantTemperatureValue()));
 
@@ -79,7 +79,7 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         binding.cusSeekConstantTemperatureTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
-            binding.textConstantTemperatureTimeValue.setText("" + progress + "s");
+            binding.textConstantTemperatureTimeValue.setText(progress + "s");
             devicePara.setConstantTemperatureTimeValue(progress);
             SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.恒温时长, devicePara.getConstantTemperatureTimeValue()));
 
@@ -87,14 +87,14 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> {
-            binding.textNoOperationValue.setText("" + progress + "s");
+            binding.textNoOperationValue.setText(progress + "s");
             devicePara.setNoOperationValue(progress);
             SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.休眠时长, devicePara.getNoOperationValue()));
 
             setChartData();
         });
         binding.cusSeekTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
-            binding.textTemperatureValue.setText("" + progress + "℃");
+            binding.textTemperatureValue.setText(progress + "℃");
             int i = adapter.getSelectIndex();
             devicePara.getTemperature()[i] = progress;
             SerialController.getInstance().send(DeviceConstant.sendCount(i + 1, devicePara.getTemperature()[i]));

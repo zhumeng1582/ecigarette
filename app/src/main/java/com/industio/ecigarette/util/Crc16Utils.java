@@ -100,13 +100,13 @@ public class Crc16Utils {
         StringBuffer buffer = new StringBuffer();
         int aa = (int) b;
         if (aa < 0) {
-            buffer.append(Integer.toString(aa + 256, 16) + " ");
+            buffer.append(Integer.toString(aa + 256, 16)).append(" ");
         } else if (aa == 0) {
             buffer.append("00 ");
-        } else if (aa > 0 && aa <= 15) {
-            buffer.append("0" + Integer.toString(aa, 16) + " ");
-        } else if (aa > 15) {
-            buffer.append(Integer.toString(aa, 16) + " ");
+        } else if (aa <= 15) {
+            buffer.append("0").append(Integer.toString(aa, 16)).append(" ");
+        } else {
+            buffer.append(Integer.toString(aa, 16)).append(" ");
         }
         return buffer.toString();
     }
