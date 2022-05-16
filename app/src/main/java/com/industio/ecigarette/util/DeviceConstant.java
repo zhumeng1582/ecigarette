@@ -17,13 +17,12 @@ public class DeviceConstant {
             "升级完成",
             "抽吸完成",
             "预热温度",
-            "温度、口数、时间",
     };
 
     public static byte[] startCmd = getCommonCmd(new byte[]{0x00, 0x01, 0x45, 0x67, (byte) 0x89, 0x00});
-    public static byte[] resetCmd = getCommonCmd(new byte[]{0x05,0x01, 0x00, 0x00, 0x00, 0x00});
-    public static byte[] saveCmd = getCommonCmd(new byte[]{0x06,0x01, 0x00, 0x00, 0x00, 0x00});
-    public static byte[] sleepCmd = getCommonCmd(new byte[]{0x07,0x01, 0x00, 0x00, 0x00, 0x00});
+    public static byte[] resetCmd = getCommonCmd(new byte[]{0x04,0x01, 0x00, 0x00, 0x00, 0x00});
+    public static byte[] saveCmd = getCommonCmd(new byte[]{0x04,0x02, 0x00, 0x00, 0x00, 0x00});
+    public static byte[] sleepCmd = getCommonCmd(new byte[]{0x04,0x03, 0x00, 0x00, 0x00, 0x00});
 
     public static byte[] getCommonCmd(byte[] data) {
         return Crc16Utils.getData(ArrayUtils.add(header, data));
@@ -43,7 +42,7 @@ public class DeviceConstant {
         }
     }
 
-    public static byte[] sendData(CMD cmd, int para) {
+    public static byte[] getData(CMD cmd, int para) {
         byte para1 = (byte) (para >> 16 & 0xFF);
         byte para2 = (byte) (para >> 8 & 0xFF);
         byte para3 = (byte) (para & 0xFF);

@@ -190,20 +190,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerSerial() {
-//        binding.imagePower.setVisibility(View.GONE);
+        binding.imageDevicePower.setVisibility(View.GONE);
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
             switch (buf[4]) {
                 case 0x00:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                     break;//显示主界面;
                 case 0x01:
-                    if (buf[5] <= 0x0C) {
+                    if (buf[5] <= 0x0A) {
                         binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]]);
+                    } else if (buf[5] == 0x0B) {
+                        int temp = buf[6] * 255 + buf[7];
+                        binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]] + "\n" + temp);
                     }
                     break;
-                case 0x10:
+                case 0x0C:
+                    int temp1 = buf[5] * 255 + buf[6];
+                    int temp2 = buf[7];
+                    int temp3 = buf[8] * 255 + buf[9];
+                    binding.textAlarm.setText("温度：" + temp1 + "\n");
+                    binding.textAlarm.setText("口数：" + temp2 + "\n");
+                    binding.textAlarm.setText("时间：" + temp3 + "\n");
 
-                    //buf[6]（电量）
+                    break;
+                case 0x10:
+                    setDevicePower(buf[6]);
+                    if (buf[7] == 0) {
+                        binding.textAlarm.setText("没有充电");
+                    } else {
+                        binding.textAlarm.setText("正在充电");
+                    }
                     break;
                 default:
                     break;
@@ -225,6 +241,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (percent > 0) {
             binding.imagePower.setImageResource(R.mipmap.icon_power1);
             binding.imagePower.setColorFilter(getColor(R.color.red_low_power));
+        }
+    }
+
+    private void setDevicePower(int power) {
+        binding.imageDevicePower.setVisibility(View.VISIBLE);
+        if (power >= 5) {
+            binding.imageDevicePower.setImageResource(R.mipmap.icon_power4);
+            binding.imageDevicePower.setColorFilter(getColor(R.color.main_color));
+        } else if (power >= 4) {
+            binding.imageDevicePower.setImageResource(R.mipmap.icon_power3);
+            binding.imageDevicePower.setColorFilter(getColor(R.color.main_color));
+        } else if (power >= 3) {
+            binding.imageDevicePower.setImageResource(R.mipmap.icon_power2);
+            binding.imageDevicePower.setColorFilter(getColor(R.color.red));
+        } else if (power >= 2) {
+            binding.imageDevicePower.setImageResource(R.mipmap.icon_power1);
+            binding.imageDevicePower.setColorFilter(getColor(R.color.red_low_power));
         }
     }
 
