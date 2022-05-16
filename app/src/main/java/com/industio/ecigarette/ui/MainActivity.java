@@ -34,9 +34,8 @@ import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
-    private GestureDetector mGestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,36 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 binding.btnSetPara,
         }, this);
 
-        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (e1.getRawY() < 300 && distanceY < 0) {
-                    binding.topView.onStateDoing();
-                    ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
-                } else if (distanceY > 0) {
-                    closeController();
-                }
-                return super.onScroll(e1, e2, distanceX, distanceY);
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                closeController();
-                return super.onSingleTapUp(e);
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                int currentBrightness = BrightnessUtils.getBrightness();
-                if (currentBrightness < 100) {
-                    setBrightness(200);
-                } else if (currentBrightness >= 175) {
-                    setBrightness(0);
-                }
-
-                return super.onDoubleTap(e);
-            }
-        });
         TimerUtils.addBrightnessLister(new TimerUtils.iBrightnessListener() {
             @Override
             public void brightnessListener() {
@@ -90,6 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         registerSerial();
         TimerUtils.init();
+    }
+
+    @Override
+    public void onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        if (e1.getRawY() < 300 && distanceY < 0) {
+            binding.topView.onStateDoing();
+            ViewAnimate.topOpen(binding.topView, (int) e2.getRawY());
+        } else if (distanceY > 0) {
+            closeController();
+        }
     }
 
     void setBrightness(int currentBrightness) {
@@ -120,13 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    //2.让手势识别器 工作起来
-    // 当activity被触摸的时候调用的方法.
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        mGestureDetector.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
 
     @Override
     protected void onResume() {
@@ -187,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void registerSerial() {
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
             if (Crc16Utils.dataVerify(buf)) return;
-            Log.d("SerialReadListener",Crc16Utils.byteTo16String(ArrayUtils.subArray(buf,0,12)));
+            Log.d("SerialReadListener", Crc16Utils.byteTo16String(ArrayUtils.subArray(buf, 0, 12)));
 
             switch (buf[4]) {
                 case 0x00:

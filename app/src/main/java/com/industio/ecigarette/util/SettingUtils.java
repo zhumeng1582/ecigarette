@@ -33,14 +33,20 @@ public class SettingUtils {
         intent.putExtra("confirm", confirm);
         context.sendBroadcast(intent);
     }
-
-
+    private static void screenOff(Context context) {
+        Intent intent = new Intent("android.ido.action.screen.off");
+        context.sendBroadcast(intent);
+    }
 
     public static void setBrightness(Context context, int currentBrightness) {
         WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
         lp.screenBrightness = currentBrightness / 255f;
         ((Activity) context).getWindow().setAttributes(lp);
         BrightnessUtils.setBrightness(currentBrightness);
+
+        if (currentBrightness == 0) {
+            screenOff(context);
+        }
     }
 
 }

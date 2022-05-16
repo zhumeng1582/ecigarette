@@ -1,7 +1,9 @@
 package com.industio.ecigarette.ui;
 
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -16,11 +18,12 @@ import com.industio.ecigarette.util.CacheDataUtils;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
+import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivitySettingBinding binding;
 
     @Override
@@ -99,8 +102,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+
         initView();
     }
+
 
     private void initView() {
         int currentBrightness = BrightnessUtils.getBrightness();

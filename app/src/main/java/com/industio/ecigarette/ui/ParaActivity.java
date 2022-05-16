@@ -3,13 +3,16 @@ package com.industio.ecigarette.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.MenuRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,6 +28,7 @@ import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.CacheDataUtils;
 import com.industio.ecigarette.util.DeviceConstant;
+import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
@@ -32,7 +36,7 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParaActivity extends AppCompatActivity implements View.OnClickListener {
+public class ParaActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private ActivityParaBinding binding;
     private DevicePara devicePara;
@@ -156,6 +160,8 @@ public class ParaActivity extends AppCompatActivity implements View.OnClickListe
 
         initEvent();
     }
+
+
 
     private void initData() {
 
