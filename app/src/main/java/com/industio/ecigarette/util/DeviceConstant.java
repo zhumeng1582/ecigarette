@@ -43,17 +43,17 @@ public class DeviceConstant {
     }
 
     public static byte[] getData(CMD cmd, int para) {
-        byte para1 = (byte) (para >> 16 & 0xFF);
-        byte para2 = (byte) (para >> 8 & 0xFF);
-        byte para3 = (byte) (para & 0xFF);
-        return getCommonCmd(new byte[]{0x02, cmd.value, para1, para2, para3, 0x00});
+        byte para1 = (byte) (para >> 8 & 0xFF);
+        byte para2 = (byte) (para & 0xFF);
+//        byte para3 = (byte) (para & 0xFF);
+        return getCommonCmd(new byte[]{0x02, cmd.value, para1, para2, 0x00, 0x00});
     }
 
     public static byte[] sendCount(int count, int para) {
         int para1 = para > 0 ? 0x01 : 0x00;
         para = Math.abs(para);
-        int para2 = para >> 8 & 0xFF;
-        int para3 = para & 0xFF;
-        return getCommonCmd(new byte[]{0x03, (byte) count, (byte) para1, (byte) para2, (byte) para3, 0x00});
+        int para2 = para  & 0xFF;
+//        int para3 = para & 0xFF;
+        return getCommonCmd(new byte[]{0x03, (byte) count, (byte) para1, (byte) para2, 0x00, 0x00});
     }
 }
