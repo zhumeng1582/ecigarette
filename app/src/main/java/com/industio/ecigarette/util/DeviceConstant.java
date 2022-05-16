@@ -3,8 +3,11 @@ package com.industio.ecigarette.util;
 import com.blankj.utilcode.util.ArrayUtils;
 
 public class DeviceConstant {
+
+    //发送数据头
     public static byte[] header = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA};
 
+    //接收数据解析
     public static String[] RECEVICE_TIPS = new String[]{"",
             "低电保护 \n请尽快充电",
             "过充保护",
@@ -19,6 +22,7 @@ public class DeviceConstant {
             "预热温度",
     };
 
+
     public static byte[] startCmd = getCommonCmd(new byte[]{0x00, 0x01, 0x45, 0x67, (byte) 0x89, 0x00});
     public static byte[] resetCmd = getCommonCmd(new byte[]{0x04,0x01, 0x00, 0x00, 0x00, 0x00});
     public static byte[] saveCmd = getCommonCmd(new byte[]{0x04,0x02, 0x00, 0x00, 0x00, 0x00});
@@ -27,7 +31,7 @@ public class DeviceConstant {
     public static byte[] getCommonCmd(byte[] data) {
         return Crc16Utils.getData(ArrayUtils.add(header, data));
     }
-
+    //发送设备参数命令
     public enum CMD {
         预热温度(0x01),
         预热时长(0x02),
@@ -41,14 +45,15 @@ public class DeviceConstant {
             this.value = (byte) value;
         }
     }
-
-    public static byte[] getData(CMD cmd, int para) {
+    //发送设备参数
+    public static byte[] getSendData(CMD cmd, int para) {
         byte para1 = (byte) (para >> 8 & 0xFF);
         byte para2 = (byte) (para & 0xFF);
 //        byte para3 = (byte) (para & 0xFF);
         return getCommonCmd(new byte[]{0x02, cmd.value, para1, para2, 0x00, 0x00});
     }
 
+    //发送口数
     public static byte[] sendCount(int count, int para) {
         int para1 = para > 0 ? 0x01 : 0x00;
         para = Math.abs(para);

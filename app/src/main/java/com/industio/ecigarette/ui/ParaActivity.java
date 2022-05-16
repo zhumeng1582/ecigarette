@@ -3,16 +3,12 @@ package com.industio.ecigarette.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.MenuRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
@@ -28,7 +24,6 @@ import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.CacheDataUtils;
 import com.industio.ecigarette.util.DeviceConstant;
-import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
@@ -64,20 +59,20 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textPreheatValue.setText(progress + "℃");
             devicePara.setPreheatValue(progress);
-            SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.预热温度, devicePara.getPreheatValue()));
+            SerialController.getInstance().send(DeviceConstant.getSendData(DeviceConstant.CMD.预热温度, devicePara.getPreheatValue()));
             setChartData();
         });
         binding.cusSeekPreheatTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textPreheatTimeValue.setText(progress + "s");
             devicePara.setPreheatTimeValue(progress);
-            SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.预热时长, devicePara.getPreheatTimeValue()));
+            SerialController.getInstance().send(DeviceConstant.getSendData(DeviceConstant.CMD.预热时长, devicePara.getPreheatTimeValue()));
             setChartData();
         });
 
         binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textConstantTemperatureValue.setText(progress + " ℃");
             devicePara.setConstantTemperatureValue(progress);
-            SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.恒温温度, devicePara.getConstantTemperatureValue()));
+            SerialController.getInstance().send(DeviceConstant.getSendData(DeviceConstant.CMD.恒温温度, devicePara.getConstantTemperatureValue()));
 
             setChartData();
         });
@@ -85,7 +80,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         binding.cusSeekConstantTemperatureTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textConstantTemperatureTimeValue.setText(progress + "s");
             devicePara.setConstantTemperatureTimeValue(progress);
-            SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.恒温时长, devicePara.getConstantTemperatureTimeValue()));
+            SerialController.getInstance().send(DeviceConstant.getSendData(DeviceConstant.CMD.恒温时长, devicePara.getConstantTemperatureTimeValue()));
 
             setChartData();
         });
@@ -93,7 +88,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         binding.cusSeekNoOperationValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textNoOperationValue.setText(progress + "s");
             devicePara.setNoOperationValue(progress);
-            SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.休眠时长, devicePara.getNoOperationValue()));
+            SerialController.getInstance().send(DeviceConstant.getSendData(DeviceConstant.CMD.休眠时长, devicePara.getNoOperationValue()));
 
             setChartData();
         });
@@ -113,7 +108,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
             adapter.setCountNum(progress);
             binding.cusSeekTemperatureValue.setCurProgress(devicePara.getTemperature()[adapter.getSelectIndex()]);
             devicePara.setCount(progress);
-            SerialController.getInstance().send(DeviceConstant.getData(DeviceConstant.CMD.发送口数, devicePara.getCount()));
+            SerialController.getInstance().send(DeviceConstant.getSendData(DeviceConstant.CMD.发送口数, devicePara.getCount()));
 
             setChartData();
         });
