@@ -1,22 +1,15 @@
 package com.industio.ecigarette.view.battery;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.industio.ecigarette.R;
 
@@ -44,19 +37,14 @@ public class BatteryView extends View{
     // 高电量 默认值 21%-100% 白色
     private int highColor;
     private int headerColor;
-    private int currentPower = 60; // 当前电量
+    private final int currentPower = 60; // 当前电量
 
     // 未充电时高电量颜色
     private int noChargingHighColor;
 
-    private int chargingSpeed;
-
     private int width;
     private int height;
-    private Context mContext;
 
-    private Handler mHandler = new Handler();
-    private Runnable runnable;
 
     public BatteryView(Context context) {
         this(context, null);
@@ -68,7 +56,6 @@ public class BatteryView extends View{
 
     public BatteryView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
         getAttrs(context, attrs);
         initPaints();
     }
@@ -102,18 +89,15 @@ public class BatteryView extends View{
         borderColor = ta.getColor(R.styleable.BatteryView_bv_border_color, Color.WHITE);
 
         // 电池实心部分
-        lowColor = ta.getColor(R.styleable.BatteryView_bv_power_color_low, mContext.getResources().getColor(R.color.low));
+        lowColor = ta.getColor(R.styleable.BatteryView_bv_power_color_low, context.getResources().getColor(R.color.low));
         lowValue = ta.getInt(R.styleable.BatteryView_bv_power_value_low, 10);
-        mediumColor = ta.getColor(R.styleable.BatteryView_bv_power_color_medium, mContext.getResources().getColor(R.color.medium));
+        mediumColor = ta.getColor(R.styleable.BatteryView_bv_power_color_medium, context.getResources().getColor(R.color.medium));
         mediumValue = ta.getInt(R.styleable.BatteryView_bv_power_value_medium, 20);
-        highColor = ta.getColor(R.styleable.BatteryView_bv_power_color_high, mContext.getResources().getColor(R.color.high));
+        highColor = ta.getColor(R.styleable.BatteryView_bv_power_color_high, context.getResources().getColor(R.color.high));
 
         headerColor = ta.getColor(R.styleable.BatteryView_bv_header_color, Color.WHITE);
 
-        noChargingHighColor = ta.getColor(R.styleable.BatteryView_bv_no_charging_color_high, mContext.getResources().getColor(R.color.high));
-
-        chargingSpeed = ta.getInt(R.styleable.BatteryView_bv_charging_speed, 2) % 10;
-        if(chargingSpeed == 0) chargingSpeed = 1;
+        noChargingHighColor = ta.getColor(R.styleable.BatteryView_bv_no_charging_color_high, context.getResources().getColor(R.color.high));
         ta.recycle();
     }
 
@@ -263,18 +247,13 @@ public class BatteryView extends View{
     }
 
     public void setPower(int power) {
-        if(mOnBatteryPowerListener != null) mOnBatteryPowerListener.onPower(currentPower);
 
         if (power <= lowValue) {
             powerPaint.setColor(lowColor);
         } else if (power < mediumValue) {
             powerPaint.setColor(mediumColor);
         } else {
-            if(runnable == null){
-                powerPaint.setColor(noChargingHighColor);
-            }else{
-                powerPaint.setColor(highColor);
-            }
+            powerPaint.setColor(noChargingHighColor);
         }
 
         if(orientation == BatteryViewOrientation.HORIZONTAL_RIGHT){
@@ -295,50 +274,4 @@ public class BatteryView extends View{
             postInvalidate();
         }
     }
-
-    private int power;
-
-    // 充电动态显示
-    private void startCharge() {
-        if (runnable != null) return;
-        power = currentPower;
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                power %= 100;
-                setPower(power);
-                power += chargingSpeed;
-                //延迟执行
-                mHandler.postDelayed(this, 200);
-            }
-        };
-        mHandler.post(runnable);
-    }
-
-    private void stopCharge() {
-        if (runnable != null) {
-            mHandler.removeCallbacks(runnable);
-            runnable = null;
-        }
-    }
-
-    //    private
-    private OnBatteryPowerListener mOnBatteryPowerListener;
-
-
-    public void setOnBatteryPowerListener(OnBatteryPowerListener onBatteryPowerListener){
-        mOnBatteryPowerListener = onBatteryPowerListener;
-    }
-    public void removeOnBatteryPowerListener(){
-        mOnBatteryPowerListener = null;
-    }
-
-    /**
-     * 充电动画速度
-     * @param speed 1-9之前的数值
-     */
-    public void setChargingSpeed(int speed){
-        this.chargingSpeed = speed;
-    }
-
 }
