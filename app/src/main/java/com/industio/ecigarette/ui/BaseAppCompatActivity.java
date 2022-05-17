@@ -19,12 +19,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                onScroll(e1, e2, distanceX, distanceY);
+                BaseAppCompatActivity.this.onScroll(e1, e2, distanceX, distanceY);
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                onSingleTapUp(e);
+                BaseAppCompatActivity.this.onSingleTapUp(e);
                 return super.onSingleTapUp(e);
             }
             @Override

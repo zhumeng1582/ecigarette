@@ -49,9 +49,9 @@ public class SerialController {
             @Override
             protected void read(byte[] buf, int len) {
                 if (CollectionUtils.isNotEmpty(listSerialReadListener)) {
+                    Log.d("uart", "rx:" + bytesToHexString(buf, len));
                     for (SerialReadListener serialReadListener : listSerialReadListener) {
                         serialReadListener.read(buf, len);
-                        Log.d("uart", "rx:" + bytesToHexString(buf, len));
                     }
                 }
             }
@@ -78,7 +78,7 @@ public class SerialController {
             public void onSuccess(Void result) {
 
             }
-        },1);
+        });
     }
 
     private void send(byte[] buf) {

@@ -82,7 +82,7 @@ public class BatteryView extends View {
         borderPadding = ta.getDimensionPixelSize(R.styleable.BatteryView_bv_border_padding, 2);
         // 电池边框厚度
         borderWidth = ta.getDimensionPixelSize(R.styleable.BatteryView_bv_border_width, 2);
-        headerWidth = ta.getDimensionPixelSize(R.styleable.BatteryView_bv_header_width, 10);
+        headerWidth = ta.getDimensionPixelSize(R.styleable.BatteryView_bv_header_width, 6);
         // 电池边框圆角
         radis = ta.getDimensionPixelSize(R.styleable.BatteryView_bv_radis, 2);
         // 电池边框颜色
@@ -191,7 +191,7 @@ public class BatteryView extends View {
         // 绘制电池头
         if (headerRf == null) {
             float headerHeight = height / 3f;
-            headerRf = new RectF(width - headerWidth, headerHeight, width, headerHeight * 2);
+            headerRf = new RectF(borderRf.right, headerHeight, width, headerHeight * 2);
         }
         canvas.drawRoundRect(headerRf, radis, radis, headerPaint);
         if (currentPower < 0) {

@@ -272,8 +272,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private void saveDevicePara() {
         CacheDataUtils.saveDevicePara(devicePara);
         SerialController.getInstance().sendSync(DeviceConstant.saveCmd);
-
-//        sendDataToDevice();
     }
 
 

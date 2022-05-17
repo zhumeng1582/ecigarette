@@ -14,6 +14,7 @@ import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
@@ -204,7 +205,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                         binding.textAlarm.setText(text);
                     } else if (key == 0x0B) {
                         int temp = (buf[6] & 0xff) << 8 + (buf[7] & 0xff);
-                        binding.textAlarm.setText(text + "\n" + temp+ "℃");
+                        binding.textAlarm.setText(text + "\n" + temp + "℃");
                     }
                 } else {
                     binding.textAlarm.setText("错误数据：" + buf[5]);
@@ -215,9 +216,19 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp1 = (buf[5] & 0xff) << 8 + (buf[6] & 0xff);
                 int temp2 = buf[7];
                 int temp3 = (buf[8] & 0xff) << 8 + (buf[9] & 0xff);
-                String text = "温度：" + temp1 + "℃"+ "\n"+"口数：" + temp2 + "\n"+"时间：" + temp3 + "s\n";
+                String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
                 binding.textAlarm.setText(text);
 
+                break;
+            case 0x04:
+                if (buf[5] == 0x01) {
+                    ToastUtils.showShort("复位数据成功");
+                    binding.textAlarm.setText("复位数据成功");
+                } else if (buf[5] == 0x02) {
+                    ToastUtils.showShort("保存数据成功");
+                    binding.textAlarm.setText("保存数据成功");
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                }
                 break;
             case 0x10:
                 setDevicePower(buf[6] & 0xff);
