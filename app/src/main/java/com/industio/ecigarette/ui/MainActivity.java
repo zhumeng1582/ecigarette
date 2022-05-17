@@ -88,13 +88,16 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
-    private void unregisterReceiverScreenBroadcast() {
+    private void unregisterReceiverScreenBroadcast(boolean delay) {
         if (isRegister) {
             isRegister = false;
-            getApplicationContext().unregisterReceiver(screenBroadcastReceiver);
+            ThreadUtils.runOnUiThreadDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getApplicationContext().unregisterReceiver(screenBroadcastReceiver);
+                }
+            }, delay ? 5 : 0);
         }
-
-
     }
 
     @Override
@@ -228,7 +231,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     if (key == 0x0A) {
                         registerReceiverScreenBroadcast();
                     } else if (key == 0x0B) {
-                        unregisterReceiverScreenBroadcast();
+                        unregisterReceiverScreenBroadcast(true);
                     }
 
                     if (key <= 0x0A) {
@@ -249,7 +252,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp3 = (buf[8] & 0xff) << 8 + (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
                 binding.textAlarm.setText(text);
-                unregisterReceiverScreenBroadcast();
+                unregisterReceiverScreenBroadcast(true);
                 break;
             case 0x04:
                 if (buf[5] == 0x01) {
@@ -283,6 +286,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiverScreenBroadcast();
+        unregisterReceiverScreenBroadcast(false);
     }
 }
