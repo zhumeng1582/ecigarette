@@ -4,6 +4,7 @@ package com.industio.ecigarette.ui;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -71,6 +72,17 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
             }
         });
+
+        screenBroadcast();
+    }
+
+    private void screenBroadcast() {
+        ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        getApplicationContext().registerReceiver(screenBroadcastReceiver, filter);
     }
 
     @Override
