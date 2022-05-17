@@ -67,12 +67,18 @@ public class SerialController {
     }
 
     public void sendSync(byte[] buf) {
-        new Thread(new Runnable() {
+        ThreadUtils.executeByCached(new ThreadUtils.SimpleTask<Void>() {
             @Override
-            public void run() {
+            public Void doInBackground() {
                 send(buf);
+                return null;
             }
-        }).start();
+
+            @Override
+            public void onSuccess(Void result) {
+
+            }
+        },1);
     }
 
     private void send(byte[] buf) {

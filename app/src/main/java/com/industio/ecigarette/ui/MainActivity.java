@@ -203,7 +203,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     if (key <= 0x0A) {
                         binding.textAlarm.setText(text);
                     } else if (key == 0x0B) {
-                        int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
+                        int temp = (buf[6] & 0xff) << 8 + (buf[7] & 0xff);
                         binding.textAlarm.setText(text + "\n" + temp+ "℃");
                     }
                 } else {
@@ -212,9 +212,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
                 break;
             case 0x0C:
-                int temp1 = (buf[5] & 0xff) * 255 + (buf[6] & 0xff);
+                int temp1 = (buf[5] & 0xff) << 8 + (buf[6] & 0xff);
                 int temp2 = buf[7];
-                int temp3 = (buf[8] & 0xff) * 255 + (buf[9] & 0xff);
+                int temp3 = (buf[8] & 0xff) << 8 + (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃"+ "\n"+"口数：" + temp2 + "\n"+"时间：" + temp3 + "s\n";
                 binding.textAlarm.setText(text);
 
