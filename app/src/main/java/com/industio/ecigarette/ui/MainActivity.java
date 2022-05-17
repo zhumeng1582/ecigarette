@@ -1,8 +1,8 @@
 package com.industio.ecigarette.ui;
 
 
-
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,10 +13,12 @@ import android.view.View;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
+import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.util.SettingUtils;
@@ -28,6 +30,7 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
+    int showTimeCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,24 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
         registerSerial();
         TimerUtils.init();
+        TimerUtils.addTimers(new TimerUtils.iTimer() {
+            @Override
+            public void timer() {
+                if (showTimeCount > 0) {
+                    showTimeCount--;
+                }
+                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+                    binding.iconHomeWifi.setVisibility(View.VISIBLE);
+                } else {
+                    binding.iconHomeWifi.setVisibility(View.GONE);
+                }
+                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
+                    binding.iconHomeBluetooth.setVisibility(View.VISIBLE);
+                } else {
+                    binding.iconHomeBluetooth.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
@@ -62,8 +83,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             closeController();
         }
     }
+
     @Override
-    public void onSingleTapUp(MotionEvent e){
+    public void onSingleTapUp(MotionEvent e) {
         closeController();
     }
 
@@ -154,14 +176,19 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
     private void registerSerial() {
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
+            if (showTimeCount > 0) {
+                return;
+            }
+
             if (Crc16Utils.dataVerify(buf)) return;
-            Log.d("SerialReadListener", Crc16Utils.byteTo16String(ArrayUtils.subArray(buf, 0, 12)));
 
             switch (buf[4]) {
                 case 0x00:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                     break;//显示主界面;
                 case 0x01:
+                    showTimeCount = DeviceConstant.stopTime[buf[5]];
+
                     if (buf[5] <= 0x0A) {
                         binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]]);
                     } else if (buf[5] == 0x0B) {
