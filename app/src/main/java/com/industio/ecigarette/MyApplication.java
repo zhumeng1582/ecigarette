@@ -12,8 +12,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("CrashUtils","---------_>"+Utils.getApp().getFilesDir());
-        Log.d("CrashUtils","---------_>"+Utils.getApp().getExternalFilesDir(null));
 
         CrashUtils.init("",new CrashUtils.OnCrashListener() {
             @Override
