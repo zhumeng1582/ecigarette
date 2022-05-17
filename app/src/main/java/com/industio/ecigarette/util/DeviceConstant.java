@@ -2,26 +2,45 @@ package com.industio.ecigarette.util;
 
 import com.blankj.utilcode.util.ArrayUtils;
 
+import java.util.HashMap;
+
 public class DeviceConstant {
 
     //发送数据头
     public static byte[] header = new byte[]{0x55, (byte) 0xFF, (byte) 0xCE, (byte) 0xAA};
 
     //低电保护/请尽快充电,PCB过温保护,电池过温保护,短路保护,开路保护,充电过充保护,升级完成
-    public static int[] stopTime = new int[]{5,5,5,5,5,5,5,0,5,0,0};
+    //接收数据暂停时间
+    public static HashMap<Integer, Integer> stopTime = new HashMap<Integer, Integer>() {
+        {
+            put(0x01, 5);
+            put(0x02, 5);
+            put(0x03, 5);
+            put(0x04, 5);
+            put(0x05, 5);
+            put(0x06, 5);
+            put(0x07, 5);
+            put(0x08, 0);
+            put(0x09, 5);
+            put(0x0A, 0);
+            put(0x0B, 0);
+        }
+    };
     //接收数据解析
-    public static String[] RECEVICE_TIPS = new String[]{"",
-            "低电保护 \n请尽快充电",
-            "过充保护",
-            "短路保护",
-            "开路保护",
-            "PCB过温保护",
-            "电池过温保护",
-            "充电过充保护",
-            "升级中",
-            "升级完成",
-            "抽吸完成",
-            "预热温度",
+    public static HashMap<Integer, String> RECEVICE_TIPS = new HashMap<Integer, String>() {
+        {
+            put(0x01, "低电保护 \n请尽快充电");
+            put(0x02, "过充保护");
+            put(0x03, "短路保护");
+            put(0x04, "开路保护");
+            put(0x05, "PCB过温保护");
+            put(0x06, "电池过温保护");
+            put(0x07, "充电过充保护");
+            put(0x08, "升级中");
+            put(0x09, "升级完成");
+            put(0x0A, "抽吸完成");
+            put(0x0B, "预热温度");
+        }
     };
 
 

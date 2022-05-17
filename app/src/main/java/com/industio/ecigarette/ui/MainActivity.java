@@ -92,7 +92,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void permission() {
-        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE).callback(new PermissionUtils.SimpleCallback() {
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
             }
@@ -180,14 +180,24 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                     break;//显示主界面;
                 case 0x01:
-                    showTimeCount = DeviceConstant.stopTime[buf[5]];
+                    int key = buf[5] & 0xff;
 
-                    if (buf[5] <= 0x0A) {
-                        binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]]);
-                    } else if (buf[5] == 0x0B) {
-                        int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
-                        binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]] + "\n" + temp);
+                    if (DeviceConstant.stopTime.containsKey(key)) {
+                        showTimeCount = DeviceConstant.stopTime.get(key);
                     }
+
+                    if (DeviceConstant.RECEVICE_TIPS.containsKey(key)) {
+                        String text = DeviceConstant.RECEVICE_TIPS.get(key);
+                        if (key <= 0x0A) {
+                            binding.textAlarm.setText(text);
+                        } else if (key == 0x0B) {
+                            int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
+                            binding.textAlarm.setText(text + "\n" + temp);
+                        }
+                    } else {
+                        binding.textAlarm.setText("错误数据：" + buf[5]);
+                    }
+
                     break;
                 case 0x0C:
                     int temp1 = (buf[5] & 0xff) * 255 + (buf[6] & 0xff);
@@ -199,7 +209,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
                     break;
                 case 0x10:
-                    setDevicePower(buf[6]& 0xff);
+                    setDevicePower(buf[6] & 0xff);
                     if (buf[7] == 0) {
                         binding.textAlarm.setText("没有充电");
                     } else {
