@@ -32,6 +32,8 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
     int showTimeCount = 0;
+    ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
+    private boolean isRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +74,27 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
             }
         });
-
-        screenBroadcast();
+        registerReceiverScreenBroadcast();
     }
 
-    private void screenBroadcast() {
-        ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        getApplicationContext().registerReceiver(screenBroadcastReceiver, filter);
+    private void registerReceiverScreenBroadcast() {
+        if (!isRegister) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            filter.addAction(Intent.ACTION_USER_PRESENT);
+            getApplicationContext().registerReceiver(screenBroadcastReceiver, filter);
+            isRegister = true;
+        }
+    }
+
+    private void unregisterReceiverScreenBroadcast() {
+        if (isRegister) {
+            isRegister = false;
+            getApplicationContext().unregisterReceiver(screenBroadcastReceiver);
+        }
+
+
     }
 
     @Override
@@ -213,14 +225,22 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
                 if (DeviceConstant.RECEVICE_TIPS.containsKey(key)) {
                     String text = DeviceConstant.RECEVICE_TIPS.get(key);
+                    if (key == 0x0A) {
+                        registerReceiverScreenBroadcast();
+                    } else if (key == 0x0B) {
+                        unregisterReceiverScreenBroadcast();
+                    }
+
                     if (key <= 0x0A) {
                         binding.textAlarm.setText(text);
                     } else if (key == 0x0B) {
                         int temp = (buf[6] & 0xff) << 8 + (buf[7] & 0xff);
                         binding.textAlarm.setText(text + "\n" + temp + "℃");
+
                     }
                 } else {
                     binding.textAlarm.setText("错误数据：" + buf[5]);
+
                 }
 
                 break;
@@ -230,7 +250,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp3 = (buf[8] & 0xff) << 8 + (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
                 binding.textAlarm.setText(text);
-
+                unregisterReceiverScreenBroadcast();
                 break;
             case 0x04:
                 if (buf[5] == 0x01) {
@@ -261,4 +281,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiverScreenBroadcast();
+    }
 }
