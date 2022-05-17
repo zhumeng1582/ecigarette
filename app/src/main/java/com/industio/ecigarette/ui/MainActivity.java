@@ -204,7 +204,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                         binding.textAlarm.setText(text);
                     } else if (key == 0x0B) {
                         int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
-                        binding.textAlarm.setText(text + "\n" + temp);
+                        binding.textAlarm.setText(text + "\n" + temp+ "℃");
                     }
                 } else {
                     binding.textAlarm.setText("错误数据：" + buf[5]);
@@ -215,9 +215,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp1 = (buf[5] & 0xff) * 255 + (buf[6] & 0xff);
                 int temp2 = buf[7];
                 int temp3 = (buf[8] & 0xff) * 255 + (buf[9] & 0xff);
-                binding.textAlarm.setText("温度：" + temp1 + "\n");
-                binding.textAlarm.setText("口数：" + temp2 + "\n");
-                binding.textAlarm.setText("时间：" + temp3 + "\n");
+                String text = "温度：" + temp1 + "℃"+ "\n"+"口数：" + temp2 + "\n"+"时间：" + temp3 + "s\n";
+                binding.textAlarm.setText(text);
 
                 break;
             case 0x10:
