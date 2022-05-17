@@ -1,26 +1,18 @@
 package com.industio.ecigarette.ui;
 
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ArrayUtils;
-import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.CollectionUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
