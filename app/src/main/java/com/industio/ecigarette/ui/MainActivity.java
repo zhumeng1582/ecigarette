@@ -98,7 +98,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
-
             }
 
             @Override
@@ -117,14 +116,11 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         permission();
-
     }
-
 
     @Override
     public void onClick(View view) {
@@ -182,7 +178,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
             if (Crc16Utils.dataVerify(buf)) return;
 
-            switch (buf[4]) {
+            switch (buf[4] & 0xff) {
                 case 0x00:
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                     break;//显示主界面;
@@ -192,21 +188,21 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     if (buf[5] <= 0x0A) {
                         binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]]);
                     } else if (buf[5] == 0x0B) {
-                        int temp = buf[6] * 255 + buf[7];
+                        int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
                         binding.textAlarm.setText(DeviceConstant.RECEVICE_TIPS[buf[5]] + "\n" + temp);
                     }
                     break;
                 case 0x0C:
-                    int temp1 = buf[5] * 255 + buf[6];
+                    int temp1 = (buf[5] & 0xff) * 255 + (buf[6] & 0xff);
                     int temp2 = buf[7];
-                    int temp3 = buf[8] * 255 + buf[9];
+                    int temp3 = (buf[8] & 0xff) * 255 + (buf[9] & 0xff);
                     binding.textAlarm.setText("温度：" + temp1 + "\n");
                     binding.textAlarm.setText("口数：" + temp2 + "\n");
                     binding.textAlarm.setText("时间：" + temp3 + "\n");
 
                     break;
                 case 0x10:
-                    setDevicePower(buf[6]);
+                    setDevicePower(buf[6]& 0xff);
                     if (buf[7] == 0) {
                         binding.textAlarm.setText("没有充电");
                     } else {
@@ -218,7 +214,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             }
         });
     }
-
 
     private void setDevicePower(int power) {
         if (power <= 5) {
