@@ -22,7 +22,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
                 onScroll(e1, e2, distanceX, distanceY);
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
-
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                onSingleTapUp(e);
+                return super.onSingleTapUp(e);
+            }
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 int currentBrightness = BrightnessUtils.getBrightness();
@@ -36,7 +40,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             }
         });
     }
+    public void onSingleTapUp(MotionEvent e){
 
+    }
     public void onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
     }
 

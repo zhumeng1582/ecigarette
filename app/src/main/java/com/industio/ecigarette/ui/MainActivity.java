@@ -70,6 +70,10 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             closeController();
         }
     }
+    @Override
+    public void onSingleTapUp(MotionEvent e){
+        closeController();
+    }
 
     void setBrightness(int currentBrightness) {
         SettingUtils.setBrightness(MainActivity.this, currentBrightness);
