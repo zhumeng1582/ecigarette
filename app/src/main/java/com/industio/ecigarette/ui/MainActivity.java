@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
@@ -175,51 +176,61 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
             if (Crc16Utils.dataVerify(buf)) return;
 
-            switch (buf[4] & 0xff) {
-                case 0x00:
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                    break;//显示主界面;
-                case 0x01:
-                    int key = buf[5] & 0xff;
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dataAnalysis(buf);
+                }
+            });
 
-                    if (DeviceConstant.stopTime.containsKey(key)) {
-                        showTimeCount = DeviceConstant.stopTime.get(key);
-                    }
-
-                    if (DeviceConstant.RECEVICE_TIPS.containsKey(key)) {
-                        String text = DeviceConstant.RECEVICE_TIPS.get(key);
-                        if (key <= 0x0A) {
-                            binding.textAlarm.setText(text);
-                        } else if (key == 0x0B) {
-                            int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
-                            binding.textAlarm.setText(text + "\n" + temp);
-                        }
-                    } else {
-                        binding.textAlarm.setText("错误数据：" + buf[5]);
-                    }
-
-                    break;
-                case 0x0C:
-                    int temp1 = (buf[5] & 0xff) * 255 + (buf[6] & 0xff);
-                    int temp2 = buf[7];
-                    int temp3 = (buf[8] & 0xff) * 255 + (buf[9] & 0xff);
-                    binding.textAlarm.setText("温度：" + temp1 + "\n");
-                    binding.textAlarm.setText("口数：" + temp2 + "\n");
-                    binding.textAlarm.setText("时间：" + temp3 + "\n");
-
-                    break;
-                case 0x10:
-                    setDevicePower(buf[6] & 0xff);
-                    if (buf[7] == 0) {
-                        binding.textAlarm.setText("没有充电");
-                    } else {
-                        binding.textAlarm.setText("正在充电");
-                    }
-                    break;
-                default:
-                    break;
-            }
         });
+    }
+
+    private void dataAnalysis(byte[] buf) {
+        switch (buf[4] & 0xff) {
+            case 0x00:
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                break;//显示主界面;
+            case 0x01:
+                int key = buf[5] & 0xff;
+
+                if (DeviceConstant.stopTime.containsKey(key)) {
+                    showTimeCount = DeviceConstant.stopTime.get(key);
+                }
+
+                if (DeviceConstant.RECEVICE_TIPS.containsKey(key)) {
+                    String text = DeviceConstant.RECEVICE_TIPS.get(key);
+                    if (key <= 0x0A) {
+                        binding.textAlarm.setText(text);
+                    } else if (key == 0x0B) {
+                        int temp = (buf[6] & 0xff) * 255 + (buf[7] & 0xff);
+                        binding.textAlarm.setText(text + "\n" + temp);
+                    }
+                } else {
+                    binding.textAlarm.setText("错误数据：" + buf[5]);
+                }
+
+                break;
+            case 0x0C:
+                int temp1 = (buf[5] & 0xff) * 255 + (buf[6] & 0xff);
+                int temp2 = buf[7];
+                int temp3 = (buf[8] & 0xff) * 255 + (buf[9] & 0xff);
+                binding.textAlarm.setText("温度：" + temp1 + "\n");
+                binding.textAlarm.setText("口数：" + temp2 + "\n");
+                binding.textAlarm.setText("时间：" + temp3 + "\n");
+
+                break;
+            case 0x10:
+                setDevicePower(buf[6] & 0xff);
+                if (buf[7] == 0) {
+                    binding.textAlarm.setText("没有充电");
+                } else {
+                    binding.textAlarm.setText("正在充电");
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void setDevicePower(int power) {
