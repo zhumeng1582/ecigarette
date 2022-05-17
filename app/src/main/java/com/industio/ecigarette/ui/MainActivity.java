@@ -5,13 +5,11 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -53,7 +51,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         closeController();
 
         registerSerial();
-        TimerUtils.init();
         TimerUtils.addTimers(new TimerUtils.iTimer() {
             @Override
             public void timer() {
@@ -95,7 +92,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void permission() {
-        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE).callback(new PermissionUtils.SimpleCallback() {
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
             }

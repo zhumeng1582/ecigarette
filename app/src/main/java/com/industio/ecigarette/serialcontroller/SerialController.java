@@ -3,6 +3,7 @@ package com.industio.ecigarette.serialcontroller;
 import android.util.Log;
 
 import com.blankj.utilcode.util.CollectionUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.util.DeviceConstant;
 
@@ -50,7 +51,7 @@ public class SerialController {
                 if (CollectionUtils.isNotEmpty(listSerialReadListener)) {
                     for (SerialReadListener serialReadListener : listSerialReadListener) {
                         serialReadListener.read(buf, len);
-                        Log.d("uart","rx:" + bytesToHexString(buf,len));
+                        Log.d("uart", "rx:" + bytesToHexString(buf, len));
                     }
                 }
             }
@@ -65,7 +66,16 @@ public class SerialController {
         }
     }
 
-    public void send(byte[] buf) {
+    public void sendSync(byte[] buf) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                send(buf);
+            }
+        }).start();
+    }
+
+    private void send(byte[] buf) {
         if (serialControl == null) {
             initSerial();
         }
