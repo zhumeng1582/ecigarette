@@ -112,7 +112,7 @@ public class Crc16Utils {
         return buffer.toString();
     }
 
-    public static boolean dataVerify(byte[] buf) {
+    public static boolean dataError(byte[] buf) {
 
         if (buf == null || buf.length < 2) {
             return false;
@@ -122,10 +122,7 @@ public class Crc16Utils {
 
         byte[] crc = Crc16Utils.getCrc16(temp);
 
-        if (buf[buf.length - 2] == crc[0] && buf[buf.length - 1] == crc[1]) {
-            return true;
-        }
-        return false;
+        return buf[buf.length - 2] == crc[0] && buf[buf.length - 1] == crc[1];
     }
 
 }

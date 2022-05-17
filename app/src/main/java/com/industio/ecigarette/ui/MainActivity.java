@@ -202,7 +202,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 return;
             }
 
-            if (Crc16Utils.dataVerify(buf)) return;
+            if (Crc16Utils.dataError(buf)) return;
 
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
