@@ -33,16 +33,18 @@ public class DeviceConstant {
     }
     //发送设备参数命令
     public enum CMD {
-        预热温度(0x01),
-        预热时长(0x02),
-        恒温温度(0x03),
-        恒温时长(0x04),
-        休眠时长(0x05),
-        发送口数(0x06);
-        private byte value;
+        预热温度(0x02,0x01),
+        预热时长(0x02,0x02),
+        恒温温度(0x02,0x03),
+        恒温时长(0x02,0x04),
+        休眠时长(0x02,0x05),
+        发送口数(0x02,0x06);
+        private final byte value1;
+        private final byte value2;
 
-        CMD(int value) {
-            this.value = (byte) value;
+        CMD(int value1,int value2) {
+            this.value1 = (byte) value1;
+            this.value2 = (byte) value2;
         }
     }
     //发送设备参数
@@ -50,7 +52,7 @@ public class DeviceConstant {
         byte para1 = (byte) (para >> 8 & 0xFF);
         byte para2 = (byte) (para & 0xFF);
 //        byte para3 = (byte) (para & 0xFF);
-        return getCommonCmd(new byte[]{0x02, cmd.value, para1, para2, 0x00, 0x00});
+        return getCommonCmd(new byte[]{cmd.value1, cmd.value2, para1, para2, 0x00, 0x00});
     }
 
     //发送口数
