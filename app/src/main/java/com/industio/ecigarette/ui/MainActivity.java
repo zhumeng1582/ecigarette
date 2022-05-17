@@ -81,8 +81,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         if (!isRegister) {
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_OFF);
-            filter.addAction(Intent.ACTION_SCREEN_ON);
-            filter.addAction(Intent.ACTION_USER_PRESENT);
+//            filter.addAction(Intent.ACTION_SCREEN_ON);
+//            filter.addAction(Intent.ACTION_USER_PRESENT);
             getApplicationContext().registerReceiver(screenBroadcastReceiver, filter);
             isRegister = true;
         }
@@ -236,7 +236,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     } else if (key == 0x0B) {
                         int temp = (buf[6] & 0xff) << 8 + (buf[7] & 0xff);
                         binding.textAlarm.setText(text + "\n" + temp + "℃");
-
                     }
                 } else {
                     binding.textAlarm.setText("错误数据：" + buf[5]);

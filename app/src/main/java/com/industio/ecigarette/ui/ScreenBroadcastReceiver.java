@@ -21,10 +21,11 @@ public class ScreenBroadcastReceiver extends BroadcastReceiver {
         if (action.equals(Intent.ACTION_SCREEN_OFF)) {
             Log.e("ScreenBroadcastReceiver","锁屏");
             SerialController.getInstance().sendSync(DeviceConstant.sleepCmd);
-        } else if (action.equals(Intent.ACTION_SCREEN_ON)) {
-            Log.e("ScreenBroadcastReceiver","解锁");
-        }else if(action.equals(Intent.ACTION_USER_PRESENT)){
-            Log.e("ScreenBroadcastReceiver","开屏");
         }
+//        else if (action.equals(Intent.ACTION_SCREEN_ON)) {
+//            Log.e("ScreenBroadcastReceiver","解锁");
+//        }else if(action.equals(Intent.ACTION_USER_PRESENT)){
+//            Log.e("ScreenBroadcastReceiver","开屏");
+//        }
     }
 }
