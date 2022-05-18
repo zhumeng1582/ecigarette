@@ -228,11 +228,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
                 if (DeviceConstant.RECEVICE_TIPS.containsKey(key)) {
                     String text = DeviceConstant.RECEVICE_TIPS.get(key);
-                    if (key == 0x0A) {
-                        registerReceiverScreenBroadcast();
-                    } else if (key == 0x0B) {
-                        unregisterReceiverScreenBroadcast(true);
-                    }
 
                     if (key <= 0x0A) {
                         binding.textAlarm.setText(text);
@@ -242,7 +237,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     }
                 } else {
                     binding.textAlarm.setText("错误数据：" + buf[5]);
-
                 }
 
                 break;
