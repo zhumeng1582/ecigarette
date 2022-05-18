@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TimerUtils {
-    private static final List<iBrightnessListener> iBrightnessListeners = new ArrayList<>();
     private static final List<iTimer> iTimers = new ArrayList<>();
 
     public static void init() {
@@ -31,11 +30,7 @@ public class TimerUtils {
             }
             if (CacheDataUtils.getLockScreenTime() > 0) {
                 CacheDataUtils.setLockScreenTime(CacheDataUtils.getLockScreenTime() - 1);
-                if (CacheDataUtils.getLockScreenTime() == 0) {
-                    for (iBrightnessListener iBrightnessListener : iBrightnessListeners) {
-                        iBrightnessListener.brightnessListener();
-                    }
-                }
+
             }
             for (iTimer iTimer : iTimers) {
                 iTimer.timer();
@@ -44,19 +39,10 @@ public class TimerUtils {
     };
 
 
-    public static void addBrightnessLister(iBrightnessListener iBrightnessListener) {
-        iBrightnessListeners.add(iBrightnessListener);
-    }
-
     public static void addTimers(iTimer iTimer) {
         iTimers.add(iTimer);
     }
 
-
-
-    public interface iBrightnessListener {
-        void brightnessListener();
-    }
 
     public interface iTimer {
         void timer();

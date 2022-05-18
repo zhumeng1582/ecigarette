@@ -46,12 +46,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 binding.btnSetPara,
         }, this);
 
-        TimerUtils.addBrightnessLister(new TimerUtils.iBrightnessListener() {
-            @Override
-            public void brightnessListener() {
-                setBrightness(0);
-            }
-        });
 
         closeController();
 
@@ -75,6 +69,19 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             }
         });
         registerReceiverScreenBroadcast();
+        findViewById(R.id.llLock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeController();
+                binding.textLock.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    @Override
+    public View getLock() {
+        return binding.textLock;
     }
 
     private void registerReceiverScreenBroadcast() {

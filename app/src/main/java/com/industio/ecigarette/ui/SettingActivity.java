@@ -3,22 +3,19 @@ package com.industio.ecigarette.ui;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
 import com.industio.ecigarette.util.CacheDataUtils;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
-import com.industio.ecigarette.view.ViewAnimate;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
@@ -34,7 +31,6 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
         ClickUtils.applySingleDebouncing(new View[]{
                 binding.textBluetooth,
                 binding.textWIFI,
-                binding.textLock,
                 binding.llShoutDown,
         }, this);
 
@@ -76,13 +72,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
                 binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
             }
         });
-        TimerUtils.addBrightnessLister(new TimerUtils.iBrightnessListener() {
-            @Override
-            public void brightnessListener() {
-                SettingUtils.setBrightness(SettingActivity.this, 0);
-                initView();
-            }
-        });
+
         binding.seekBarLockScreenTime.setMin1(10);
         binding.seekBarLockScreenTime.setMax1(60);
 
@@ -90,6 +80,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 CacheDataUtils.setLockScreenTime(i);
+                SettingUtils.systemSleep(SettingActivity.this, i);
             }
 
             @Override
@@ -102,7 +93,18 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
 
             }
         });
-
+        binding.switchLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                CacheDataUtils.setLockScreenSwitch(b);
+                if (b) {
+                    ToastUtils.showShort("锁屏功能已开启");
+                } else {
+                    ToastUtils.showShort("锁屏功能已关闭");
+                }
+            }
+        });
+        binding.switchLock.setChecked(CacheDataUtils.getLockScreenSwitch());
         initView();
     }
 
@@ -114,16 +116,21 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
     }
 
     @Override
+    public View getLock() {
+        return binding.textLock1;
+    }
+
+    @Override
     public void onClick(View view) {
         if (view == binding.textBluetooth) {
             SettingUtils.setBlueTooth();
         } else if (view == binding.textWIFI) {
             SettingUtils.openWIFISettings();
-        } else if (view == binding.textLock) {
-            int currentBrightness = 0;
-            binding.seekBar.setProgress1(currentBrightness);
-            SettingUtils.setBrightness(SettingActivity.this, currentBrightness);
-            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
+//        } else if (view == binding.textLock) {
+//            int currentBrightness = 0;
+//            binding.seekBar.setProgress1(currentBrightness);
+//            SettingUtils.setBrightness(SettingActivity.this, currentBrightness);
+//            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
 //        } else if (view == binding.textUnLock) {
 //            int currentBrightness = 0;
 //            binding.seekBar.setProgress1(currentBrightness);

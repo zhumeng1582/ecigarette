@@ -101,7 +101,6 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             }
         });
         iv_lock = findViewById(R.id.lock);
-        findViewById(R.id.llLock).setOnClickListener(this);
         TimerUtils.addTimers(new TimerUtils.iTimer() {
             @Override
             public void timer() {
@@ -162,10 +161,10 @@ public class ToggleToolWidget extends FrameLayout implements OnClickListener {
             SettingUtils.setBrightness(getContext(), currentBrightness);
             seekBar.setProgress1(currentBrightness);
         } else if (v.getId() == R.id.llLock) {
-            int currentBrightness = 0;
-            SettingUtils.setBrightness(getContext(), currentBrightness);
-            initBrightnessImage(getContext(), iv_brightness, currentBrightness);
-            seekBar.setProgress1(currentBrightness);
+//            int currentBrightness = 0;
+//            SettingUtils.setBrightness(getContext(), currentBrightness);
+//            initBrightnessImage(getContext(), iv_brightness, currentBrightness);
+//            seekBar.setProgress1(currentBrightness);
         }
     }
 

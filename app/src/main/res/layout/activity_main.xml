@@ -7,7 +7,6 @@
     tools:context=".ui.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/drag_content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@mipmap/bg_main"
@@ -100,5 +99,15 @@
         android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    <TextView
+        android:id="@+id/textLock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/half_trans"
+        android:gravity="center"
+        android:text="屏幕锁定\n双击屏幕解锁"
+        android:lineSpacingExtra="@dimen/dip_15"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:textSize="@dimen/sp_24" />
 </FrameLayout>

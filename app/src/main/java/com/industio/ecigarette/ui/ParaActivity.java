@@ -156,6 +156,10 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         initEvent();
     }
 
+    @Override
+    public View getLock() {
+        return binding.textLock;
+    }
 
 
     private void initData() {

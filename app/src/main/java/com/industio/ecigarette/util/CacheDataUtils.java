@@ -20,6 +20,14 @@ public class CacheDataUtils {
         CacheDiskStaticUtils.put("DevicePara" + devicePara.getId(), devicePara);
     }
 
+    public static void setLockScreenSwitch(boolean b) {
+        CacheDiskStaticUtils.put("lockScreenSwitch", b);
+    }
+
+    public static boolean getLockScreenSwitch() {
+        return (boolean) CacheDiskStaticUtils.getSerializable("lockScreenSwitch", false);
+    }
+
     private static int shoutDownTime = 0;
     private static int lockScreenTime = 0;
 

@@ -1,182 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:contentInsetLeft="@dimen/dip_0"
-        app:contentInsetStart="@dimen/dip_0"
-        app:contentInsetStartWithNavigation="@dimen/dip_0"
-        app:layout_collapseMode="pin"
-        app:navigationIcon="@mipmap/btn_head_back"
-        app:title="设置" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_0.5"
-        android:background="@color/grey" />
-
-    <TextView
-        android:id="@+id/textBluetooth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/dip_10"
-        android:padding="@dimen/dip_15"
-        android:text="蓝牙"
-        android:textColor="#090D16"
-        app:drawableEndCompat="@mipmap/icon_right_arrow"
-        app:drawableStartCompat="@mipmap/icon_bluetooth" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_0.5"
-        android:background="@color/grey" />
-
-    <TextView
-        android:id="@+id/textWIFI"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/dip_10"
-        android:padding="@dimen/dip_15"
-        android:text="WIFI"
-        android:textColor="#090D16"
-        app:drawableEndCompat="@mipmap/icon_right_arrow"
-        app:drawableStartCompat="@mipmap/icon_wifi" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_0.5"
-        android:background="@color/grey" />
-
-    <TextView
-        android:id="@+id/textLock"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/dip_10"
-        android:padding="@dimen/dip_15"
-        android:text="锁屏"
-        android:textColor="#090D16"
-        app:drawableEndCompat="@mipmap/icon_right_arrow"
-        app:drawableStartCompat="@mipmap/icon_lock" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_0.5"
-        android:background="@color/grey" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/dip_15">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetLeft="@dimen/dip_0"
+            app:contentInsetStart="@dimen/dip_0"
+            app:contentInsetStartWithNavigation="@dimen/dip_0"
+            app:layout_collapseMode="pin"
+            app:navigationIcon="@mipmap/btn_head_back"
+            app:title="设置" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="@dimen/dip_10"
-            android:text="息屏"
-            android:textColor="#090D16"
-            app:drawableStartCompat="@mipmap/icon_dormancy" />
-        <TextView
-            android:id="@+id/textLockScreenTime"
-            android:layout_width="wrap_content"
+            android:id="@+id/textBluetooth"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/dip_10"
             android:padding="@dimen/dip_15"
+            android:text="蓝牙"
             android:textColor="#090D16"
-            tools:text="5分钟" />
-    </LinearLayout>
+            app:drawableEndCompat="@mipmap/icon_right_arrow"
+            app:drawableStartCompat="@mipmap/icon_bluetooth" />
 
-    <com.industio.ecigarette.view.ProSeekBar
-        android:id="@+id/seekBarLockScreenTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingLeft="@dimen/dip_15"
-        android:paddingRight="@dimen/dip_15"
-        android:paddingBottom="@dimen/dip_15"
-        android:progressDrawable="@drawable/seekbar_style"
-        android:thumb="@drawable/seekbar_thumb" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_0.5"
-        android:background="@color/grey" />
+        <TextView
+            android:id="@+id/textWIFI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/dip_10"
+            android:padding="@dimen/dip_15"
+            android:text="WIFI"
+            android:textColor="#090D16"
+            app:drawableEndCompat="@mipmap/icon_right_arrow"
+            app:drawableStartCompat="@mipmap/icon_wifi" />
 
-    <TextView
-        android:id="@+id/textLight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/dip_10"
-        android:padding="@dimen/dip_15"
-        android:text="亮度"
-        android:textColor="#090D16"
-        app:drawableStartCompat="@mipmap/icon_light" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dip_15"
-        android:layout_marginRight="@dimen/dip_15"
-        android:layout_marginBottom="@dimen/dip_10"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dip_15">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/dip_10"
+                android:text="锁屏"
+                android:textColor="#090D16"
+                app:drawableStartCompat="@mipmap/icon_lock" />
+
+            <Switch
+                android:id="@+id/switchLock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/dip_15">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/dip_10"
+                android:text="息屏"
+                android:textColor="#090D16"
+                app:drawableStartCompat="@mipmap/icon_dormancy" />
+
+            <TextView
+                android:id="@+id/textLockScreenTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/dip_10"
+                android:padding="@dimen/dip_15"
+                android:textColor="#090D16"
+                tools:text="5分钟" />
+        </LinearLayout>
 
         <com.industio.ecigarette.view.ProSeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="0dp"
+            android:id="@+id/seekBarLockScreenTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:paddingLeft="@dimen/dip_15"
+            android:paddingRight="@dimen/dip_15"
+            android:paddingBottom="@dimen/dip_15"
             android:progressDrawable="@drawable/seekbar_style"
             android:thumb="@drawable/seekbar_thumb" />
 
-        <ImageView
-            android:id="@+id/brightness"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
-            android:src="@mipmap/brightness_low" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_0.5"
-        android:background="@color/grey" />
-
-    <LinearLayout
-        android:id="@+id/llShoutDown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/dip_10"
-        android:orientation="horizontal">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawablePadding="@dimen/dip_10"
-            android:padding="@dimen/dip_15"
-            android:text="自动关机"
-            android:textColor="#090D16"
-            app:drawableStartCompat="@mipmap/icon_shutdown" />
-
-        <TextView
-            android:id="@+id/textShoutDownTime"
-            android:layout_width="wrap_content"
+            android:id="@+id/textLight"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/dip_10"
             android:padding="@dimen/dip_15"
+            android:text="亮度"
             android:textColor="#090D16"
-            app:drawableEndCompat="@mipmap/icon_right_arrow"
-            tools:text="5分钟" />
+            app:drawableStartCompat="@mipmap/icon_light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dip_15"
+            android:layout_marginRight="@dimen/dip_15"
+            android:layout_marginBottom="@dimen/dip_10"
+            android:orientation="horizontal">
+
+            <com.industio.ecigarette.view.ProSeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:progressDrawable="@drawable/seekbar_style"
+                android:thumb="@drawable/seekbar_thumb" />
+
+            <ImageView
+                android:id="@+id/brightness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10px"
+                android:src="@mipmap/brightness_low" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:id="@+id/llShoutDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/dip_10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/dip_10"
+                android:padding="@dimen/dip_15"
+                android:text="自动关机"
+                android:textColor="#090D16"
+                app:drawableStartCompat="@mipmap/icon_shutdown" />
+
+            <TextView
+                android:id="@+id/textShoutDownTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/dip_10"
+                android:padding="@dimen/dip_15"
+                android:textColor="#090D16"
+                app:drawableEndCompat="@mipmap/icon_right_arrow"
+                tools:text="5分钟" />
+        </LinearLayout>
     </LinearLayout>
 
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/textLock1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/half_trans"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/dip_15"
+        android:text="屏幕锁定\n双击屏幕解锁"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_24"
+        android:visibility="gone" />
+</FrameLayout>

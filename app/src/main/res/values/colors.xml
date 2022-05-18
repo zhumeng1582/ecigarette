@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#33666666</color>
+    <color name="half_trans">#88222222</color>
 
 
     <color name="main_color">#a2c888</color>
