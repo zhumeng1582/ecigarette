@@ -269,8 +269,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
     }
 
-    private void saveDevicePara() {
-        CacheDataUtils.saveDevicePara(devicePara);
+    private void sendSaveCmd() {
         SerialController.getInstance().sendSync(DeviceConstant.saveCmd);
     }
 
@@ -278,8 +277,8 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view == binding.btnSave) {
-            saveDevicePara();
-            ToastUtils.showShort("保存成功");
+            sendSaveCmd();
+            finish();
         } else if (view == binding.btnExit) {
             finish();
         } else if (view == binding.btnSaveAs) {
@@ -290,6 +289,12 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
             showDevicePara();
             SerialController.getInstance().sendSync(DeviceConstant.resetCmd);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CacheDataUtils.saveDevicePara(devicePara);
     }
 
     private void saveAs() {
@@ -322,7 +327,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                             devicePara.setId(ParaActivity.strong);
                             binding.textModeChange.setText("浓郁");
                         }
-                        saveDevicePara();
+                        sendSaveCmd();
 
                     }
 

@@ -262,7 +262,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 } else if (buf[5] == 0x02) {
                     ToastUtils.showShort("保存数据成功");
                     binding.textAlarm.setText("保存数据成功");
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+//                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                 }
                 break;
             case 0x10:

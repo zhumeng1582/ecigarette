@@ -33,24 +33,27 @@ public class SettingUtils {
         intent.putExtra("confirm", confirm);
         context.sendBroadcast(intent);
     }
+
     private static void screenOff(Context context) {
         Intent intent = new Intent("android.ido.action.screen.off");
         context.sendBroadcast(intent);
     }
-    private static  void systemSleep(Context context){
+
+    private static void systemSleep(Context context) {
         Intent mIntent1 = new Intent("android.ido.action.system.sleep");
-        mIntent1.putExtra("timeout",30);//单位为秒，-1为永不息屏
+        mIntent1.putExtra("timeout", 30);//单位为秒，-1为永不息屏
         context.sendBroadcast(mIntent1);
     }
 
     public static void setBrightness(Context context, int currentBrightness) {
-        WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
-        lp.screenBrightness = currentBrightness / 255f;
-        ((Activity) context).getWindow().setAttributes(lp);
-        BrightnessUtils.setBrightness(currentBrightness);
 
         if (currentBrightness == 0) {
             screenOff(context);
+        } else {
+            WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
+            lp.screenBrightness = currentBrightness / 255f;
+            ((Activity) context).getWindow().setAttributes(lp);
+            BrightnessUtils.setBrightness(currentBrightness);
         }
     }
 
