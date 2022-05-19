@@ -8,7 +8,7 @@ public abstract class SerialControl {
 
     private static final int MAX_RX_LEN = 1024;//一次接收的最大数据约10k
 
-    private volatile int send_wait_time = 60;//100ms内未再接收到数据则回调读接口
+    private volatile int send_wait_time = 75;//100ms内未再接收到数据则回调读接口
 
     private SerialPort mSerialPort;
 

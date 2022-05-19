@@ -25,7 +25,7 @@ public class CacheDataUtils {
     }
 
     public static boolean getLockScreenSwitch() {
-        return (boolean) CacheDiskStaticUtils.getSerializable("lockScreenSwitch", false);
+        return (boolean) CacheDiskStaticUtils.getSerializable("lockScreenSwitch", true);
     }
 
     private static int shoutDownTime = 0;
