@@ -193,16 +193,17 @@
                 tools:text="5分钟" />
         </LinearLayout>
     </LinearLayout>
-
-    <TextView
+    <LinearLayout
         android:id="@+id/textLock1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/half_trans"
-        android:gravity="center"
-        android:lineSpacingExtra="@dimen/dip_15"
-        android:text="屏幕锁定\n双击屏幕解锁"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_24"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="@dimen/dip_54"
+            android:layout_height="@dimen/dip_54"
+            android:src="@mipmap/icon_lock"
+            app:tint="@color/white" />
+    </LinearLayout>
 </FrameLayout>

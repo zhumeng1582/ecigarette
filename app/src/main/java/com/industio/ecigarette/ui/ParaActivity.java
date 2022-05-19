@@ -10,6 +10,7 @@ import androidx.annotation.MenuRes;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.CloneUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -282,8 +283,8 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == binding.btnSave) {
             sendSaveCmd();
-            finish();
         } else if (view == binding.btnExit) {
+            CacheDataUtils.saveDevicePara(devicePara);
             finish();
         } else if (view == binding.btnSaveAs) {
             saveAs();
@@ -295,11 +296,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        CacheDataUtils.saveDevicePara(devicePara);
-    }
 
     private void saveAs() {
         @MenuRes int id;
@@ -321,18 +317,20 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
                     @Override
                     public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
-                        if (menuItem.getItemId() == R.id.classics) {
-                            devicePara.setId(ParaActivity.classics);
-                            binding.textModeChange.setText("经典（默认）");
-                        } else if (menuItem.getItemId() == R.id.elegant) {
-                            devicePara.setId(ParaActivity.elegant);
-                            binding.textModeChange.setText("淡雅");
-                        } else {
-                            devicePara.setId(ParaActivity.strong);
-                            binding.textModeChange.setText("浓郁");
-                        }
-                        sendSaveCmd();
 
+                        DevicePara saveAsDevicePara = CloneUtils.deepClone(devicePara,DevicePara.class);
+                        if (menuItem.getItemId() == R.id.classics) {
+                            saveAsDevicePara.setId(ParaActivity.classics);
+//                            binding.textModeChange.setText("经典（默认）");
+                        } else if (menuItem.getItemId() == R.id.elegant) {
+                            saveAsDevicePara.setId(ParaActivity.elegant);
+//                            binding.textModeChange.setText("淡雅");
+                        } else {
+                            saveAsDevicePara.setId(ParaActivity.strong);
+//                            binding.textModeChange.setText("浓郁");
+                        }
+                        CacheDataUtils.saveDevicePara(saveAsDevicePara);
+                        ToastUtils.showShort("另存成功");
                     }
 
                     @Override
