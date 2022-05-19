@@ -92,7 +92,15 @@
         <com.industio.ecigarette.view.battery.BatteryView
             android:id="@+id/batteryView"
             android:layout_width="@dimen/dip_58"
-            android:layout_height="@dimen/dip_28" />
+            android:layout_height="@dimen/dip_28"
+            android:layout_marginEnd="@dimen/dip_5"/>
+
+        <ImageView
+            android:id="@+id/imageChange"
+            android:layout_width="@dimen/dip_28"
+            android:layout_height="@dimen/dip_28"
+            android:src="@mipmap/icon_charge"
+            app:tint="@color/white" />
     </LinearLayout>
 
     <com.industio.ecigarette.view.ToggleToolWidget
@@ -105,8 +113,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/half_trans"
-        android:visibility="gone"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/dip_54"

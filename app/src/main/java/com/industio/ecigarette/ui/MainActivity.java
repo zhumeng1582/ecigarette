@@ -269,9 +269,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             case 0x10:
                 setDevicePower(buf[6] & 0xff);
                 if (buf[7] == 0) {
-                    binding.textAlarm.setText("没有充电");
+                    binding.imageChange.setVisibility(View.GONE);
                 } else {
-                    binding.textAlarm.setText("正在充电");
+                    binding.imageChange.setVisibility(View.VISIBLE);
                 }
                 break;
             default:

@@ -48,6 +48,7 @@ public class DeviceConstant {
     public static byte[] resetCmd = getCommonCmd(new byte[]{0x04, 0x01, 0x00, 0x00, 0x00, 0x00});
     public static byte[] saveCmd = getCommonCmd(new byte[]{0x04, 0x02, 0x00, 0x00, 0x00, 0x00});
     public static byte[] sleepCmd = getCommonCmd(new byte[]{0x04, 0x03, 0x00, 0x00, 0x00, 0x00});
+    public static byte[] shoutDownCmd = getCommonCmd(new byte[]{0x04, 0x04, 0x00, 0x00, 0x00, 0x00});
 
     public static byte[] getCommonCmd(byte[] data) {
         return Crc16Utils.getData(ArrayUtils.add(header, data));

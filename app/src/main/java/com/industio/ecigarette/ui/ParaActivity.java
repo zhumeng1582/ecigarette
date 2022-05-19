@@ -127,14 +127,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                             @Override
                             public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
                                 if (menuItem.getItemId() == R.id.classics) {
-                                    binding.textModeChange.setText("经典（默认）");
                                     devicePara = CacheDataUtils.getDevicePara(ParaActivity.classics);
                                 } else if (menuItem.getItemId() == R.id.elegant) {
                                     devicePara = CacheDataUtils.getDevicePara(ParaActivity.elegant);
-                                    binding.textModeChange.setText("淡雅");
                                 } else {
                                     devicePara = CacheDataUtils.getDevicePara(ParaActivity.strong);
-                                    binding.textModeChange.setText("浓郁");
                                 }
                                 initData();
                             }
@@ -165,6 +162,13 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
     private void initData() {
 
+        if (devicePara.getId() == ParaActivity.classics) {
+            binding.textModeChange.setText("经典（默认）");
+        } else if (devicePara.getId() == ParaActivity.elegant) {
+            binding.textModeChange.setText("淡雅");
+        } else {
+            binding.textModeChange.setText("浓郁");
+        }
         initAdapter();
         initLineChart();
         showDevicePara();
@@ -318,7 +322,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                     @Override
                     public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
 
-                        DevicePara saveAsDevicePara = CloneUtils.deepClone(devicePara,DevicePara.class);
+                        DevicePara saveAsDevicePara = CloneUtils.deepClone(devicePara, DevicePara.class);
                         if (menuItem.getItemId() == R.id.classics) {
                             saveAsDevicePara.setId(ParaActivity.classics);
 //                            binding.textModeChange.setText("经典（默认）");

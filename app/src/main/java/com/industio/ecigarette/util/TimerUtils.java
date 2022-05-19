@@ -2,6 +2,7 @@ package com.industio.ecigarette.util;
 
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.Utils;
+import com.industio.ecigarette.serialcontroller.SerialController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public class TimerUtils {
             if (CacheDataUtils.getShoutDownTime() > 0) {
                 CacheDataUtils.setShoutDownTime(CacheDataUtils.getShoutDownTime() - 1);
                 if (CacheDataUtils.getShoutDownTime() == 0) {
-                    SettingUtils.systemShutdown(Utils.getApp(), true);
+                    SerialController.getInstance().sendSync(DeviceConstant.shoutDownCmd);
+                    SettingUtils.systemShutdown(Utils.getApp(), false);
                 }
             }
             if (CacheDataUtils.getLockScreenTime() > 0) {

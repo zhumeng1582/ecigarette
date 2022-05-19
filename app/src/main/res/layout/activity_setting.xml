@@ -106,6 +106,7 @@
                 android:drawablePadding="@dimen/dip_10"
                 android:padding="@dimen/dip_15"
                 android:textColor="#090D16"
+                android:visibility="gone"
                 tools:text="5分钟" />
         </LinearLayout>
 

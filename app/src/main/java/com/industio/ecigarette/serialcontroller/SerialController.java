@@ -57,31 +57,31 @@ public class SerialController {
     //初始化串口
     private void initSerial() {
 
-//        serialControl = new SerialControl() {
-//            @Override
-//            protected void read(byte[] buf, int len) {
-//                Log.d("uart", "rx:" + bytesToHexString(buf, len));
-//                if (CollectionUtils.isNotEmpty(listSerialReadListener)) {
-//                  /*  if (delay_flag) {
-//                        setClsSleepCnt();
-//                        mHandler.sendEmptyMessageDelayed(MSG_CLEAN_SLEEP_COUNT, 5000);
-//                        delay_flag = false;
-//                    }*/
-//                    setClsSleepCnt();
-//                    for (SerialReadListener serialReadListener : listSerialReadListener) {
-//                        serialReadListener.read(buf, len);
-//                    }
-//                }
-//            }
-//        };
-//
-//        String portName = "/dev/ttyS2";
-//        if (serialControl.init(portName, 115200)) {
-//            serialControl.write(DeviceConstant.startCmd);
-//            ToastUtils.showShort("打开成功:" + portName);
-//        } else {
-//            ToastUtils.showLong("打开失败:" + portName);
-//        }
+        serialControl = new SerialControl() {
+            @Override
+            protected void read(byte[] buf, int len) {
+                Log.d("uart", "rx:" + bytesToHexString(buf, len));
+                if (CollectionUtils.isNotEmpty(listSerialReadListener)) {
+                  /*  if (delay_flag) {
+                        setClsSleepCnt();
+                        mHandler.sendEmptyMessageDelayed(MSG_CLEAN_SLEEP_COUNT, 5000);
+                        delay_flag = false;
+                    }*/
+                    setClsSleepCnt();
+                    for (SerialReadListener serialReadListener : listSerialReadListener) {
+                        serialReadListener.read(buf, len);
+                    }
+                }
+            }
+        };
+
+        String portName = "/dev/ttyS2";
+        if (serialControl.init(portName, 115200)) {
+            serialControl.write(DeviceConstant.startCmd);
+            ToastUtils.showShort("打开成功:" + portName);
+        } else {
+            ToastUtils.showLong("打开失败:" + portName);
+        }
     }
 
     public void sendSync(byte[] buf) {
