@@ -64,12 +64,12 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
         });
 
         binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
-        binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
+//        binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
         TimerUtils.addTimers(new TimerUtils.iTimer() {
             @Override
             public void timer() {
                 binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
-                binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
+//                binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
             }
         });
 
@@ -80,6 +80,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 CacheDataUtils.setLockScreenTime(i);
+                binding.textLockScreenTime.setText(i + "秒");
                 SettingUtils.systemSleep(SettingActivity.this, i);
             }
 

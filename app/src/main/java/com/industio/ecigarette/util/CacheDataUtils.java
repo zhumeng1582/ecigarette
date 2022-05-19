@@ -1,15 +1,36 @@
 package com.industio.ecigarette.util;
 
 import com.blankj.utilcode.util.CacheDiskStaticUtils;
+import com.industio.ecigarette.bean.ClassicTemperatureValue;
 import com.industio.ecigarette.bean.DevicePara;
 
 public class CacheDataUtils {
+    public static ClassicTemperatureValue classicTemperatureValue;
+
     public static DevicePara getDefaultDevicePara(int id) {
         return new DevicePara(id);
     }
 
+    public static ClassicTemperatureValue getClassicTemperatureValue() {
+        if (classicTemperatureValue != null) {
+            return classicTemperatureValue;
+        }
+        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable("ClassicTemperatureValue");
+        if (classicTemperatureValue != null) {
+            return classicTemperatureValue;
+        }
+        return new ClassicTemperatureValue();
+    }
+    public static void initTemperatureValue() {
+        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable("ClassicTemperatureValue",new ClassicTemperatureValue());
+    }
+
+//    public static DevicePara getDevicePara(int id) {
+//        return (DevicePara) CacheDiskStaticUtils.getSerializable("KeyDevicePara" + id,new DevicePara(id));
+//    }
+
     public static DevicePara getDevicePara(int id) {
-        DevicePara devicePara = (DevicePara) CacheDiskStaticUtils.getSerializable("DevicePara" + id);
+        DevicePara devicePara = (DevicePara) CacheDiskStaticUtils.getSerializable("KeyDevicePara" + id);
         if (devicePara != null) {
             return devicePara;
         }
@@ -17,7 +38,9 @@ public class CacheDataUtils {
     }
 
     public static void saveDevicePara(DevicePara devicePara) {
-        CacheDiskStaticUtils.put("DevicePara" + devicePara.getId(), devicePara);
+        CacheDiskStaticUtils.put("KeyDevicePara" + devicePara.getId(), devicePara);
+        CacheDiskStaticUtils.put("ClassicTemperatureValue",getClassicTemperatureValue());
+
     }
 
     public static void setLockScreenSwitch(boolean b) {

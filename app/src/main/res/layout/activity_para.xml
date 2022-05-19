@@ -331,13 +331,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/half_trans"
-        android:visibility="gone"
-        android:gravity="center">
+        android:visibility="gone">
 
         <ImageView
-            android:layout_width="@dimen/dip_54"
-            android:layout_height="@dimen/dip_54"
-            android:src="@mipmap/icon_lock"
-            app:tint="@color/white" />
+            android:layout_width="@dimen/dip_28"
+            android:layout_height="@dimen/dip_28"
+            android:layout_margin="@dimen/dip_10"
+            android:src="@mipmap/lock_home"
+            app:tint="@color/main_color" />
     </LinearLayout>
 </FrameLayout>

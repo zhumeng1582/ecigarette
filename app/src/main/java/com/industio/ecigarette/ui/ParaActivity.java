@@ -55,12 +55,13 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         setContentView(binding.getRoot());
 
         int mode = getIntent().getIntExtra("mode", ParaActivity.classics);
+        CacheDataUtils.initTemperatureValue();
         devicePara = CacheDataUtils.getDevicePara(mode);
 
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textPreheatValue.setText(progress + "℃");
             devicePara.setPreheatValue(progress);
-            SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.预热温度, devicePara.getPreheatValue()));
+            SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.预热温度, progress));
             setChartData();
         });
         binding.cusSeekPreheatTimeValue.setOnSeekBarChangeListener((seekBar, progress) -> {
@@ -73,7 +74,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textConstantTemperatureValue.setText(progress + " ℃");
             devicePara.setConstantTemperatureValue(progress);
-            SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.恒温温度, devicePara.getConstantTemperatureValue()));
+            SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.恒温温度, progress));
 
             setChartData();
         });
