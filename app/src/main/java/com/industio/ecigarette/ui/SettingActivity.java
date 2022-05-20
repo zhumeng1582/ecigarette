@@ -75,6 +75,9 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
 
         binding.seekBarLockScreenTime.setMin1(10);
         binding.seekBarLockScreenTime.setMax1(60);
+        int lockScreenTime = CacheDataUtils.getLockScreenTime();
+        binding.textLockScreenTime.setText(lockScreenTime + "秒");
+        binding.seekBarLockScreenTime.setProgress1(lockScreenTime);
 
         binding.seekBarLockScreenTime.setOnSeekBarChangeListener1(new SeekBar.OnSeekBarChangeListener() {
             @Override

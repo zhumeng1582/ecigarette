@@ -41,7 +41,7 @@ public class SettingUtils {
 
     public static void systemSleep(Context context, int time) {
         Intent mIntent1 = new Intent("android.ido.action.system.sleep");
-        mIntent1.putExtra("timeout", time);//单位为秒，-1为永不息屏
+        mIntent1.putExtra("time", time);//单位为秒，-1为永不息屏
         context.sendBroadcast(mIntent1);
     }
 

@@ -30,10 +30,6 @@ public class TimerUtils {
                     SettingUtils.systemShutdown(Utils.getApp(), false);
                 }
             }
-            if (CacheDataUtils.getLockScreenTime() > 0) {
-                CacheDataUtils.setLockScreenTime(CacheDataUtils.getLockScreenTime() - 1);
-
-            }
             for (iTimer iTimer : iTimers) {
                 iTimer.timer();
             }

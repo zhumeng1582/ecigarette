@@ -33,7 +33,6 @@ public class CacheDataUtils {
     }
 
     private static int shoutDownTime = 0;
-    private static int lockScreenTime = 0;
 
     public static void setShoutDownTime(int time) {
         shoutDownTime = time;
@@ -44,11 +43,11 @@ public class CacheDataUtils {
     }
 
     public static void setLockScreenTime(int time) {
-        lockScreenTime = time;
+        CacheDiskStaticUtils.put("LockScreenTime",time);
     }
 
     public static int getLockScreenTime() {
-        return lockScreenTime;
+        return (int) CacheDiskStaticUtils.getSerializable("LockScreenTime",0);
     }
 
     public static String getShoutDownTimeText() {
@@ -56,13 +55,6 @@ public class CacheDataUtils {
             return "";
         }
         return transFom(shoutDownTime);
-    }
-
-    public static String getLockScreenTimeText() {
-        if (lockScreenTime <= 0) {
-            return "";
-        }
-        return "" + lockScreenTime + "秒";
     }
 
     /**
