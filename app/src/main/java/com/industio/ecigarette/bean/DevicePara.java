@@ -1,12 +1,8 @@
 package com.industio.ecigarette.bean;
 
-import com.industio.ecigarette.ui.ParaActivity;
-import com.industio.ecigarette.util.CacheDataUtils;
-
 import java.io.Serializable;
 
 public class DevicePara implements Serializable {
-    private final int offset = 10;
 
     public DevicePara(int id) {
         this.id = id;
@@ -47,41 +43,6 @@ public class DevicePara implements Serializable {
         this.id = id;
     }
 
-    public int getPreheatValue() {
-        int preheatValue;
-        if (id == ParaActivity.classics) {
-            preheatValue = CacheDataUtils.getClassicTemperatureValue().getPreheatValue();
-        } else if (id == ParaActivity.elegant) {
-            preheatValue = CacheDataUtils.getClassicTemperatureValue().getPreheatValue() - offset;
-        } else {
-            preheatValue = CacheDataUtils.getClassicTemperatureValue().getPreheatValue() + offset;
-        }
-        return dataTrim(preheatValue);
-
-    }
-
-    private int dataTrim(int preheatValue) {
-        if (preheatValue < 300) {
-            preheatValue = 300;
-        }
-        if (preheatValue > 400) {
-            preheatValue = 400;
-        }
-        return preheatValue;
-    }
-
-    public void setPreheatValue(int preheatValue) {
-
-        if (id == ParaActivity.classics) {
-        } else if (id == ParaActivity.elegant) {
-            preheatValue = preheatValue + offset;
-        } else {
-            preheatValue = preheatValue - offset;
-        }
-
-        preheatValue = dataTrim(preheatValue);
-        CacheDataUtils.getClassicTemperatureValue().setPreheatValue(preheatValue);
-    }
 
     public int getPreheatTimeValue() {
         return preheatTimeValue;
@@ -89,32 +50,6 @@ public class DevicePara implements Serializable {
 
     public void setPreheatTimeValue(int preheatTimeValue) {
         this.preheatTimeValue = preheatTimeValue;
-    }
-
-    public int getConstantTemperatureValue() {
-        int constantTemperatureValue;
-        if (id == ParaActivity.classics) {
-            constantTemperatureValue = CacheDataUtils.getClassicTemperatureValue().getConstantTemperatureValue();
-        } else if (id == ParaActivity.elegant) {
-            constantTemperatureValue = CacheDataUtils.getClassicTemperatureValue().getConstantTemperatureValue() - offset;
-        } else {
-            constantTemperatureValue = CacheDataUtils.getClassicTemperatureValue().getConstantTemperatureValue() + offset;
-        }
-
-        return dataTrim(constantTemperatureValue);
-    }
-
-    public void setConstantTemperatureValue(int constantTemperatureValue) {
-        if (id == ParaActivity.classics) {
-        } else if (id == ParaActivity.elegant) {
-            constantTemperatureValue = constantTemperatureValue + offset;
-        } else {
-            constantTemperatureValue = constantTemperatureValue - offset;
-        }
-        constantTemperatureValue = dataTrim(constantTemperatureValue);
-
-        CacheDataUtils.getClassicTemperatureValue().setConstantTemperatureValue(constantTemperatureValue);
-
     }
 
     public int getConstantTemperatureTimeValue() {

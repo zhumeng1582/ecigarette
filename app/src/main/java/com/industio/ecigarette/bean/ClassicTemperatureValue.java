@@ -1,8 +1,10 @@
 package com.industio.ecigarette.bean;
 
+
 import java.io.Serializable;
 
 public class ClassicTemperatureValue implements Serializable {
+
     private int preheatValue = 350;
     private int constantTemperatureValue = 330;
 
@@ -21,4 +23,5 @@ public class ClassicTemperatureValue implements Serializable {
     public void setConstantTemperatureValue(int constantTemperatureValue) {
         this.constantTemperatureValue = constantTemperatureValue;
     }
+
 }

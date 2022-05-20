@@ -24,6 +24,7 @@ import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.CacheDataUtils;
+import com.industio.ecigarette.util.ClassicTemperatureUtils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -55,12 +56,13 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         setContentView(binding.getRoot());
 
         int mode = getIntent().getIntExtra("mode", ParaActivity.classics);
-        CacheDataUtils.initTemperatureValue();
+        ClassicTemperatureUtils.initTemperatureValue();
         devicePara = CacheDataUtils.getDevicePara(mode);
 
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textPreheatValue.setText(progress + "℃");
-            devicePara.setPreheatValue(progress);
+
+            ClassicTemperatureUtils.setPreheatValue(devicePara.getId(), progress);
             SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.预热温度, progress));
             setChartData();
         });
@@ -73,7 +75,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
         binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textConstantTemperatureValue.setText(progress + " ℃");
-            devicePara.setConstantTemperatureValue(progress);
+            ClassicTemperatureUtils.setConstantTemperatureValue(devicePara.getId(), progress);
             SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.恒温温度, progress));
 
             setChartData();
@@ -215,11 +217,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         List<Entry> entries1 = new ArrayList<>();
         entries1.add(new Entry(0, 0));
 
-        entries1.add(new Entry(1, devicePara.getPreheatValue()));
+        entries1.add(new Entry(1, ClassicTemperatureUtils.getPreheatValue(devicePara.getId())));
 
         for (int i = 0; i < 18; i++) {
             if (adapter.getCountNum() > i) {
-                entries1.add(new Entry(i + 2, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[i]));
+                entries1.add(new Entry(i + 2, ClassicTemperatureUtils.getConstantTemperatureValue(devicePara.getId()) + devicePara.getTemperature()[i]));
             }
         }
 
@@ -269,9 +271,9 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void showDevicePara() {
-        binding.cusSeekPreheatValue.setCurProgress(devicePara.getPreheatValue());
+        binding.cusSeekPreheatValue.setCurProgress(ClassicTemperatureUtils.getPreheatValue(devicePara.getId()));
         binding.cusSeekPreheatTimeValue.setCurProgress(devicePara.getPreheatTimeValue());
-        binding.cusSeekConstantTemperatureValue.setCurProgress(devicePara.getConstantTemperatureValue());
+        binding.cusSeekConstantTemperatureValue.setCurProgress(ClassicTemperatureUtils.getConstantTemperatureValue(devicePara.getId()));
         binding.cusSeekConstantTemperatureTimeValue.setCurProgress(devicePara.getConstantTemperatureTimeValue());
         binding.cusSeekNoOperationValue.setCurProgress(devicePara.getNoOperationValue());
 
