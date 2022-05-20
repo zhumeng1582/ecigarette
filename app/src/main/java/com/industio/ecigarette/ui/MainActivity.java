@@ -206,16 +206,19 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
     private void registerSerial() {
         SerialController.getInstance().registerSerialReadListener((buf, len) -> {
+
+            byte[] subBuf = ArrayUtils.subArray(buf, 0, len);
+
             if (showTimeCount > 0) {
                 return;
             }
 
-            if (Crc16Utils.dataError(buf)) return;
+            if (Crc16Utils.dataError(subBuf)) return;
 
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dataAnalysis(buf);
+                    dataAnalysis(subBuf);
                 }
             });
 
