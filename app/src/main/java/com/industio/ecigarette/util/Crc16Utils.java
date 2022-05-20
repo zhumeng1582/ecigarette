@@ -115,14 +115,14 @@ public class Crc16Utils {
     public static boolean dataError(byte[] buf) {
 
         if (buf == null || buf.length < 2) {
-            return false;
+            return true;
         }
         byte[] temp = new byte[buf.length - 2];
         System.arraycopy(buf, 0, temp, 0, temp.length);
 
         byte[] crc = Crc16Utils.getCrc16(temp);
 
-        return buf[buf.length - 2] == crc[0] && buf[buf.length - 1] == crc[1];
+        return buf[buf.length - 2] != crc[0] || buf[buf.length - 1] != crc[1];
     }
 
 }
