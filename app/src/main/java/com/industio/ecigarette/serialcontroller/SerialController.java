@@ -77,7 +77,7 @@ public class SerialController {
 
         String portName = "/dev/ttyS2";
         if (serialControl.init(portName, 115200)) {
-            serialControl.write(DeviceConstant.startCmd);
+//            serialControl.write(DeviceConstant.startCmd);
             ToastUtils.showShort("打开成功:" + portName);
         } else {
             ToastUtils.showLong("打开失败:" + portName);

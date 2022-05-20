@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -222,6 +223,10 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void dataAnalysis(byte[] buf) {
+        if (ArrayUtils.equals(buf, DeviceConstant.startCmd)) {
+            SerialController.getInstance().sendSync(DeviceConstant.startCmd);
+            return;
+        }
         switch (buf[4] & 0xff) {
             case 0x00:
                 startActivity(new Intent(MainActivity.this, MainActivity.class));
