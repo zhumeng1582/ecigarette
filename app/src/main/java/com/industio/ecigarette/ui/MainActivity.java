@@ -173,31 +173,32 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 AppUtils.launchApp(migu);
             }
         } else if (view == binding.btnMode) {
-            new BottomSheetMenuDialogFragment.Builder(this)
-                    .setSheet(R.menu.list_mode)
-                    .setTitle("选择模式")
-                    .setListener(new BottomSheetListener() {
-                        @Override
-                        public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
-                        }
-
-                        @Override
-                        public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
-                            if (menuItem.getItemId() == R.id.classics) {
-                                ParaActivity.newInstance(MainActivity.this, ParaActivity.classics);
-                            } else if (menuItem.getItemId() == R.id.elegant) {
-                                ParaActivity.newInstance(MainActivity.this, ParaActivity.elegant);
-                            } else {
-                                ParaActivity.newInstance(MainActivity.this, ParaActivity.strong);
-                            }
-                        }
-
-                        @Override
-                        public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
-
-                        }
-                    })
-                    .show(getSupportFragmentManager());
+//            new BottomSheetMenuDialogFragment.Builder(this)
+//                    .setSheet(R.menu.list_mode)
+//                    .setTitle("选择模式")
+//                    .setListener(new BottomSheetListener() {
+//                        @Override
+//                        public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
+//                        }
+//
+//                        @Override
+//                        public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
+//                            if (menuItem.getItemId() == R.id.classics) {
+//
+//                            } else if (menuItem.getItemId() == R.id.elegant) {
+//                                ParaActivity.newInstance(MainActivity.this, ParaActivity.elegant);
+//                            } else {
+//                                ParaActivity.newInstance(MainActivity.this, ParaActivity.strong);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
+//
+//                        }
+//                    })
+//                    .show(getSupportFragmentManager());
+            ParaActivity.newInstance(MainActivity.this, ParaActivity.classics);
 
         } else if (view == binding.btnSetPara) {
             startActivity(new Intent(MainActivity.this, SettingActivity.class));
