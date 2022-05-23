@@ -19,11 +19,16 @@ public class ClassicTemperatureUtils {
         }
         return new ClassicTemperatureValue();
     }
+
     public static void initTemperatureValue() {
-        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable("ClassicTemperatureValue",new ClassicTemperatureValue());
+        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable("ClassicTemperatureValue", new ClassicTemperatureValue());
     }
 
-    public static void setPreheatValue(int id,int preheatValue) {
+    public static void resetTemperatureValue() {
+        classicTemperatureValue = new ClassicTemperatureValue();
+    }
+
+    public static void setPreheatValue(int id, int preheatValue) {
 
         if (id == ParaActivity.classics) {
         } else if (id == ParaActivity.elegant) {
@@ -35,6 +40,7 @@ public class ClassicTemperatureUtils {
         preheatValue = dataTrim(preheatValue);
         getClassicTemperatureValue().setPreheatValue(preheatValue);
     }
+
     public static int getPreheatValue(int id) {
         int preheatValue = getClassicTemperatureValue().getPreheatValue();
         if (id == ParaActivity.classics) {
@@ -47,6 +53,7 @@ public class ClassicTemperatureUtils {
         return dataTrim(preheatValue);
 
     }
+
     private static int dataTrim(int preheatValue) {
         if (preheatValue < 300) {
             preheatValue = 300;
@@ -56,6 +63,7 @@ public class ClassicTemperatureUtils {
         }
         return preheatValue;
     }
+
     public static int getConstantTemperatureValue(int id) {
         int constantTemperatureValue = getClassicTemperatureValue().getConstantTemperatureValue();
         if (id == ParaActivity.classics) {
@@ -68,7 +76,8 @@ public class ClassicTemperatureUtils {
 
         return dataTrim(constantTemperatureValue);
     }
-    public static void setConstantTemperatureValue(int id,int constantTemperatureValue) {
+
+    public static void setConstantTemperatureValue(int id, int constantTemperatureValue) {
         if (id == ParaActivity.classics) {
         } else if (id == ParaActivity.elegant) {
             constantTemperatureValue = constantTemperatureValue + offset;

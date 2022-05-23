@@ -297,6 +297,8 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
             saveAs();
         } else if (view == binding.btnReset) {
             devicePara = CacheDataUtils.getDefaultDevicePara(devicePara.getId());
+            ClassicTemperatureUtils.resetTemperatureValue();
+
             CacheDataUtils.saveDevicePara(devicePara);
             showDevicePara();
             SerialController.getInstance().sendSync(DeviceConstant.resetCmd);
