@@ -11,7 +11,7 @@ public class CacheDataUtils {
 
 
     public static DevicePara getDevicePara(int id) {
-        DevicePara devicePara = (DevicePara) CacheDiskStaticUtils.getSerializable("KeyDevicePara" + id);
+        DevicePara devicePara = (DevicePara) CacheDiskStaticUtils.getSerializable("KeyDevicePara");
         if (devicePara != null) {
             return devicePara;
         }
@@ -19,7 +19,7 @@ public class CacheDataUtils {
     }
 
     public static void saveDevicePara(DevicePara devicePara) {
-        CacheDiskStaticUtils.put("KeyDevicePara" + devicePara.getId(), devicePara);
+        CacheDiskStaticUtils.put("KeyDevicePara", devicePara);
         CacheDiskStaticUtils.put("ClassicTemperatureValue", ClassicTemperatureUtils.getClassicTemperatureValue());
 
     }
