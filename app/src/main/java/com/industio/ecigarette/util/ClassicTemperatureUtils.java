@@ -1,31 +1,76 @@
 package com.industio.ecigarette.util;
 
 import com.blankj.utilcode.util.CacheDiskStaticUtils;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.industio.ecigarette.bean.ClassicTemperatureValue;
 import com.industio.ecigarette.ui.ParaActivity;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 
 public class ClassicTemperatureUtils {
     private static final int offset = 10;
+
     public static ClassicTemperatureValue classicTemperatureValue;
+
+    private static HashSet<String> getTemperatureNameSet() {
+
+        HashSet<String> hashSet = (HashSet<String>) CacheDiskStaticUtils.getSerializable("TemperatureNameSet");
+        if (CollectionUtils.isEmpty(hashSet)) {
+            hashSet = new HashSet<>();
+            hashSet.add(getCurrentTemperatureNameValue());
+        }
+        return hashSet;
+    }
+
+    public static void addTemperatureNameValue(String name) {
+        HashSet<String> hashSet = getTemperatureNameSet();
+        hashSet.add(name);
+        CacheDiskStaticUtils.put("TemperatureNameSet", hashSet);
+    }
+
+    private static String getCurrentTemperatureNameValue() {
+        return CacheDiskStaticUtils.getString("TemperatureNameValue", "默认");
+    }
+
+    public static void setCurrentTemperatureNameValue(String name) {
+        CacheDiskStaticUtils.put("TemperatureNameValue", name);
+    }
 
     public static ClassicTemperatureValue getClassicTemperatureValue() {
         if (classicTemperatureValue != null) {
             return classicTemperatureValue;
         }
-        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable("ClassicTemperatureValue");
+        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable(getCurrentTemperatureNameValue());
+
         if (classicTemperatureValue != null) {
             return classicTemperatureValue;
         }
-        return new ClassicTemperatureValue();
+        classicTemperatureValue = new ClassicTemperatureValue();
+        return classicTemperatureValue;
     }
 
-    public static void initTemperatureValue() {
-        classicTemperatureValue = (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable("ClassicTemperatureValue", new ClassicTemperatureValue());
+    public static void clearTemperatureValue() {
+        classicTemperatureValue = null;
     }
 
     public static void resetTemperatureValue() {
         classicTemperatureValue = new ClassicTemperatureValue();
+    }
+
+    public static List<String> getHashMapKeys() {
+        return new ArrayList<>(getTemperatureNameSet());
+    }
+
+    public static void saveAsTemperatureValue(String name, ClassicTemperatureValue value) {
+        addTemperatureNameValue(name);
+        CacheDiskStaticUtils.put(name, value);
+    }
+
+    public static void saveTemperatureValue() {
+        CacheDiskStaticUtils.put(getCurrentTemperatureNameValue(), classicTemperatureValue);
     }
 
     public static void setPreheatValue(int id, int preheatValue) {

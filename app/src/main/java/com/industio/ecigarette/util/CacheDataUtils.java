@@ -20,8 +20,7 @@ public class CacheDataUtils {
 
     public static void saveDevicePara(DevicePara devicePara) {
         CacheDiskStaticUtils.put("KeyDevicePara", devicePara);
-        CacheDiskStaticUtils.put("ClassicTemperatureValue", ClassicTemperatureUtils.getClassicTemperatureValue());
-
+        ClassicTemperatureUtils.saveTemperatureValue();
     }
 
     public static void setLockScreenSwitch(boolean b) {
@@ -43,11 +42,11 @@ public class CacheDataUtils {
     }
 
     public static void setLockScreenTime(int time) {
-        CacheDiskStaticUtils.put("LockScreenTime",time);
+        CacheDiskStaticUtils.put("LockScreenTime", time);
     }
 
     public static int getLockScreenTime() {
-        return (int) CacheDiskStaticUtils.getSerializable("LockScreenTime",0);
+        return (int) CacheDiskStaticUtils.getSerializable("LockScreenTime", 0);
     }
 
     public static String getShoutDownTimeText() {

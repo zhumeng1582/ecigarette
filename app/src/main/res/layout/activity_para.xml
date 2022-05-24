@@ -292,12 +292,21 @@
                 android:text="复位" />
 
             <TextView
+                android:id="@+id/btnImport"
+                style="@style/btn_main_style"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dip_20"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/dip_7"
+                android:text="导入" />
+            <TextView
                 android:id="@+id/btnSaveAs"
                 style="@style/btn_main_style"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dip_20"
-                android:layout_marginRight="@dimen/dip_20"
+                android:layout_marginStart="@dimen/dip_20"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/dip_7"
@@ -308,7 +317,7 @@
                 style="@style/btn_main_style"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dip_20"
+                android:layout_marginStart="@dimen/dip_20"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/dip_7"
@@ -320,6 +329,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="@dimen/dip_20"
                 android:gravity="center"
                 android:padding="@dimen/dip_7"
                 android:text="退出" />

@@ -2,16 +2,16 @@ package com.industio.ecigarette.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import androidx.annotation.MenuRes;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.CloneUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.industio.ecigarette.R;
+import com.industio.ecigarette.adapter.CheckedAdapter;
 import com.industio.ecigarette.adapter.NormalAdapter;
 import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
@@ -29,6 +30,7 @@ import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
+import com.mylhyl.circledialog.CircleDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         setContentView(binding.getRoot());
 
         int mode = getIntent().getIntExtra("mode", ParaActivity.classics);
-        ClassicTemperatureUtils.initTemperatureValue();
+        ClassicTemperatureUtils.clearTemperatureValue();
         devicePara = CacheDataUtils.getDevicePara(mode);
 
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
@@ -184,6 +186,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private void initEvent() {
         ClickUtils.applySingleDebouncing(new View[]{
                 binding.btnSave,
+                binding.btnImport,
                 binding.btnSaveAs,
                 binding.btnExit,
                 binding.btnReset
@@ -293,6 +296,8 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == binding.btnSave) {
             sendSaveCmd();
+        } else if (view == binding.btnImport) {
+            importCache();
         } else if (view == binding.btnExit) {
             CacheDataUtils.saveDevicePara(devicePara);
             finish();
@@ -308,6 +313,22 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
+    private void importCache() {
+        List<String> dataList = ClassicTemperatureUtils.getHashMapKeys();
+        CheckedAdapter checkedAdapterR = new CheckedAdapter(this, dataList);
+
+        new CircleDialog.Builder()
+                .configDialog(params -> params.backgroundColorPress = Color.CYAN)
+                .setItems(checkedAdapterR, (parent, view15, position15, id) -> {
+                    ClassicTemperatureUtils.setCurrentTemperatureNameValue(dataList.get(position15));
+                    ClassicTemperatureUtils.clearTemperatureValue();
+                    showDevicePara();
+                    return true;
+                })
+                .show(getSupportFragmentManager());
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -315,44 +336,20 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void saveAs() {
-        @MenuRes int id;
-        if (devicePara.getId() == ParaActivity.classics) {
-            id = R.menu.list_classics;
-        } else if (devicePara.getId() == ParaActivity.elegant) {
-            id = R.menu.list_elegant;
-        } else {
-            id = R.menu.list_strong;
-        }
-
-        new BottomSheetMenuDialogFragment.Builder(ParaActivity.this)
-                .setSheet(id)
+        new CircleDialog.Builder()
+                .setCanceledOnTouchOutside(true)
+                .setCancelable(true)
                 .setTitle("另存为")
-                .setListener(new BottomSheetListener() {
-                    @Override
-                    public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
-                    }
-
-                    @Override
-                    public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
-
-                        DevicePara saveAsDevicePara = CloneUtils.deepClone(devicePara, DevicePara.class);
-                        if (menuItem.getItemId() == R.id.classics) {
-                            saveAsDevicePara.setId(ParaActivity.classics);
-//                            binding.textModeChange.setText("经典（默认）");
-                        } else if (menuItem.getItemId() == R.id.elegant) {
-                            saveAsDevicePara.setId(ParaActivity.elegant);
-//                            binding.textModeChange.setText("淡雅");
-                        } else {
-                            saveAsDevicePara.setId(ParaActivity.strong);
-//                            binding.textModeChange.setText("浓郁");
-                        }
-                        CacheDataUtils.saveDevicePara(saveAsDevicePara);
-                        ToastUtils.showShort("另存成功");
-                    }
-
-                    @Override
-                    public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
-
+                .setInputHint("请输入名字")
+                .setNegative("取消", null)
+                .setPositiveInput("确定", (text, v) -> {
+                    if (TextUtils.isEmpty(text)) {
+                        v.setError("请输入内容");
+                        return false;
+                    } else {
+                        Toast.makeText(ParaActivity.this, "另存成功", Toast.LENGTH_SHORT).show();
+                        ClassicTemperatureUtils.saveAsTemperatureValue(text, ClassicTemperatureUtils.getClassicTemperatureValue());
+                        return true;
                     }
                 })
                 .show(getSupportFragmentManager());
