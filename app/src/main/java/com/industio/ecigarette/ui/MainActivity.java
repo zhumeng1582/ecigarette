@@ -260,7 +260,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             case 0x04:
                 if (buf[5] == 0x01) {
                     ToastUtils.showShort("复位数据成功");
-                    setAlarmText("复位数据成功");
+//                    setAlarmText("复位数据成功");
                 } else if (buf[5] == 0x02) {
                     ToastUtils.showShort("保存数据成功");
 //                    setAlarmText("保存数据成功");
