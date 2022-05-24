@@ -130,11 +130,14 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                             @Override
                             public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
                                 if (menuItem.getItemId() == R.id.classics) {
-                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.classics);
+                                    devicePara.setId(ParaActivity.classics);
+//                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.classics);
                                 } else if (menuItem.getItemId() == R.id.elegant) {
-                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.elegant);
+                                    devicePara.setId(ParaActivity.elegant);
+//                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.elegant);
                                 } else {
-                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.strong);
+                                    devicePara.setId(ParaActivity.strong);
+//                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.strong);
                                 }
                                 initData();
                             }
@@ -305,6 +308,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CacheDataUtils.saveDevicePara(devicePara);
+    }
 
     private void saveAs() {
         @MenuRes int id;

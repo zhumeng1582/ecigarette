@@ -33,8 +33,8 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
     int showTimeCount = 0;
+    int clearTimeCount = 5;
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
-    private boolean isRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,13 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 if (showTimeCount > 0) {
                     showTimeCount--;
                 }
+                if (clearTimeCount > 0) {
+                    clearTimeCount--;
+                }
+                if (clearTimeCount == 0) {
+                    setAlarmText("");
+                }
+
                 if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
                     binding.iconHomeWifi.setVisibility(View.VISIBLE);
                 } else {
@@ -86,27 +93,13 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void registerReceiverScreenBroadcast() {
-        if (!isRegister) {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(Intent.ACTION_SCREEN_OFF);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
 //            filter.addAction(Intent.ACTION_SCREEN_ON);
 //            filter.addAction(Intent.ACTION_USER_PRESENT);
-            getApplicationContext().registerReceiver(screenBroadcastReceiver, filter);
-            isRegister = true;
-        }
+        getApplicationContext().registerReceiver(screenBroadcastReceiver, filter);
     }
 
-    private void unregisterReceiverScreenBroadcast(boolean delay) {
-        if (isRegister) {
-            isRegister = false;
-            ThreadUtils.runOnUiThreadDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getApplicationContext().unregisterReceiver(screenBroadcastReceiver);
-                }
-            }, delay ? 5 : 0);
-        }
-    }
 
     @Override
     public void onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -246,13 +239,13 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     String text = DeviceConstant.RECEVICE_TIPS.get(key);
 
                     if (key <= 0x0A) {
-                        binding.textAlarm.setText(text);
+                        setAlarmText(text);
                     } else if (key == 0x0B) {
                         int temp = (((buf[6] & 0xff) << 8) & 0xff00) | (buf[7] & 0xff);
-                        binding.textAlarm.setText(text + "\n" + temp + "℃");
+                        setAlarmText(text + "\n" + temp + "℃");
                     }
                 } else {
-                    binding.textAlarm.setText("错误数据：" + buf[5]);
+                    setAlarmText("错误数据：" + buf[5]);
                 }
 
                 break;
@@ -262,16 +255,15 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp2 = buf[7] & 0xff;
                 int temp3 = (((buf[8] & 0xff) << 8) & 0xff00) | (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
-                binding.textAlarm.setText(text);
-                unregisterReceiverScreenBroadcast(true);
+                setAlarmText(text);
                 break;
             case 0x04:
                 if (buf[5] == 0x01) {
                     ToastUtils.showShort("复位数据成功");
-                    binding.textAlarm.setText("复位数据成功");
+                    setAlarmText("复位数据成功");
                 } else if (buf[5] == 0x02) {
                     ToastUtils.showShort("保存数据成功");
-                    binding.textAlarm.setText("保存数据成功");
+//                    setAlarmText("保存数据成功");
 //                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                 }
                 break;
@@ -288,6 +280,11 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
+    private void setAlarmText(String text) {
+        clearTimeCount = 5;
+        binding.textAlarm.setText(text);
+    }
+
     private void setDevicePower(int power) {
         if (power <= 5) {
             binding.batteryView.setPower(power * 20);
@@ -297,6 +294,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiverScreenBroadcast(false);
+        registerReceiverScreenBroadcast();
     }
 }
