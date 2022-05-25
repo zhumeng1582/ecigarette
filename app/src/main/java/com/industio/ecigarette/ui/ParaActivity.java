@@ -160,7 +160,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
         binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 30, 20));
+        binding.recyclerView.addItemDecoration(new GridSpaceItemDecoration(6, 20, 20));
 
         initData();
 
