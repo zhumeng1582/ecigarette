@@ -185,37 +185,33 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         initAdapter();
         initLineChart();
         showDevicePara();
+    }
 
-        iTimer = new TimerUtils.iTimer() {
-            @Override
-            public void timer() {
+    @Override
+    public void timer() {
 
-                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
-                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.iconHomeWifi.setVisibility(View.GONE);
-                }
-                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
-                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
-                }
-            }
-        };
+        if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+            binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
+        } else {
+            binding.included.iconHomeWifi.setVisibility(View.GONE);
+        }
+        if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
+            binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
+        } else {
+            binding.included.iconHomeBluetooth.setVisibility(View.GONE);
+        }
+    }
 
-        iCharge = new ChargeUtils.iCharge() {
-            @Override
-            public void charge(boolean isCharge, int power) {
-                if (power <= 5) {
-                    binding.included.batteryView.setPower(power * 20);
-                }
-                if (isCharge) {
-                    binding.included.imageChange.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.imageChange.setVisibility(View.GONE);
-                }
-            }
-        };
+    @Override
+    public void charge(boolean isCharge, int power) {
+        if (power <= 5) {
+            binding.included.batteryView.setPower(power * 20);
+        }
+        if (isCharge) {
+            binding.included.imageChange.setVisibility(View.VISIBLE);
+        } else {
+            binding.included.imageChange.setVisibility(View.GONE);
+        }
     }
 
     private void initEvent() {
@@ -326,7 +322,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private void sendSaveCmd() {
         SerialController.getInstance().sendSync(DeviceConstant.saveCmd);
     }
-
 
 
     @Override

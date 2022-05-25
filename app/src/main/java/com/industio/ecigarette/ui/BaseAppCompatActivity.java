@@ -19,11 +19,9 @@ import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
 
-public abstract class BaseAppCompatActivity extends AppCompatActivity {
+public abstract class BaseAppCompatActivity extends AppCompatActivity implements TimerUtils.iTimer,ChargeUtils.iCharge {
     private GestureDetector mGestureDetector;
     private View llLock;
-    protected TimerUtils.iTimer iTimer;
-    protected ChargeUtils.iCharge iCharge;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +58,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ChargeUtils.addCharges(iCharge);
-        TimerUtils.addTimers(iTimer);
+        ChargeUtils.addCharges(this);
+        TimerUtils.addTimers(this);
 
         llLock = getLock();
         if (llLock != null) {
@@ -81,8 +79,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        ChargeUtils.removeCharges(iCharge);
-        TimerUtils.removeTimers(iTimer);
+        ChargeUtils.removeCharges(this);
+        TimerUtils.removeTimers(this);
     }
 
     public abstract View getLock();

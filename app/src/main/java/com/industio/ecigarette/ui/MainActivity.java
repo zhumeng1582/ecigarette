@@ -63,48 +63,41 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 binding.textLock.setVisibility(View.VISIBLE);
             }
         });
-
-        iTimer = new TimerUtils.iTimer() {
-            @Override
-            public void timer() {
-                if (showTimeCount > 0) {
-                    showTimeCount--;
-                }
-                if (clearTimeCount > 0) {
-                    clearTimeCount--;
-                }
-                if (clearTimeCount == 0) {
-                    setAlarmText("");
-                }
-
-                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
-                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.iconHomeWifi.setVisibility(View.GONE);
-                }
-                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
-                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
-                }
-            }
-        };
-        iCharge = new ChargeUtils.iCharge() {
-            @Override
-            public void charge(boolean isCharge, int power) {
-                if (power <= 5) {
-                    binding.included.batteryView.setPower(power * 20);
-                }
-                if (isCharge) {
-                    binding.included.imageChange.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.imageChange.setVisibility(View.GONE);
-                }
-            }
-        };
-
     }
+    @Override
+    public void charge(boolean isCharge, int power) {
+        if (power <= 5) {
+            binding.included.batteryView.setPower(power * 20);
+        }
+        if (isCharge) {
+            binding.included.imageChange.setVisibility(View.VISIBLE);
+        } else {
+            binding.included.imageChange.setVisibility(View.GONE);
+        }
+    }
+    @Override
+    public void timer() {
+        if (showTimeCount > 0) {
+            showTimeCount--;
+        }
+        if (clearTimeCount > 0) {
+            clearTimeCount--;
+        }
+        if (clearTimeCount == 0) {
+            setAlarmText("");
+        }
 
+        if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+            binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
+        } else {
+            binding.included.iconHomeWifi.setVisibility(View.GONE);
+        }
+        if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
+            binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
+        } else {
+            binding.included.iconHomeBluetooth.setVisibility(View.GONE);
+        }
+    }
     @Override
     public View getLock() {
         return binding.textLock;
