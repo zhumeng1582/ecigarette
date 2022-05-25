@@ -39,7 +39,6 @@
             android:drawablePadding="@dimen/dip_10"
             android:padding="@dimen/dip_15"
             android:text="蓝牙"
-            android:visibility="gone"
             android:textColor="#090D16"
             app:drawableEndCompat="@mipmap/icon_right_arrow"
             app:drawableStartCompat="@mipmap/icon_bluetooth"
@@ -49,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_0.5"
             android:background="@color/grey" />
+
         <TextView
             android:id="@+id/textSyncData"
             android:layout_width="match_parent"
@@ -57,9 +57,9 @@
             android:padding="@dimen/dip_15"
             android:text="同步数据"
             android:textColor="#090D16"
-            app:drawableTint="#090D16"
             app:drawableEndCompat="@mipmap/icon_right_arrow"
-            app:drawableStartCompat="@mipmap/icon_sync" />
+            app:drawableStartCompat="@mipmap/icon_sync"
+            app:drawableTint="#090D16" />
 
         <View
             android:layout_width="match_parent"
@@ -74,9 +74,9 @@
             android:padding="@dimen/dip_15"
             android:text="WIFI"
             android:textColor="#090D16"
-            app:drawableTint="#090D16"
             app:drawableEndCompat="@mipmap/icon_right_arrow"
-            app:drawableStartCompat="@mipmap/icon_wifi" />
+            app:drawableStartCompat="@mipmap/icon_wifi"
+            app:drawableTint="#090D16" />
 
         <View
             android:layout_width="match_parent"
@@ -95,8 +95,8 @@
                 android:drawablePadding="@dimen/dip_10"
                 android:text="锁屏"
                 android:textColor="#090D16"
-                app:drawableTint="#090D16"
-                app:drawableStartCompat="@mipmap/icon_lock" />
+                app:drawableStartCompat="@mipmap/icon_lock"
+                app:drawableTint="#090D16" />
 
             <Switch
                 android:id="@+id/switchLock"
@@ -123,8 +123,8 @@
                 android:drawablePadding="@dimen/dip_10"
                 android:text="息屏"
                 android:textColor="#090D16"
-                app:drawableTint="#090D16"
-                app:drawableStartCompat="@mipmap/icon_dormancy" />
+                app:drawableStartCompat="@mipmap/icon_dormancy"
+                app:drawableTint="#090D16" />
 
             <TextView
                 android:id="@+id/textLockScreenTime"
@@ -160,8 +160,8 @@
             android:padding="@dimen/dip_15"
             android:text="亮度"
             android:textColor="#090D16"
-            app:drawableTint="#090D16"
-            app:drawableStartCompat="@mipmap/icon_light" />
+            app:drawableStartCompat="@mipmap/icon_light"
+            app:drawableTint="#090D16" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -208,8 +208,8 @@
                 android:padding="@dimen/dip_15"
                 android:text="自动关机"
                 android:textColor="#090D16"
-                app:drawableTint="#090D16"
-                app:drawableStartCompat="@mipmap/icon_shutdown" />
+                app:drawableStartCompat="@mipmap/icon_shutdown"
+                app:drawableTint="#090D16" />
 
             <TextView
                 android:id="@+id/textShoutDownTime"

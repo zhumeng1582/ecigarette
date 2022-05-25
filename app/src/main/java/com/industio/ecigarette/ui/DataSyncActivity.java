@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.GsonUtils;
@@ -20,13 +23,12 @@ import com.hjy.bluetooth.inter.ReceiveCallBack;
 import com.hjy.bluetooth.inter.ScanCallBack;
 import com.hjy.bluetooth.inter.SendCallBack;
 import com.hjy.bluetooth.operator.abstra.Sender;
+import com.industio.ecigarette.adapter.BluetoothListAdapter;
 import com.industio.ecigarette.bean.ClassicTemperatureValue;
 import com.industio.ecigarette.databinding.ActivityDataSyncBinding;
 import com.industio.ecigarette.util.BluetoothUtils;
-import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.ClassicTemperatureUtils;
 import com.industio.ecigarette.util.Crc16Utils;
-import com.industio.ecigarette.util.TimerUtils;
 
 import java.io.DataInputStream;
 import java.util.List;
@@ -52,7 +54,6 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
                 finish();
             }
         });
-
 
         scanDevice();
         getConnectedBtDevice();
@@ -87,8 +88,7 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
 
     @SuppressLint("MissingPermission")
     private void getConnectedBtDevice() {
-        binding.textBluetoothName.setText(BluetoothUtils.getConnectedBtDevice());
-
+        binding.toolbar.setTitle(BluetoothUtils.getConnectedBtDevice());
     }
 
 
@@ -117,13 +117,15 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
                         Log.i(TAG, "扫描结束:" + CollectionUtils.size(bluetoothDevices));
 
                         if (CollectionUtils.isNotEmpty(bluetoothDevices)) {
-                            for (BluetoothDevice bluetoothDevice : bluetoothDevices) {
-                                Log.i(TAG, "bluetoothDevice:" + GsonUtils.toJson(bluetoothDevice));
-                                if (StringUtils.equals(bluetoothDevice.getName(), binding.textBluetoothName.getText().toString())) {
-                                    connect(bluetoothDevice);
-                                    return;
+                            BluetoothListAdapter  adapter = new BluetoothListAdapter(bluetoothDevices, new BluetoothListAdapter.ItemOnClick() {
+                                @Override
+                                public void itemOnClick(int index,BluetoothDevice device) {
+                                    connect(device);
                                 }
-                            }
+                            });
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(DataSyncActivity.this));
+                            binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            binding.recyclerView.setAdapter(adapter);
                         }
                     }
                 });
@@ -205,7 +207,7 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
             nextIndex = ClassicTemperatureNameList.indexOf(currentName) + 1;
         }
 
-        if (nextIndex < CollectionUtils.size(nextIndex)) {
+        if (nextIndex < CollectionUtils.size(ClassicTemperatureNameList)) {
             String hashMapKey = ClassicTemperatureNameList.get(nextIndex);
             ClassicTemperatureValue value = ClassicTemperatureUtils.getClassicTemperatureValue(hashMapKey);
             String text = GsonUtils.toJson(value);
