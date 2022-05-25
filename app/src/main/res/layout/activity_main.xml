@@ -66,42 +66,11 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <include
+        android:id="@+id/included"
+        layout="@layout/layout_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right|center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/dip_10">
-
-        <ImageView
-            android:id="@+id/iconHomeWifi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dip_15"
-            android:src="@mipmap/wifi_enabled"
-            app:tint="@color/main_color" />
-
-        <ImageView
-            android:id="@+id/iconHomeBluetooth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dip_15"
-            android:src="@mipmap/bluetooth_on"
-            app:tint="@color/main_color" />
-
-        <com.industio.ecigarette.view.battery.BatteryView
-            android:id="@+id/batteryView"
-            android:layout_width="@dimen/dip_58"
-            android:layout_height="@dimen/dip_28"
-            android:layout_marginEnd="@dimen/dip_5" />
-
-        <ImageView
-            android:id="@+id/imageChange"
-            android:layout_width="@dimen/dip_28"
-            android:layout_height="@dimen/dip_28"
-            android:src="@mipmap/icon_charge"
-            app:tint="@color/white" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <com.industio.ecigarette.view.ToggleToolWidget
         android:id="@+id/top_view"
@@ -120,7 +89,7 @@
             android:layout_height="@dimen/dip_28"
             android:layout_margin="@dimen/dip_10"
             android:src="@mipmap/lock_home"
-            app:tint="@color/main_color"/>
+            app:tint="@color/main_color" />
     </LinearLayout>
 
 </FrameLayout>

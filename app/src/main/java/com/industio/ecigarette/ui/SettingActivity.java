@@ -1,5 +1,6 @@
 package com.industio.ecigarette.ui;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MenuItem;
@@ -9,10 +10,13 @@ import android.widget.SeekBar;
 
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
+import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.CacheDataUtils;
+import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
@@ -70,6 +74,30 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
             public void timer() {
                 binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
 //                binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
+                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.iconHomeWifi.setVisibility(View.GONE);
+                }
+                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
+                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
+                }
+            }
+        });
+        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
+            @Override
+            public void charge(boolean isCharge, int power) {
+                if (power <= 5) {
+                    binding.included.batteryView.setPower(power * 20);
+                }
+                if (isCharge) {
+                    binding.included.imageChange.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.imageChange.setVisibility(View.GONE);
+
+                }
             }
         });
 

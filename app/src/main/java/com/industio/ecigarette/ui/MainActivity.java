@@ -21,6 +21,7 @@ import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.BluetoothUtils;
+import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.util.SettingUtils;
@@ -65,14 +66,28 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
 
                 if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
-                    binding.iconHomeWifi.setVisibility(View.VISIBLE);
+                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
                 } else {
-                    binding.iconHomeWifi.setVisibility(View.GONE);
+                    binding.included.iconHomeWifi.setVisibility(View.GONE);
                 }
                 if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
-                    binding.iconHomeBluetooth.setVisibility(View.VISIBLE);
+                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
                 } else {
-                    binding.iconHomeBluetooth.setVisibility(View.GONE);
+                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
+                }
+            }
+        });
+        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
+            @Override
+            public void charge(boolean isCharge, int power) {
+                if (power <= 5) {
+                    binding.included.batteryView.setPower(power * 20);
+                }
+                if (isCharge) {
+                    binding.included.imageChange.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.imageChange.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -268,12 +283,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
                 break;
             case 0x10:
-                setDevicePower(buf[6] & 0xff);
-                if (buf[7] == 0) {
-                    binding.imageChange.setVisibility(View.GONE);
-                } else {
-                    binding.imageChange.setVisibility(View.VISIBLE);
-                }
+
+                ChargeUtils.notifyCharges(buf[7] != 0,buf[6] & 0xff);
                 break;
             default:
                 break;
@@ -285,11 +296,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         binding.textAlarm.setText(text);
     }
 
-    private void setDevicePower(int power) {
-        if (power <= 5) {
-            binding.batteryView.setPower(power * 20);
-        }
-    }
 
     @Override
     protected void onDestroy() {

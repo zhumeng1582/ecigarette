@@ -1,5 +1,6 @@
 package com.industio.ecigarette.ui;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.NetworkUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -24,9 +26,12 @@ import com.industio.ecigarette.adapter.NormalAdapter;
 import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
+import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.CacheDataUtils;
+import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.ClassicTemperatureUtils;
 import com.industio.ecigarette.util.DeviceConstant;
+import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
@@ -191,6 +196,37 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                 binding.btnExit,
                 binding.btnReset
         }, this);
+
+        TimerUtils.addTimers(new TimerUtils.iTimer() {
+            @Override
+            public void timer() {
+
+                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.iconHomeWifi.setVisibility(View.GONE);
+                }
+                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
+                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
+                }
+            }
+        });
+        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
+            @Override
+            public void charge(boolean isCharge, int power) {
+                if (power <= 5) {
+                    binding.included.batteryView.setPower(power * 20);
+                }
+                if (isCharge) {
+                    binding.included.imageChange.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.imageChange.setVisibility(View.GONE);
+
+                }
+            }
+        });
     }
 
     private void initAdapter() {
