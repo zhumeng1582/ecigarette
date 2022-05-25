@@ -15,12 +15,15 @@ import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.util.CacheDataUtils;
+import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.SettingUtils;
+import com.industio.ecigarette.util.TimerUtils;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
     private GestureDetector mGestureDetector;
     private View llLock;
-
+    protected TimerUtils.iTimer iTimer;
+    protected ChargeUtils.iCharge iCharge;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ChargeUtils.addCharges(iCharge);
+        TimerUtils.addTimers(iTimer);
+
         llLock = getLock();
         if (llLock != null) {
             llLock.setOnClickListener(new ClickUtils.OnMultiClickListener(2) {
@@ -71,6 +77,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ChargeUtils.removeCharges(iCharge);
+        TimerUtils.removeTimers(iTimer);
     }
 
     public abstract View getLock();

@@ -53,7 +53,12 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
             }
         });
 
-        TimerUtils.addTimers(new TimerUtils.iTimer() {
+
+        scanDevice();
+        getConnectedBtDevice();
+        receiver();
+
+        iTimer = new TimerUtils.iTimer() {
             @Override
             public void timer() {
                 if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
@@ -67,39 +72,23 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
                     binding.included.iconHomeBluetooth.setVisibility(View.GONE);
                 }
             }
-        });
+        };
 
-
-        scanDevice();
-        getConnectedBtDevice();
-        receiver();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ChargeUtils.addCharges(iCharge);
-    }
-
-    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
-        @Override
-        public void charge(boolean isCharge, int power) {
-            if (power <= 5) {
-                binding.included.batteryView.setPower(power * 20);
+        iCharge = new ChargeUtils.iCharge() {
+            @Override
+            public void charge(boolean isCharge, int power) {
+                if (power <= 5) {
+                    binding.included.batteryView.setPower(power * 20);
+                }
+                if (isCharge) {
+                    binding.included.imageChange.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.imageChange.setVisibility(View.GONE);
+                }
             }
-            if (isCharge) {
-                binding.included.imageChange.setVisibility(View.VISIBLE);
-            } else {
-                binding.included.imageChange.setVisibility(View.GONE);
-            }
-        }
-    };
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ChargeUtils.removeCharges(iCharge);
+        };
     }
+
 
     @SuppressLint("MissingPermission")
     private void getConnectedBtDevice() {

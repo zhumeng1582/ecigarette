@@ -53,7 +53,18 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         closeController();
 
         registerSerial();
-        TimerUtils.addTimers(new TimerUtils.iTimer() {
+
+
+        registerReceiverScreenBroadcast();
+        findViewById(R.id.llLock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeController();
+                binding.textLock.setVisibility(View.VISIBLE);
+            }
+        });
+
+        iTimer = new TimerUtils.iTimer() {
             @Override
             public void timer() {
                 if (showTimeCount > 0) {
@@ -77,16 +88,20 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     binding.included.iconHomeBluetooth.setVisibility(View.GONE);
                 }
             }
-        });
-
-        registerReceiverScreenBroadcast();
-        findViewById(R.id.llLock).setOnClickListener(new View.OnClickListener() {
+        };
+        iCharge = new ChargeUtils.iCharge() {
             @Override
-            public void onClick(View view) {
-                closeController();
-                binding.textLock.setVisibility(View.VISIBLE);
+            public void charge(boolean isCharge, int power) {
+                if (power <= 5) {
+                    binding.included.batteryView.setPower(power * 20);
+                }
+                if (isCharge) {
+                    binding.included.imageChange.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.imageChange.setVisibility(View.GONE);
+                }
             }
-        });
+        };
 
     }
 
@@ -150,28 +165,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         permission();
-
-        ChargeUtils.addCharges(iCharge);
     }
-    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
-        @Override
-        public void charge(boolean isCharge, int power) {
-            if (power <= 5) {
-                binding.included.batteryView.setPower(power * 20);
-            }
-            if (isCharge) {
-                binding.included.imageChange.setVisibility(View.VISIBLE);
-            } else {
-                binding.included.imageChange.setVisibility(View.GONE);
-            }
-        }
-    };
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ChargeUtils.removeCharges(iCharge);
-    }
 
     @Override
     public void onClick(View view) {
@@ -231,7 +226,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 return;
             }
 
-            if (Crc16Utils.dataError(subBuf)) return;
+//            if (Crc16Utils.dataError(subBuf)) return;
 
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
@@ -292,7 +287,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
                 break;
             case 0x10:
-                ChargeUtils.notifyCharges(buf[7] != 0,buf[6] & 0xff);
+                ChargeUtils.notifyCharges(buf[7] != 0, buf[6] & 0xff);
                 break;
             default:
                 break;

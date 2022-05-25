@@ -40,7 +40,9 @@ public class TimerUtils {
     public static void addTimers(iTimer iTimer) {
         iTimers.add(iTimer);
     }
-
+    public static void removeTimers(iTimer iTimer) {
+        iTimers.remove(iTimer);
+    }
 
     public interface iTimer {
         void timer();

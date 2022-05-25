@@ -73,23 +73,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
 
         binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
 //        binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
-        TimerUtils.addTimers(new TimerUtils.iTimer() {
-            @Override
-            public void timer() {
-                binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
-//                binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
-                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
-                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.iconHomeWifi.setVisibility(View.GONE);
-                }
-                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
-                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
-                }
-            }
-        });
+
 
         binding.seekBarLockScreenTime.setMin1(10);
         binding.seekBarLockScreenTime.setMax1(60);
@@ -128,6 +112,37 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
         });
         binding.switchLock.setChecked(CacheDataUtils.getLockScreenSwitch());
         initView();
+
+        iTimer = new TimerUtils.iTimer() {
+            @Override
+            public void timer() {
+                binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
+//                binding.textLockScreenTime.setText(CacheDataUtils.getLockScreenTimeText());
+                if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
+                    binding.included.iconHomeWifi.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.iconHomeWifi.setVisibility(View.GONE);
+                }
+                if (BluetoothUtils.getState() == BluetoothAdapter.STATE_CONNECTED) {
+                    binding.included.iconHomeBluetooth.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.iconHomeBluetooth.setVisibility(View.GONE);
+                }
+            }
+        };
+        iCharge = new ChargeUtils.iCharge() {
+            @Override
+            public void charge(boolean isCharge, int power) {
+                if (power <= 5) {
+                    binding.included.batteryView.setPower(power * 20);
+                }
+                if (isCharge) {
+                    binding.included.imageChange.setVisibility(View.VISIBLE);
+                } else {
+                    binding.included.imageChange.setVisibility(View.GONE);
+                }
+            }
+        };
     }
 
 
@@ -137,31 +152,6 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
         ToggleToolWidget.initBrightnessImage(this, binding.brightness, currentBrightness);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ChargeUtils.addCharges(iCharge);
-    }
-
-    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
-        @Override
-        public void charge(boolean isCharge, int power) {
-            if (power <= 5) {
-                binding.included.batteryView.setPower(power * 20);
-            }
-            if (isCharge) {
-                binding.included.imageChange.setVisibility(View.VISIBLE);
-            } else {
-                binding.included.imageChange.setVisibility(View.GONE);
-            }
-        }
-    };
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ChargeUtils.removeCharges(iCharge);
-    }
 
     @Override
     public View getLock() {
