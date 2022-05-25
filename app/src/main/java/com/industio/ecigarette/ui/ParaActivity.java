@@ -213,20 +213,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
             }
         });
-        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
-            @Override
-            public void charge(boolean isCharge, int power) {
-                if (power <= 5) {
-                    binding.included.batteryView.setPower(power * 20);
-                }
-                if (isCharge) {
-                    binding.included.imageChange.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.imageChange.setVisibility(View.GONE);
 
-                }
-            }
-        });
     }
 
     private void initAdapter() {
@@ -327,6 +314,32 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         SerialController.getInstance().sendSync(DeviceConstant.saveCmd);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ChargeUtils.addCharges(iCharge);
+    }
+
+    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
+        @Override
+        public void charge(boolean isCharge, int power) {
+            if (power <= 5) {
+                binding.included.batteryView.setPower(power * 20);
+            }
+            if (isCharge) {
+                binding.included.imageChange.setVisibility(View.VISIBLE);
+            } else {
+                binding.included.imageChange.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ChargeUtils.removeCharges(iCharge);
+    }
 
     @Override
     public void onClick(View view) {

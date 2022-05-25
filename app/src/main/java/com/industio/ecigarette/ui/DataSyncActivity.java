@@ -36,6 +36,7 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
     private ActivityDataSyncBinding binding;
     private static final String TAG = "DataSyncActivity";
     private static final List<String> ClassicTemperatureNameList = ClassicTemperatureUtils.getHashMapKeys();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,24 +68,37 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
                 }
             }
         });
-        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
-            @Override
-            public void charge(boolean isCharge, int power) {
-                if (power <= 5) {
-                    binding.included.batteryView.setPower(power * 20);
-                }
-                if (isCharge) {
-                    binding.included.imageChange.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.imageChange.setVisibility(View.GONE);
 
-                }
-            }
-        });
 
         scanDevice();
         getConnectedBtDevice();
         receiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ChargeUtils.addCharges(iCharge);
+    }
+
+    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
+        @Override
+        public void charge(boolean isCharge, int power) {
+            if (power <= 5) {
+                binding.included.batteryView.setPower(power * 20);
+            }
+            if (isCharge) {
+                binding.included.imageChange.setVisibility(View.VISIBLE);
+            } else {
+                binding.included.imageChange.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ChargeUtils.removeCharges(iCharge);
     }
 
     @SuppressLint("MissingPermission")

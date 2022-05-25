@@ -90,20 +90,6 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
                 }
             }
         });
-        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
-            @Override
-            public void charge(boolean isCharge, int power) {
-                if (power <= 5) {
-                    binding.included.batteryView.setPower(power * 20);
-                }
-                if (isCharge) {
-                    binding.included.imageChange.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.imageChange.setVisibility(View.GONE);
-
-                }
-            }
-        });
 
         binding.seekBarLockScreenTime.setMin1(10);
         binding.seekBarLockScreenTime.setMax1(60);
@@ -149,6 +135,32 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
         int currentBrightness = BrightnessUtils.getBrightness();
         binding.seekBar.setProgress1(currentBrightness);
         ToggleToolWidget.initBrightnessImage(this, binding.brightness, currentBrightness);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ChargeUtils.addCharges(iCharge);
+    }
+
+    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
+        @Override
+        public void charge(boolean isCharge, int power) {
+            if (power <= 5) {
+                binding.included.batteryView.setPower(power * 20);
+            }
+            if (isCharge) {
+                binding.included.imageChange.setVisibility(View.VISIBLE);
+            } else {
+                binding.included.imageChange.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ChargeUtils.removeCharges(iCharge);
     }
 
     @Override

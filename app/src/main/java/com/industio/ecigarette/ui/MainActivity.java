@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,20 +78,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
             }
         });
-        ChargeUtils.addCharges(new ChargeUtils.iCharge() {
-            @Override
-            public void charge(boolean isCharge, int power) {
-                if (power <= 5) {
-                    binding.included.batteryView.setPower(power * 20);
-                }
-                if (isCharge) {
-                    binding.included.imageChange.setVisibility(View.VISIBLE);
-                } else {
-                    binding.included.imageChange.setVisibility(View.GONE);
 
-                }
-            }
-        });
         registerReceiverScreenBroadcast();
         findViewById(R.id.llLock).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +150,27 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         permission();
+
+        ChargeUtils.addCharges(iCharge);
+    }
+    ChargeUtils.iCharge iCharge = new ChargeUtils.iCharge() {
+        @Override
+        public void charge(boolean isCharge, int power) {
+            if (power <= 5) {
+                binding.included.batteryView.setPower(power * 20);
+            }
+            if (isCharge) {
+                binding.included.imageChange.setVisibility(View.VISIBLE);
+            } else {
+                binding.included.imageChange.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ChargeUtils.removeCharges(iCharge);
     }
 
     @Override
@@ -283,7 +292,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
                 break;
             case 0x10:
-
                 ChargeUtils.notifyCharges(buf[7] != 0,buf[6] & 0xff);
                 break;
             default:

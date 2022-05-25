@@ -10,17 +10,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            android:id="@+id/included"
+            layout="@layout/layout_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/grey">
-
-            <include
-                android:id="@+id/included"
-                layout="@layout/layout_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
