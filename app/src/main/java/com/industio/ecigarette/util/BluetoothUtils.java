@@ -4,13 +4,21 @@ package com.industio.ecigarette.util;
 import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.RequiresPermission;
 
+import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
+import com.hjy.bluetooth.HBluetooth;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Set;
 
 public class BluetoothUtils {
 
@@ -65,6 +73,7 @@ public class BluetoothUtils {
         }
         return false;
     }
+
     /**
      * 获取蓝牙状态
      */
@@ -76,4 +85,30 @@ public class BluetoothUtils {
         return BluetoothAdapter.STATE_OFF;
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
+    public static String getConnectedBtDevice() {
+        //得到已匹配的蓝牙设备列表
+        Set<BluetoothDevice> bondedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+        if (CollectionUtils.isNotEmpty(bondedDevices)) {
+            for (BluetoothDevice bondedDevice : bondedDevices) {
+                try {
+                    //使用反射调用被隐藏的方法
+                    Method isConnectedMethod = BluetoothDevice.class.getDeclaredMethod("isConnected", (Class[]) null);
+                    isConnectedMethod.setAccessible(true);
+                    boolean isConnected = (boolean) isConnectedMethod.invoke(bondedDevice, (Object[]) null);
+                    Log.e("123", "isConnected：" + isConnected);
+                    if (isConnected) {
+                        return bondedDevice.getName();
+                    }
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 }

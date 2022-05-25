@@ -51,6 +51,9 @@ public class ClassicTemperatureUtils {
         classicTemperatureValue = new ClassicTemperatureValue();
         return classicTemperatureValue;
     }
+    public static ClassicTemperatureValue getClassicTemperatureValue(String name) {
+        return (ClassicTemperatureValue) CacheDiskStaticUtils.getSerializable(name);
+    }
 
     public static void clearTemperatureValue() {
         classicTemperatureValue = null;

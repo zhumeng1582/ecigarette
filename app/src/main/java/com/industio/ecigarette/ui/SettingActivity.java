@@ -1,6 +1,8 @@
 package com.industio.ecigarette.ui;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MenuItem;
@@ -11,6 +13,7 @@ import android.widget.SeekBar;
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.databinding.ActivitySettingBinding;
@@ -36,6 +39,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
                 binding.textBluetooth,
                 binding.textWIFI,
                 binding.llShoutDown,
+                binding.textSyncData,
         }, this);
 
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -168,8 +172,18 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
 //            binding.seekBar.setProgress1(currentBrightness);
 //            ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
 //            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
-//        } else if (view == binding.textLight) {
-//            SettingUtils.setDISPLAY();
+        } else if (view == binding.textSyncData) {
+            PermissionUtils.permission(Manifest.permission.BLUETOOTH).callback(new PermissionUtils.SimpleCallback() {
+                @Override
+                public void onGranted() {
+                    startActivity(new Intent(SettingActivity.this, DataSyncActivity.class));
+                }
+
+                @Override
+                public void onDenied() {
+
+                }
+            }).request();
         } else if (view == binding.llShoutDown) {
             new BottomSheetMenuDialogFragment.Builder(this)
                     .setSheet(R.menu.list_time)

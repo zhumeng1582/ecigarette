@@ -47,7 +47,24 @@
             android:text="蓝牙"
             android:textColor="#090D16"
             app:drawableEndCompat="@mipmap/icon_right_arrow"
-            app:drawableStartCompat="@mipmap/icon_bluetooth" />
+            app:drawableStartCompat="@mipmap/icon_bluetooth"
+            app:drawableTint="#090D16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dip_0.5"
+            android:background="@color/grey" />
+        <TextView
+            android:id="@+id/textSyncData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/dip_10"
+            android:padding="@dimen/dip_15"
+            android:text="同步数据"
+            android:textColor="#090D16"
+            app:drawableTint="#090D16"
+            app:drawableEndCompat="@mipmap/icon_right_arrow"
+            app:drawableStartCompat="@mipmap/icon_sync" />
 
         <View
             android:layout_width="match_parent"
@@ -62,6 +79,7 @@
             android:padding="@dimen/dip_15"
             android:text="WIFI"
             android:textColor="#090D16"
+            app:drawableTint="#090D16"
             app:drawableEndCompat="@mipmap/icon_right_arrow"
             app:drawableStartCompat="@mipmap/icon_wifi" />
 
@@ -82,6 +100,7 @@
                 android:drawablePadding="@dimen/dip_10"
                 android:text="锁屏"
                 android:textColor="#090D16"
+                app:drawableTint="#090D16"
                 app:drawableStartCompat="@mipmap/icon_lock" />
 
             <Switch
@@ -109,6 +128,7 @@
                 android:drawablePadding="@dimen/dip_10"
                 android:text="息屏"
                 android:textColor="#090D16"
+                app:drawableTint="#090D16"
                 app:drawableStartCompat="@mipmap/icon_dormancy" />
 
             <TextView
@@ -145,6 +165,7 @@
             android:padding="@dimen/dip_15"
             android:text="亮度"
             android:textColor="#090D16"
+            app:drawableTint="#090D16"
             app:drawableStartCompat="@mipmap/icon_light" />
 
         <LinearLayout
@@ -192,6 +213,7 @@
                 android:padding="@dimen/dip_15"
                 android:text="自动关机"
                 android:textColor="#090D16"
+                app:drawableTint="#090D16"
                 app:drawableStartCompat="@mipmap/icon_shutdown" />
 
             <TextView

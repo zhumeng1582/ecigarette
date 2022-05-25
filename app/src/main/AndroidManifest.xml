@@ -43,6 +43,7 @@
         </activity>
         <activity android:name=".ui.ParaActivity" />
         <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.DataSyncActivity" />
 
     </application>
 

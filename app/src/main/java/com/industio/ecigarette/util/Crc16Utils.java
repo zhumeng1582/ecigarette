@@ -1,6 +1,8 @@
 package com.industio.ecigarette.util;
 
 
+import android.util.Base64;
+
 /**
  * crc16校验
  *
@@ -123,6 +125,14 @@ public class Crc16Utils {
         byte[] crc = Crc16Utils.getCrc16(temp);
 
         return buf[buf.length - 2] != crc[0] || buf[buf.length - 1] != crc[1];
+    }
+
+    public static byte[] string2Byte(String base64Str) {
+        return base64Str.getBytes();
+    }
+
+    public static String byte2String(byte[] bytes) {
+        return new String(bytes);
     }
 
 }
