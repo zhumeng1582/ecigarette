@@ -127,10 +127,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         closeController();
     }
 
-    void setBrightness(int currentBrightness) {
-        SettingUtils.setBrightness(MainActivity.this, currentBrightness);
-        binding.topView.initView();
-    }
 
     private void permission() {
         PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).callback(new PermissionUtils.SimpleCallback() {
@@ -178,31 +174,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 AppUtils.launchApp(migu);
             }
         } else if (view == binding.btnMode) {
-//            new BottomSheetMenuDialogFragment.Builder(this)
-//                    .setSheet(R.menu.list_mode)
-//                    .setTitle("选择模式")
-//                    .setListener(new BottomSheetListener() {
-//                        @Override
-//                        public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
-//                        }
-//
-//                        @Override
-//                        public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
-//                            if (menuItem.getItemId() == R.id.classics) {
-//
-//                            } else if (menuItem.getItemId() == R.id.elegant) {
-//                                ParaActivity.newInstance(MainActivity.this, ParaActivity.elegant);
-//                            } else {
-//                                ParaActivity.newInstance(MainActivity.this, ParaActivity.strong);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
-//
-//                        }
-//                    })
-//                    .show(getSupportFragmentManager());
             ParaActivity.newInstance(MainActivity.this, ParaActivity.classics);
 
         } else if (view == binding.btnSetPara) {
@@ -219,7 +190,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 return;
             }
 
-//            if (Crc16Utils.dataError(subBuf)) return;
+            if (Crc16Utils.dataError(subBuf)) return;
 
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
@@ -255,6 +226,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     } else if (key == 0x0B) {
                         int temp = (((buf[6] & 0xff) << 8) & 0xff00) | (buf[7] & 0xff);
                         setAlarmText(text + "\n" + temp + "℃");
+                        startActivity(new Intent(MainActivity.this, MainActivity.class));
                     }
                 } else {
                     setAlarmText("错误数据：" + buf[5]);

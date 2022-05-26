@@ -18,6 +18,8 @@ import com.blankj.utilcode.util.StringUtils;
 import com.hjy.bluetooth.HBluetooth;
 import com.hjy.bluetooth.entity.BluetoothDevice;
 import com.hjy.bluetooth.exception.BluetoothException;
+import com.hjy.bluetooth.inter.BleMtuChangedCallback;
+import com.hjy.bluetooth.inter.BleNotifyCallBack;
 import com.hjy.bluetooth.inter.ClassicBluetoothPairCallBack;
 import com.hjy.bluetooth.inter.ConnectCallBack;
 import com.hjy.bluetooth.inter.ReceiveCallBack;
@@ -105,65 +107,70 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
 
     private void scanDevice() {
 
+//        //请填写你自己设备的UUID
+//        //低功耗蓝牙才需要如下配置BleConfig,经典蓝牙不需要new HBluetooth.BleConfig()
+//        HBluetooth.BleConfig bleConfig = new HBluetooth.BleConfig();
+//        bleConfig.withServiceUUID("0000fe61-0000-1000-8000-00805f9b34fb")
+//                .withWriteCharacteristicUUID("0000fe61-0000-1000-8000-00805f9b34fb")
+//                .withNotifyCharacteristicUUID("0000fe61-0000-1000-8000-00805f9b34fb")
+//                //.liveUpdateScannedDeviceName(true)
+//                //命令长度大于20个字节时是否分包发送，默认false,分包时可以调两参方法设置包之间发送间隔
+//                //默认false,注释部分为默认值
+//                //.splitPacketToSendWhenCmdLenBeyond(false)
+//                //.useCharacteristicDescriptor(false)
+//                //连接后开启通知的延迟时间，单位ms，默认200ms
+//                //.notifyDelay(200)
+//                .setMtu(200, new BleMtuChangedCallback() {
+//                    @Override
+//                    public void onSetMTUFailure(int realMtuSize, BluetoothException bleException) {
+//                        Log.i(TAG, "bleException:" + bleException.getMessage() + "  realMtuSize:" + realMtuSize);
+//                    }
+//
+//                    @Override
+//                    public void onMtuChanged(int mtuSize) {
+//                        Log.i(TAG, "Mtu set success,mtuSize:" + mtuSize);
+//                    }
+//                });
+
+
         HBluetooth.getInstance()
-                .enableBluetooth()
-                .scan(android.bluetooth.BluetoothDevice.DEVICE_TYPE_CLASSIC, new ScanCallBack() {
-                    @Override
-                    public void onScanStart() {
-                        Log.i(TAG, "开始扫描");
-                    }
+                .enableBluetooth();
+//                .setBleConfig(bleConfig);
 
-                    @Override
-                    public void onScanning(List<BluetoothDevice> scannedDevices, BluetoothDevice currentScannedDevice) {
-                        Log.i(TAG, "扫描中");
-                        if (CollectionUtils.isNotEmpty(scannedDevices)) {
-                            adapter.setDatas(scannedDevices);
-                        }
-                    }
+        HBluetooth.getInstance().scan(android.bluetooth.BluetoothDevice.DEVICE_TYPE_CLASSIC, new ScanCallBack() {
+            @Override
+            public void onScanStart() {
+                Log.i(TAG, "开始扫描");
+            }
 
-                    @Override
-                    public void onError(int errorType, String errorMsg) {
+            @Override
+            public void onScanning(List<BluetoothDevice> scannedDevices, BluetoothDevice currentScannedDevice) {
+                Log.i(TAG, "扫描中");
+                if (CollectionUtils.isNotEmpty(scannedDevices)) {
+                    adapter.setDatas(scannedDevices);
+                }
+            }
 
-                    }
+            @Override
+            public void onError(int errorType, String errorMsg) {
 
-                    @Override
-                    public void onScanFinished(List<BluetoothDevice> bluetoothDevices) {
-                        Log.i(TAG, "扫描结束:" + CollectionUtils.size(bluetoothDevices));
+            }
 
-                        if (CollectionUtils.isNotEmpty(bluetoothDevices)) {
-                            adapter.setDatas(bluetoothDevices);
-                        }
-                    }
-                });
+            @Override
+            public void onScanFinished(List<BluetoothDevice> bluetoothDevices) {
+                Log.i(TAG, "扫描结束:" + CollectionUtils.size(bluetoothDevices));
+
+                if (CollectionUtils.isNotEmpty(bluetoothDevices)) {
+                    adapter.setDatas(bluetoothDevices);
+                }
+            }
+        });
     }
 
     private void connect(BluetoothDevice device) {
         Log.i(TAG, "开始连接。。。。。");
         HBluetooth.getInstance()
-                .connect(device, new ClassicBluetoothPairCallBack() {
-                    @Override
-                    public void onPairSuccess() {
-                        Log.i(TAG, "onPairSuccess。。。。。");
-                    }
-
-                    @Override
-                    public void onPairing() {
-                        Log.i(TAG, "onPairing。。。。。");
-
-                    }
-
-                    @Override
-                    public void onPairFailure(BluetoothException bluetoothException) {
-                        Log.i(TAG, "onPairFailure。。。。。");
-
-                    }
-
-                    @Override
-                    public void onPairRemoved() {
-                        Log.i(TAG, "onPairRemoved。。。。。");
-
-                    }
-                }, new ConnectCallBack() {
+                .connect(device, new ConnectCallBack() {
 
                     @Override
                     public void onConnecting() {

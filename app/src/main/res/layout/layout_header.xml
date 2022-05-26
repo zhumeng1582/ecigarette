@@ -37,6 +37,5 @@
         android:id="@+id/imageChange"
         android:layout_width="@dimen/dip_28"
         android:layout_height="@dimen/dip_28"
-        android:src="@mipmap/icon_charge"
-        app:tint="@color/white" />
+        android:src="@mipmap/icon_charge" />
 </LinearLayout>
