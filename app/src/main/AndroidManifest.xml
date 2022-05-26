@@ -6,23 +6,24 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"
-    tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".MyApplication"
@@ -43,8 +44,18 @@
         </activity>
         <activity android:name=".ui.ParaActivity" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".ui.DataSyncActivity" />
-
+        <activity android:name="com.sdwfqin.bluetoothdemo.BlueToothActivity"
+            android:label="蓝牙" />
+        <activity
+            android:name="com.sdwfqin.bluetoothdemo.scan.ScanListActivity"
+            android:label="设备列表" />
+        <activity
+            android:name="com.sdwfqin.bluetoothdemo.send.SendDataActivity"
+            android:label="发送数据" />
+        <activity
+            android:name="com.sdwfqin.bluetoothdemo.receivedata.ReceiveDataActivity"
+            android:label="接收数据" />
+        <activity android:name="com.sdwfqin.bluetoothdemo.bond.BondedListActivity"></activity>
     </application>
 
 </manifest>

@@ -25,6 +25,7 @@ import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ToggleToolWidget;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
+import com.sdwfqin.bluetoothdemo.BlueToothActivity;
 
 
 public class SettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -114,6 +115,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
         initView();
 
     }
+
     @Override
     public void timer() {
         binding.textShoutDownTime.setText(CacheDataUtils.getShoutDownTimeText());
@@ -129,6 +131,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
             binding.included.iconHomeBluetooth.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void charge(boolean isCharge, int power) {
         if (power <= 5) {
@@ -170,10 +173,13 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
 //            ToggleToolWidget.setBrightness(SettingActivity.this, currentBrightness);
 //            ToggleToolWidget.initBrightnessImage(SettingActivity.this, binding.brightness, currentBrightness);
         } else if (view == binding.textSyncData) {
-            PermissionUtils.permission(Manifest.permission.BLUETOOTH).callback(new PermissionUtils.SimpleCallback() {
+            PermissionUtils.permission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION).callback(new PermissionUtils.SimpleCallback() {
                 @Override
                 public void onGranted() {
-                    startActivity(new Intent(SettingActivity.this, DataSyncActivity.class));
+                    startActivity(new Intent(SettingActivity.this, BlueToothActivity.class));
                 }
 
                 @Override

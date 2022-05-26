@@ -11,7 +11,7 @@ public class ChargeUtils {
 
     public static void addCharges(iCharge iTimer) {
         iCharge.add(iTimer);
-        iTimer.charge(isCharge, power);
+        iTimer.charge(ChargeUtils.isCharge, ChargeUtils.power);
     }
     public static void removeCharges(iCharge iTimer) {
         iCharge.remove(iTimer);

@@ -49,7 +49,7 @@ public class SettingUtils {
         WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
         lp.screenBrightness = currentBrightness / 255f;
         ((Activity) context).getWindow().setAttributes(lp);
-        BrightnessUtils.setBrightness(currentBrightness);
+//        BrightnessUtils.setBrightness(currentBrightness);
     }
 
 }

@@ -34,8 +34,8 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
-    int showTimeCount = 0;
-    int clearTimeCount = 5;
+    private int showTimeCount = 0;
+    private int clearTimeCount = 5;
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
 
     @Override
@@ -54,7 +54,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
         registerSerial();
 
-
         registerReceiverScreenBroadcast();
         findViewById(R.id.llLock).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +63,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             }
         });
     }
+
     @Override
     public void charge(boolean isCharge, int power) {
         if (power <= 5) {
@@ -75,16 +75,17 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             binding.included.imageChange.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void timer() {
         if (showTimeCount > 0) {
             showTimeCount--;
         }
-        if (clearTimeCount > 0) {
+        if (clearTimeCount >= 0) {
             clearTimeCount--;
         }
-        if (clearTimeCount == 0) {
-            setAlarmText("");
+        if (clearTimeCount <= 0) {
+            binding.textAlarm.setText("");
         }
 
         if (NetworkUtils.getNetworkType() == NetworkUtils.NetworkType.NETWORK_WIFI) {
@@ -98,6 +99,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             binding.included.iconHomeBluetooth.setVisibility(View.GONE);
         }
     }
+
     @Override
     public View getLock() {
         return binding.textLock;
@@ -129,7 +131,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
 
     private void permission() {
-        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).callback(new PermissionUtils.SimpleCallback() {
+        PermissionUtils.permission(Manifest.permission.BLUETOOTH, Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.WRITE_SETTINGS, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).callback(new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
             }
@@ -226,7 +228,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     } else if (key == 0x0B) {
                         int temp = (((buf[6] & 0xff) << 8) & 0xff00) | (buf[7] & 0xff);
                         setAlarmText(text + "\n" + temp + "℃");
-                        startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        if (!isFront) {
+                            startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        }
                     }
                 } else {
                     setAlarmText("错误数据：" + buf[5]);
@@ -244,11 +248,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             case 0x04:
                 if (buf[5] == 0x01) {
                     ToastUtils.showShort("复位数据成功");
-//                    setAlarmText("复位数据成功");
                 } else if (buf[5] == 0x02) {
                     ToastUtils.showShort("保存数据成功");
-//                    setAlarmText("保存数据成功");
-//                    startActivity(new Intent(MainActivity.this, MainActivity.class));
                 }
                 break;
             case 0x10:

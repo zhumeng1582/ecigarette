@@ -5,9 +5,8 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.ClipboardUtils;
 import com.blankj.utilcode.util.CrashUtils;
-import com.blankj.utilcode.util.Utils;
-import com.hjy.bluetooth.HBluetooth;
 import com.industio.ecigarette.util.TimerUtils;
+import com.sdwfqin.cbt.CbtManager;
 
 public class MyApplication extends Application {
     @Override
@@ -20,9 +19,10 @@ public class MyApplication extends Application {
                 ClipboardUtils.copyText(crashInfo.toString());
             }
         });
-
+        CbtManager
+                .getInstance()
+                .init(this)
+                .enableLog(true);
         TimerUtils.init();
-        //初始化 HBluetooth
-        HBluetooth.init(this);
     }
 }

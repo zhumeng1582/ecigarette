@@ -5,16 +5,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.RequiresPermission;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.Utils;
-import com.hjy.bluetooth.HBluetooth;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
