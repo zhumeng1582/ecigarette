@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.hjy.bluetooth.HBluetooth;
 import com.hjy.bluetooth.entity.BluetoothDevice;
 import com.hjy.bluetooth.exception.BluetoothException;
+import com.hjy.bluetooth.inter.ClassicBluetoothPairCallBack;
 import com.hjy.bluetooth.inter.ConnectCallBack;
 import com.hjy.bluetooth.inter.ReceiveCallBack;
 import com.hjy.bluetooth.inter.ScanCallBack;
@@ -38,6 +39,7 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
     private ActivityDataSyncBinding binding;
     private static final String TAG = "DataSyncActivity";
     private static final List<String> ClassicTemperatureNameList = ClassicTemperatureUtils.getHashMapKeys();
+    BluetoothListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,15 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
         scanDevice();
         getConnectedBtDevice();
         receiver();
+        adapter = new BluetoothListAdapter(new BluetoothListAdapter.ItemOnClick() {
+            @Override
+            public void itemOnClick(int index, BluetoothDevice device) {
+                connect(device);
+            }
+        });
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(DataSyncActivity.this));
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -105,6 +116,9 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
                     @Override
                     public void onScanning(List<BluetoothDevice> scannedDevices, BluetoothDevice currentScannedDevice) {
                         Log.i(TAG, "扫描中");
+                        if (CollectionUtils.isNotEmpty(scannedDevices)) {
+                            adapter.setDatas(scannedDevices);
+                        }
                     }
 
                     @Override
@@ -117,23 +131,39 @@ public class DataSyncActivity extends BaseAppCompatActivity implements View.OnCl
                         Log.i(TAG, "扫描结束:" + CollectionUtils.size(bluetoothDevices));
 
                         if (CollectionUtils.isNotEmpty(bluetoothDevices)) {
-                            BluetoothListAdapter  adapter = new BluetoothListAdapter(bluetoothDevices, new BluetoothListAdapter.ItemOnClick() {
-                                @Override
-                                public void itemOnClick(int index,BluetoothDevice device) {
-                                    connect(device);
-                                }
-                            });
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(DataSyncActivity.this));
-                            binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            binding.recyclerView.setAdapter(adapter);
+                            adapter.setDatas(bluetoothDevices);
                         }
                     }
                 });
     }
 
     private void connect(BluetoothDevice device) {
+        Log.i(TAG, "开始连接。。。。。");
         HBluetooth.getInstance()
-                .connect(device, new ConnectCallBack() {
+                .connect(device, new ClassicBluetoothPairCallBack() {
+                    @Override
+                    public void onPairSuccess() {
+                        Log.i(TAG, "onPairSuccess。。。。。");
+                    }
+
+                    @Override
+                    public void onPairing() {
+                        Log.i(TAG, "onPairing。。。。。");
+
+                    }
+
+                    @Override
+                    public void onPairFailure(BluetoothException bluetoothException) {
+                        Log.i(TAG, "onPairFailure。。。。。");
+
+                    }
+
+                    @Override
+                    public void onPairRemoved() {
+                        Log.i(TAG, "onPairRemoved。。。。。");
+
+                    }
+                }, new ConnectCallBack() {
 
                     @Override
                     public void onConnecting() {

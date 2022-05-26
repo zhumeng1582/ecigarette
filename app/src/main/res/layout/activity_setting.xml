@@ -57,6 +57,7 @@
             android:padding="@dimen/dip_15"
             android:text="同步数据"
             android:textColor="#090D16"
+            android:visibility="gone"
             app:drawableEndCompat="@mipmap/icon_right_arrow"
             app:drawableStartCompat="@mipmap/icon_sync"
             app:drawableTint="#090D16" />
@@ -64,6 +65,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_0.5"
+            android:visibility="gone"
             android:background="@color/grey" />
 
         <TextView

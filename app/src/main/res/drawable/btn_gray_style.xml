@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ ********************************************************************
+  ~   @项目名称: BHex Android
+  ~   @文件名称: btn_gray_style.xml
+  ~   @Date: 19-7-26 上午11:25
+  ~   @Author: ppzhao
+  ~   @Description:
+  ~   @Copyright（C）: 2019 BlueHelix Inc.   All rights reserved.
+  ~   注意：本内容仅限于内部传阅，禁止外泄以及用于其他的商业目的.
+  ~  *******************************************************************
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/press" android:state_pressed="true" />
+    <item android:drawable="@color/white" />
+</selector>
