@@ -79,6 +79,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
                 }
             });
         }
+
+        charge(ChargeUtils.isCharge, ChargeUtils.power);
     }
     @Override
     public void onPause() {
