@@ -45,13 +45,9 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private ActivityParaBinding binding;
     private DevicePara devicePara;
     private NormalAdapter adapter;
-    public final static int classics = 0;
-    public final static int elegant = 1;
-    public final static int strong = 2;
 
-    public static void newInstance(Context mContext, int mode) {
+    public static void newInstance(Context mContext) {
         Intent intent = new Intent(mContext, ParaActivity.class);
-        intent.putExtra("mode", mode);
         mContext.startActivity(intent);
     }
 

@@ -176,7 +176,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 AppUtils.launchApp(migu);
             }
         } else if (view == binding.btnMode) {
-            ParaActivity.newInstance(MainActivity.this, ParaActivity.classics);
+            ParaActivity.newInstance(MainActivity.this);
 
         } else if (view == binding.btnSetPara) {
             startActivity(new Intent(MainActivity.this, SettingActivity.class));
