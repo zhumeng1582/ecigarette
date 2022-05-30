@@ -7,6 +7,7 @@ import com.industio.ecigarette.bean.DevicePara;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 
 public class ClassicTemperatureUtils {
@@ -33,18 +34,18 @@ public class ClassicTemperatureUtils {
         CacheDiskStaticUtils.put(name, devicePara);
     }
 
-    private static HashSet<String> getTemperatureNameSet() {
+    private static TreeSet<String> getTemperatureNameSet() {
 
-        HashSet<String> hashSet = (HashSet<String>) CacheDiskStaticUtils.getSerializable("TemperatureNameSet");
+        TreeSet<String> hashSet = (TreeSet<String>) CacheDiskStaticUtils.getSerializable("TemperatureNameSet");
         if (CollectionUtils.isEmpty(hashSet)) {
-            hashSet = new HashSet<>();
+            hashSet = new TreeSet<>();
             hashSet.add(getCurrentTemperatureNameValue());
         }
         return hashSet;
     }
 
     public static void addTemperatureNameValue(String name) {
-        HashSet<String> hashSet = getTemperatureNameSet();
+        TreeSet<String> hashSet = getTemperatureNameSet();
         hashSet.add(name);
         CacheDiskStaticUtils.put("TemperatureNameSet", hashSet);
     }

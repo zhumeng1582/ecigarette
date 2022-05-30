@@ -302,7 +302,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private void importCache() {
         List<String> dataList = ClassicTemperatureUtils.getHashMapKeys();
         CheckedAdapter checkedAdapterR = new CheckedAdapter(this, dataList);
-
         new CircleDialog.Builder()
                 .configDialog(params -> params.backgroundColorPress = Color.CYAN)
                 .setItems(checkedAdapterR, (parent, view15, position15, id) -> {
