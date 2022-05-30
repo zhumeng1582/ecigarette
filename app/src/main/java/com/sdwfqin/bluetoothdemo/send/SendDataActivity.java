@@ -65,8 +65,8 @@ public class SendDataActivity extends AppCompatActivity {
         binding = ActivitySendDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         HashMap<String, DevicePara> valueHashMap = new HashMap<>();
-        for (String hashMapKey : ClassicTemperatureUtils.getHashMapKeys()) {
-            valueHashMap.put(hashMapKey,ClassicTemperatureUtils.getClassicTemperatureValue(hashMapKey));
+        for (String hashMapKey : ClassicTemperatureUtils.getTemperatureNameSet()) {
+            valueHashMap.put(hashMapKey, ClassicTemperatureUtils.getClassicTemperatureValue(hashMapKey));
         }
         binding.data.setText(GsonUtils.toJson(valueHashMap));
         binding.send.setOnClickListener(new View.OnClickListener() {

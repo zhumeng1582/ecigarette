@@ -5,9 +5,6 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.industio.ecigarette.bean.DevicePara;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.TreeSet;
 
 
 public class ClassicTemperatureUtils {
@@ -34,20 +31,30 @@ public class ClassicTemperatureUtils {
         CacheDiskStaticUtils.put(name, devicePara);
     }
 
-    private static TreeSet<String> getTemperatureNameSet() {
+    public static ArrayList<String> getTemperatureNameSet() {
 
-        TreeSet<String> hashSet = (TreeSet<String>) CacheDiskStaticUtils.getSerializable("TemperatureNameSet");
+        ArrayList<String> hashSet = (ArrayList<String>) CacheDiskStaticUtils.getSerializable("TemperatureNameSet");
         if (CollectionUtils.isEmpty(hashSet)) {
-            hashSet = new TreeSet<>();
+            hashSet = new ArrayList<>();
             hashSet.add(getCurrentTemperatureNameValue());
         }
         return hashSet;
     }
 
     public static void addTemperatureNameValue(String name) {
-        TreeSet<String> hashSet = getTemperatureNameSet();
-        hashSet.add(name);
+        ArrayList<String> hashSet = getTemperatureNameSet();
+        if (hashSet.size() > 10) {
+            hashSet.remove(1);
+        }
+        if (!hashSet.contains(name)) {
+            hashSet.add(name);
+        }
         CacheDiskStaticUtils.put("TemperatureNameSet", hashSet);
+    }
+
+    public static boolean containsNameValue(String name) {
+        ArrayList<String> hashSet = getTemperatureNameSet();
+        return hashSet.contains(name);
     }
 
     public static String getCurrentTemperatureNameValue() {
@@ -60,11 +67,6 @@ public class ClassicTemperatureUtils {
 
     public static DevicePara getClassicTemperatureValue(String name) {
         return (DevicePara) CacheDiskStaticUtils.getSerializable(name);
-    }
-
-
-    public static List<String> getHashMapKeys() {
-        return new ArrayList<>(getTemperatureNameSet());
     }
 
     public static void saveAsTemperatureValue(String name, DevicePara value) {

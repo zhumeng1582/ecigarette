@@ -283,7 +283,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         } else if (view == binding.btnImport) {
             importCache();
         } else if (view == binding.btnExit) {
-            ClassicTemperatureUtils.saveDevicePara( devicePara);
+            ClassicTemperatureUtils.saveDevicePara(devicePara);
             finish();
         } else if (view == binding.btnSaveAs) {
             saveAs();
@@ -296,7 +296,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void importCache() {
-        List<String> dataList = ClassicTemperatureUtils.getHashMapKeys();
+        List<String> dataList = ClassicTemperatureUtils.getTemperatureNameSet();
         CheckedAdapter checkedAdapterR = new CheckedAdapter(this, dataList);
         new CircleDialog.Builder()
                 .configDialog(params -> params.backgroundColorPress = Color.CYAN)
@@ -326,6 +326,9 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                 .setPositiveInput("确定", (text, v) -> {
                     if (TextUtils.isEmpty(text)) {
                         v.setError("请输入内容");
+                        return false;
+                    } else if (ClassicTemperatureUtils.containsNameValue(text)) {
+                        v.setError("名字重复，请重新输入");
                         return false;
                     } else {
                         Toast.makeText(ParaActivity.this, "另存成功", Toast.LENGTH_SHORT).show();
