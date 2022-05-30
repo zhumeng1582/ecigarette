@@ -5,23 +5,6 @@ import com.industio.ecigarette.bean.DevicePara;
 
 public class CacheDataUtils {
 
-    public static DevicePara getDefaultDevicePara(int id) {
-        return new DevicePara(id);
-    }
-
-
-    public static DevicePara getDevicePara(int id) {
-        DevicePara devicePara = (DevicePara) CacheDiskStaticUtils.getSerializable("KeyDevicePara");
-        if (devicePara != null) {
-            return devicePara;
-        }
-        return getDefaultDevicePara(id);
-    }
-
-    public static void saveDevicePara(DevicePara devicePara) {
-        CacheDiskStaticUtils.put("KeyDevicePara", devicePara);
-        ClassicTemperatureUtils.saveTemperatureValue();
-    }
 
     public static void setLockScreenSwitch(boolean b) {
         CacheDiskStaticUtils.put("lockScreenSwitch", b);

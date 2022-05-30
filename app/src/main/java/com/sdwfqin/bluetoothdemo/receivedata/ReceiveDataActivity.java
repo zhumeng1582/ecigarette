@@ -7,20 +7,15 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.industio.ecigarette.R;
-import com.industio.ecigarette.bean.ClassicTemperatureValue;
-import com.industio.ecigarette.databinding.ActivityBondedListBinding;
+import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityReceiveDataBinding;
 import com.industio.ecigarette.util.ClassicTemperatureUtils;
 import com.sdwfqin.cbt.CbtManager;
 import com.sdwfqin.cbt.callback.ServiceListenerCallback;
 import com.sdwfqin.cbt.utils.CbtLogs;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -73,9 +68,9 @@ public class ReceiveDataActivity extends AppCompatActivity {
                 runOnUiThread(() ->
                         {
                             mReceiveDataAdapter.addData(new ReceiveDataModel(device, s));
-                            Map<String, ClassicTemperatureValue> valueHashMap = GsonUtils.fromJson(s,GsonUtils.getMapType(String.class,ClassicTemperatureValue.class));
+                            Map<String, DevicePara> valueHashMap = GsonUtils.fromJson(s, GsonUtils.getMapType(String.class, DevicePara.class));
                             for (String s1 : valueHashMap.keySet()) {
-                                ClassicTemperatureUtils.saveAsTemperatureValue(s1,valueHashMap.get(s1));
+                                ClassicTemperatureUtils.saveAsTemperatureValue(s1, valueHashMap.get(s1));
                             }
 
                         }

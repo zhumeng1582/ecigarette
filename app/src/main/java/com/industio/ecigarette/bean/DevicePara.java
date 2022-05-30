@@ -4,11 +4,6 @@ import java.io.Serializable;
 
 public class DevicePara implements Serializable {
 
-    public DevicePara(int id) {
-        this.id = id;
-    }
-
-    private int id;
     //初始化数值：预热温度350；预热时长20；恒温330；恒温时长220;无操作保护60；口数12；DIY口数选择到第一口位置；调整温度0℃
 //    private int preheatValue = 350;
     private int preheatTimeValue = 20;
@@ -30,17 +25,27 @@ public class DevicePara implements Serializable {
         return temperature;
     }
 
+    private int preheatValue = 350;
+    private int constantTemperatureValue = 330;
+
+    public int getPreheatValue() {
+        return preheatValue;
+    }
+
+    public void setPreheatValue(int preheatValue) {
+        this.preheatValue = preheatValue;
+    }
+
+    public int getConstantTemperatureValue() {
+        return constantTemperatureValue;
+    }
+
+    public void setConstantTemperatureValue(int constantTemperatureValue) {
+        this.constantTemperatureValue = constantTemperatureValue;
+    }
+
     public void setTemperature(int[] temperature) {
         this.temperature = temperature;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
 

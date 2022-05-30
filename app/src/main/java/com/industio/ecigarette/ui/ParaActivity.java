@@ -62,14 +62,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         binding = ActivityParaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int mode = getIntent().getIntExtra("mode", ParaActivity.classics);
-        ClassicTemperatureUtils.clearTemperatureValue();
-        devicePara = CacheDataUtils.getDevicePara(mode);
+        devicePara = ClassicTemperatureUtils.getDevicePara();
 
         binding.cusSeekPreheatValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textPreheatValue.setText(progress + "℃");
-
-            ClassicTemperatureUtils.setPreheatValue(devicePara.getId(), progress);
+            devicePara.setPreheatValue(progress);
             SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.预热温度, progress));
             setChartData();
         });
@@ -82,7 +79,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
         binding.cusSeekConstantTemperatureValue.setOnSeekBarChangeListener((seekBar, progress) -> {
             binding.textConstantTemperatureValue.setText(progress + " ℃");
-            ClassicTemperatureUtils.setConstantTemperatureValue(devicePara.getId(), progress);
+            devicePara.setConstantTemperatureValue(progress);
             SerialController.getInstance().sendSync(DeviceConstant.getSendData(DeviceConstant.CMD.恒温温度, progress));
 
             setChartData();
@@ -123,40 +120,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
             setChartData();
         });
-        binding.textModeChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new BottomSheetMenuDialogFragment.Builder(ParaActivity.this)
-                        .setSheet(R.menu.list_mode)
-                        .setTitle("选择模式")
-                        .setListener(new BottomSheetListener() {
-                            @Override
-                            public void onSheetShown(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o) {
-                            }
-
-                            @Override
-                            public void onSheetItemSelected(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, MenuItem menuItem, Object o) {
-                                if (menuItem.getItemId() == R.id.classics) {
-                                    devicePara.setId(ParaActivity.classics);
-//                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.classics);
-                                } else if (menuItem.getItemId() == R.id.elegant) {
-                                    devicePara.setId(ParaActivity.elegant);
-//                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.elegant);
-                                } else {
-                                    devicePara.setId(ParaActivity.strong);
-//                                    devicePara = CacheDataUtils.getDevicePara(ParaActivity.strong);
-                                }
-                                initData();
-                            }
-
-                            @Override
-                            public void onSheetDismissed(BottomSheetMenuDialogFragment bottomSheetMenuDialogFragment, Object o, int i) {
-
-                            }
-                        })
-                        .show(getSupportFragmentManager());
-            }
-        });
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 6);
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -175,13 +138,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
     private void initData() {
 
-        if (devicePara.getId() == ParaActivity.classics) {
-            binding.textModeChange.setText("经典（默认）");
-        } else if (devicePara.getId() == ParaActivity.elegant) {
-            binding.textModeChange.setText("淡雅");
-        } else {
-            binding.textModeChange.setText("浓郁");
-        }
         initAdapter();
         initLineChart();
         showDevicePara();
@@ -255,11 +211,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         List<Entry> entries1 = new ArrayList<>();
         entries1.add(new Entry(0, 0));
 
-        entries1.add(new Entry(1, ClassicTemperatureUtils.getPreheatValue(devicePara.getId())));
+        entries1.add(new Entry(1, devicePara.getPreheatValue()));
 
         for (int i = 0; i < 18; i++) {
             if (adapter.getCountNum() > i) {
-                entries1.add(new Entry(i + 2, ClassicTemperatureUtils.getConstantTemperatureValue(devicePara.getId()) + devicePara.getTemperature()[i]));
+                entries1.add(new Entry(i + 2, devicePara.getConstantTemperatureValue() + devicePara.getTemperature()[i]));
             }
         }
 
@@ -309,9 +265,9 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
     private void showDevicePara() {
-        binding.cusSeekPreheatValue.setCurProgress(ClassicTemperatureUtils.getPreheatValue(devicePara.getId()));
+        binding.cusSeekPreheatValue.setCurProgress(devicePara.getPreheatValue());
         binding.cusSeekPreheatTimeValue.setCurProgress(devicePara.getPreheatTimeValue());
-        binding.cusSeekConstantTemperatureValue.setCurProgress(ClassicTemperatureUtils.getConstantTemperatureValue(devicePara.getId()));
+        binding.cusSeekConstantTemperatureValue.setCurProgress(devicePara.getConstantTemperatureValue());
         binding.cusSeekConstantTemperatureTimeValue.setCurProgress(devicePara.getConstantTemperatureTimeValue());
         binding.cusSeekNoOperationValue.setCurProgress(devicePara.getNoOperationValue());
 
@@ -331,15 +287,13 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         } else if (view == binding.btnImport) {
             importCache();
         } else if (view == binding.btnExit) {
-            CacheDataUtils.saveDevicePara(devicePara);
+            ClassicTemperatureUtils.saveDevicePara( devicePara);
             finish();
         } else if (view == binding.btnSaveAs) {
             saveAs();
         } else if (view == binding.btnReset) {
-            devicePara = CacheDataUtils.getDefaultDevicePara(devicePara.getId());
-            ClassicTemperatureUtils.resetTemperatureValue();
-
-            CacheDataUtils.saveDevicePara(devicePara);
+            devicePara = ClassicTemperatureUtils.getDefaultDevicePara();
+            ClassicTemperatureUtils.saveDevicePara(devicePara);
             showDevicePara();
             SerialController.getInstance().sendSync(DeviceConstant.resetCmd);
         }
@@ -353,7 +307,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                 .configDialog(params -> params.backgroundColorPress = Color.CYAN)
                 .setItems(checkedAdapterR, (parent, view15, position15, id) -> {
                     ClassicTemperatureUtils.setCurrentTemperatureNameValue(dataList.get(position15));
-                    ClassicTemperatureUtils.clearTemperatureValue();
+                    devicePara = ClassicTemperatureUtils.getDevicePara();
                     showDevicePara();
                     return true;
                 })
@@ -364,7 +318,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        CacheDataUtils.saveDevicePara(devicePara);
+        ClassicTemperatureUtils.saveDevicePara(devicePara);
     }
 
     private void saveAs() {
@@ -380,7 +334,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
                         return false;
                     } else {
                         Toast.makeText(ParaActivity.this, "另存成功", Toast.LENGTH_SHORT).show();
-                        ClassicTemperatureUtils.saveAsTemperatureValue(text, ClassicTemperatureUtils.getClassicTemperatureValue());
+                        ClassicTemperatureUtils.saveAsTemperatureValue(text, devicePara);
                         return true;
                     }
                 })

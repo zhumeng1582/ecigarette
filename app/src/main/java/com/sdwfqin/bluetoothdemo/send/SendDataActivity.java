@@ -7,9 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.GsonUtils;
-import com.industio.ecigarette.R;
-import com.industio.ecigarette.bean.ClassicTemperatureValue;
-import com.industio.ecigarette.databinding.ActivityReceiveDataBinding;
+import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivitySendDataBinding;
 import com.industio.ecigarette.util.ClassicTemperatureUtils;
 import com.sdwfqin.cbt.CbtManager;
@@ -66,7 +64,7 @@ public class SendDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySendDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        HashMap<String, ClassicTemperatureValue> valueHashMap = new HashMap<>();
+        HashMap<String, DevicePara> valueHashMap = new HashMap<>();
         for (String hashMapKey : ClassicTemperatureUtils.getHashMapKeys()) {
             valueHashMap.put(hashMapKey,ClassicTemperatureUtils.getClassicTemperatureValue(hashMapKey));
         }
