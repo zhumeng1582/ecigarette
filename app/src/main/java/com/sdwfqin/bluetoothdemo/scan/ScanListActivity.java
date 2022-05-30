@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,9 +31,6 @@ import java.util.List;
 public class ScanListActivity extends AppCompatActivity {
 
     private ActivityScanListBinding binding;
-
-
-    private Context mContext;
     private ScanListAdapter mScanListAdapter;
 
     @Override
@@ -40,8 +38,12 @@ public class ScanListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityScanListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mContext = this;
-
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         initList();
         initData();
     }
@@ -50,8 +52,8 @@ public class ScanListActivity extends AppCompatActivity {
      * 初始化列表
      */
     private void initList() {
-        binding.rv.setLayoutManager(new LinearLayoutManager(mContext));
-        binding.rv.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        binding.rv.setLayoutManager(new LinearLayoutManager(this));
+        binding.rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mScanListAdapter = new ScanListAdapter(null);
         binding.rv.setAdapter(mScanListAdapter);
         mScanListAdapter.setOnItemClickListener(
@@ -62,14 +64,14 @@ public class ScanListActivity extends AppCompatActivity {
                             .connectDevice(item, new ConnectDeviceCallback() {
                                 @Override
                                 public void connectSuccess(BluetoothSocket socket, BluetoothDevice device) {
-                                    Toast.makeText(mContext, "连接成功！", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(mContext, SendDataActivity.class));
+                                    Toast.makeText(ScanListActivity.this, "连接成功！", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(ScanListActivity.this, SendDataActivity.class));
                                 }
 
                                 @Override
                                 public void connectError(Throwable throwable) {
                                     CbtLogs.e(throwable.getMessage());
-                                    Toast.makeText(mContext, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ScanListActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }

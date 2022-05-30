@@ -3,6 +3,7 @@ package com.sdwfqin.bluetoothdemo.receivedata;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -29,7 +30,6 @@ public class ReceiveDataActivity extends AppCompatActivity {
     private ActivityReceiveDataBinding binding;
 
 
-    private Context mContext;
     private ReceiveDataAdapter mReceiveDataAdapter;
 
     @Override
@@ -37,7 +37,12 @@ public class ReceiveDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityReceiveDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mContext = this;
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         initList();
         initData();
     }
@@ -46,8 +51,8 @@ public class ReceiveDataActivity extends AppCompatActivity {
      * 初始化列表
      */
     private void initList() {
-        binding.rv.setLayoutManager(new LinearLayoutManager(mContext));
-        binding.rv.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        binding.rv.setLayoutManager(new LinearLayoutManager(this));
+        binding.rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mReceiveDataAdapter = new ReceiveDataAdapter(null);
         binding.rv.setAdapter(mReceiveDataAdapter);
     }

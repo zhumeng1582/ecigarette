@@ -44,18 +44,14 @@
         </activity>
         <activity android:name=".ui.ParaActivity" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name="com.sdwfqin.bluetoothdemo.BlueToothActivity"
-            android:label="蓝牙" />
+        <activity android:name="com.sdwfqin.bluetoothdemo.BlueToothActivity"/>
         <activity
-            android:name="com.sdwfqin.bluetoothdemo.scan.ScanListActivity"
-            android:label="设备列表" />
+            android:name="com.sdwfqin.bluetoothdemo.scan.ScanListActivity" />
         <activity
-            android:name="com.sdwfqin.bluetoothdemo.send.SendDataActivity"
-            android:label="发送数据" />
+            android:name="com.sdwfqin.bluetoothdemo.send.SendDataActivity"/>
         <activity
-            android:name="com.sdwfqin.bluetoothdemo.receivedata.ReceiveDataActivity"
-            android:label="接收数据" />
-        <activity android:name="com.sdwfqin.bluetoothdemo.bond.BondedListActivity"></activity>
+            android:name="com.sdwfqin.bluetoothdemo.receivedata.ReceiveDataActivity"/>
+        <activity android:name="com.sdwfqin.bluetoothdemo.bond.BondedListActivity"/>
     </application>
 
 </manifest>
