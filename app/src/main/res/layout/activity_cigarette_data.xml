@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingConstraints">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/included"
+            layout="@layout/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetLeft="@dimen/dip_0"
+            app:contentInsetStart="@dimen/dip_0"
+            app:contentInsetStartWithNavigation="@dimen/dip_0"
+            app:layout_collapseMode="pin"
+            app:menu="@menu/list_mode"
+            app:navigationIcon="@mipmap/btn_head_back"
+            app:title="数据统计" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dip_20"
+            android:background="@color/grey"
+            android:padding="@dimen/dip_20">
+
+            <TextView
+                android:id="@+id/textTitleInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dip_20"
+                android:text="最近抽吸信息"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/textRecentTimeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dip_20"
+                android:text="11:10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="@+id/textRecentTimeTitle"
+                app:layout_constraintStart_toStartOf="@+id/textRecentTimeTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textTitleInfo" />
+
+            <TextView
+                android:id="@+id/textRecentTimeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最近抽吸时间"
+                app:layout_constraintEnd_toStartOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textRecentTimeValue" />
+
+            <TextView
+                android:id="@+id/textRecentCountValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dip_20"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="@+id/textRecentTimeTitle"
+                app:layout_constraintStart_toStartOf="@+id/textRecentTimeTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textRecentTimeTitle" />
+
+            <TextView
+                android:id="@+id/textRecentCountTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最近抽吸时间"
+                app:layout_constraintEnd_toEndOf="@+id/textRecentTimeTitle"
+                app:layout_constraintStart_toStartOf="@+id/textRecentTimeTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textRecentCountValue" />
+
+            <TextView
+                android:id="@+id/textRecentTimeLongValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dip_20"
+                android:text="300s"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintStart_toStartOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textTitleInfo" />
+
+            <TextView
+                android:id="@+id/textRecentTimeLongTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="抽吸时长"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textRecentTimeTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textRecentTimeValue" />
+
+            <TextView
+                android:id="@+id/textDayCountValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dip_20"
+                android:text="0"
+                app:layout_constraintEnd_toEndOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintStart_toStartOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textRecentTimeTitle" />
+
+            <TextView
+                android:id="@+id/textDayCountTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当天抽吸支数"
+                app:layout_constraintEnd_toEndOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintStart_toStartOf="@+id/textRecentTimeLongTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textRecentCountValue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dip_20"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_login_tab"
+                android:button="@null"
+                android:checked="true"
+                android:paddingLeft="@dimen/dip_30"
+                android:paddingTop="@dimen/dip_10"
+                android:paddingRight="@dimen/dip_30"
+                android:paddingBottom="@dimen/dip_10"
+                android:text="天" />
+
+            <RadioButton
+                android:id="@+id/radioWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dip_20"
+                android:layout_marginRight="@dimen/dip_20"
+                android:background="@drawable/bg_login_tab"
+                android:button="@null"
+                android:paddingLeft="@dimen/dip_30"
+                android:paddingTop="@dimen/dip_10"
+                android:paddingRight="@dimen/dip_30"
+                android:paddingBottom="@dimen/dip_10"
+                android:text="周" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dip_15">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dip_20"
+                android:text="统计吸烟支数"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dip_180"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/textLock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/half_trans"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/dip_28"
+            android:layout_height="@dimen/dip_28"
+            android:layout_margin="@dimen/dip_10"
+            android:src="@mipmap/lock_home"
+            app:tint="@color/main_color" />
+    </LinearLayout>
+</FrameLayout>

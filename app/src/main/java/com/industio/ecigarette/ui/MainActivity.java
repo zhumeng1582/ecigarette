@@ -17,8 +17,10 @@ import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.industio.ecigarette.R;
+import com.industio.ecigarette.bean.CigaretteData;
 import com.industio.ecigarette.databinding.ActivityMainBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.BluetoothUtils;
@@ -36,6 +38,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     private ActivityMainBinding binding;
     private int showTimeCount = 0;
     private int clearTimeCount = 5;
+    private CigaretteData cigaretteData;
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
 
     @Override
@@ -215,6 +218,10 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 break;//显示主界面;
             case 0x01:
                 int key = buf[5] & 0xff;
+                if (key == 0x0A && cigaretteData != null) {
+                    CigaretteData.add(cigaretteData);
+                    cigaretteData = null;
+                }
 
                 if (DeviceConstant.stopTime.containsKey(key)) {
                     showTimeCount = DeviceConstant.stopTime.get(key);
@@ -243,6 +250,11 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp2 = buf[7] & 0xff;
                 int temp3 = (((buf[8] & 0xff) << 8) & 0xff00) | (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
+                cigaretteData = new CigaretteData();
+                cigaretteData.setTime(TimeUtils.getNowMills());
+                cigaretteData.setCount(temp2);
+                cigaretteData.setTimeLong(temp3);
+
                 setAlarmText(text);
                 break;
             case 0x04:

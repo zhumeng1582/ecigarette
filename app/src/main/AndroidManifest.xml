@@ -44,6 +44,9 @@
         </activity>
         <activity android:name=".ui.ParaActivity" />
         <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.CigaretteDataActivity"/>
+
+
         <activity android:name="com.sdwfqin.bluetoothdemo.BlueToothActivity"/>
         <activity
             android:name="com.sdwfqin.bluetoothdemo.scan.ScanListActivity" />

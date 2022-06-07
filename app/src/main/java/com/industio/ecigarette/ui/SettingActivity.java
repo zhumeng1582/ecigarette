@@ -41,6 +41,7 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
                 binding.textWIFI,
                 binding.llShoutDown,
                 binding.textSyncData,
+                binding.textData,
         }, this);
 
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -160,6 +161,8 @@ public class SettingActivity extends BaseAppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view == binding.textBluetooth) {
             SettingUtils.setBlueTooth();
+        } else if (view == binding.textData) {
+            startActivity(new Intent(this, CigaretteDataActivity.class));
         } else if (view == binding.textWIFI) {
             SettingUtils.openWIFISettings();
 //        } else if (view == binding.textLock) {
