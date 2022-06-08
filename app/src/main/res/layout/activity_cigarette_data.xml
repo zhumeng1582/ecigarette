@@ -25,7 +25,6 @@
             app:contentInsetStart="@dimen/dip_0"
             app:contentInsetStartWithNavigation="@dimen/dip_0"
             app:layout_collapseMode="pin"
-            app:menu="@menu/list_mode"
             app:navigationIcon="@mipmap/btn_head_back"
             app:title="数据统计" />
 
