@@ -6,15 +6,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
@@ -28,18 +25,20 @@ import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
-import com.industio.ecigarette.util.SettingUtils;
-import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.ViewAnimate;
-import com.kennyc.bottomsheet.BottomSheetListener;
-import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 
 
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
     private int showTimeCount = 0;
     private int clearTimeCount = 5;
-    private CigaretteData cigaretteData;
+    private int totalTime;
+    private int endTime;
+    private int totalCount;
+    private int endCount;
+    private long currentTime;
+
+
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
 
     @Override
@@ -66,6 +65,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 binding.textLock.setVisibility(View.VISIBLE);
             }
         });
+        initData();
     }
 
     @Override
@@ -219,11 +219,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 break;//显示主界面;
             case 0x01:
                 int key = buf[5] & 0xff;
-                if (key == 0x0A && cigaretteData != null) {
-                    Log.d("CigaretteDataSet", "抽吸完成，去添加数据：" + GsonUtils.toJson(cigaretteData));
-
-                    CigaretteData.add(cigaretteData);
-                    cigaretteData = null;
+                if (key == 0x0A && currentTime != 0) {
+                    CigaretteData.add(new CigaretteData(currentTime, totalCount - endCount, totalTime - endTime));
+                    initData();
                 }
 
                 if (DeviceConstant.stopTime.containsKey(key)) {
@@ -253,11 +251,16 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp2 = buf[7] & 0xff;
                 int temp3 = (((buf[8] & 0xff) << 8) & 0xff00) | (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
-                cigaretteData = new CigaretteData();
-                cigaretteData.setTime(TimeUtils.getNowMills());
-                cigaretteData.setCount(temp2);
-                cigaretteData.setTimeLong(temp3);
-                Log.d("CigaretteDataSet", "收到吸烟数据：" + GsonUtils.toJson(cigaretteData));
+                if (totalTime == 0) {
+                    totalTime = temp3;
+                    totalCount = temp2;
+                    endTime = 0;
+                    endCount = 0;
+                    currentTime = TimeUtils.getNowMills();
+                } else {
+                    endTime = temp3;
+                    endCount = temp2;
+                }
 
                 setAlarmText(text);
                 break;
@@ -276,11 +279,18 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
+    private void initData() {
+        totalTime = 0;
+        endTime = 0;
+        totalCount = 0;
+        endCount = 0;
+        currentTime = 0;
+    }
+
     private void setAlarmText(String text) {
         clearTimeCount = 5;
         binding.textAlarm.setText(text);
     }
-
 
     @Override
     protected void onDestroy() {

@@ -11,6 +11,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CigaretteData implements Serializable {
+    public CigaretteData(long time, int count, int timeLong) {
+        this.time = time;
+        this.count = count;
+        this.timeLong = timeLong;
+    }
+
     private long time;
     private int count;
     private int timeLong;

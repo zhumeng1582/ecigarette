@@ -2,6 +2,7 @@ package com.industio.ecigarette.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -103,7 +104,7 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
     }
 
     private void setChartData() {
-        int[] data;
+        List<Pair<Integer, Integer>> data;
         if (binding.radioDay.isChecked()) {
             data = DateUtils.getDataDay(list);
         } else {
@@ -114,12 +115,12 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
         setData(data); // 设置数据
     }
 
-    private void setData(int[] data) {
+    private void setData(List<Pair<Integer, Integer>> data) {
         List<ILineDataSet> sets = new ArrayList<>();
 
         List<Entry> entries1 = new ArrayList<>();
-        for (int i = 0; i < data.length; i++) {
-            entries1.add(new Entry(i, data[i]));
+        for (Pair<Integer, Integer> datum : data) {
+            entries1.add(new Entry(datum.first, datum.second));
         }
 
         LineDataSet dataSet1 = new LineDataSet(entries1, "");
@@ -142,23 +143,23 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
 
     }
 
-    private int getMax(int[] data) {
+    private int getMax(List<Pair<Integer, Integer>> data) {
         int max = 0;
-        for (int datum : data) {
-            max = Math.max(max, datum);
+        for (Pair<Integer, Integer> datum : data) {
+            max = Math.max(max, datum.second);
         }
         return max;
     }
 
-    private void setAxis(int[] data) {
+    private void setAxis(List<Pair<Integer, Integer>> data) {
 
         // x轴
         XAxis xAxis = binding.chart1.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        xAxis.setAxisMaximum(data.length);
+        xAxis.setAxisMaximum(data.size());
         xAxis.setAxisMinimum(0);
-        xAxis.setLabelCount(data.length);
+        xAxis.setLabelCount(data.size());
         xAxis.setTextSize(12f);
         int max = getMax(data);
         // 右y轴

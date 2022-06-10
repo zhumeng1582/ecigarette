@@ -74,7 +74,6 @@
                 tools:text="0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_14"
-                android:typeface="sans"
                 app:layout_constraintEnd_toEndOf="@+id/textRecentTimeTitle"
                 app:layout_constraintStart_toStartOf="@+id/textRecentTimeTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textRecentTimeTitle" />
@@ -83,7 +82,7 @@
                 android:id="@+id/textRecentCountTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="最近抽吸时间"
+                android:text="抽吸口数"
                 app:layout_constraintEnd_toEndOf="@+id/textRecentTimeTitle"
                 app:layout_constraintStart_toStartOf="@+id/textRecentTimeTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textRecentCountValue" />
@@ -106,9 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="抽吸时长"
-                android:textColor="@color/black"
                 android:textSize="@dimen/sp_14"
-                android:typeface="sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textRecentTimeTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textRecentTimeValue" />
