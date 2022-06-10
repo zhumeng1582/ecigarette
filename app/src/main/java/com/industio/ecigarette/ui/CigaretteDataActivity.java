@@ -30,7 +30,7 @@ import java.util.List;
 
 public class CigaretteDataActivity extends BaseAppCompatActivity {
     private ActivityCigaretteDataBinding binding;
-    private ArrayList<CigaretteData> list = CigaretteData.getCigaretteDataSet();
+    private final ArrayList<CigaretteData> list = CigaretteData.getCigaretteDataSet();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

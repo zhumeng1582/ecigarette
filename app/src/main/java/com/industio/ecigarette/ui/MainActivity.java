@@ -14,6 +14,7 @@ import android.view.View;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
@@ -219,6 +220,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             case 0x01:
                 int key = buf[5] & 0xff;
                 if (key == 0x0A && cigaretteData != null) {
+                    Log.d("CigaretteDataSet", "抽吸完成，去添加数据：" + GsonUtils.toJson(cigaretteData));
+
                     CigaretteData.add(cigaretteData);
                     cigaretteData = null;
                 }
@@ -254,6 +257,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 cigaretteData.setTime(TimeUtils.getNowMills());
                 cigaretteData.setCount(temp2);
                 cigaretteData.setTimeLong(temp3);
+                Log.d("CigaretteDataSet", "收到吸烟数据：" + GsonUtils.toJson(cigaretteData));
 
                 setAlarmText(text);
                 break;
