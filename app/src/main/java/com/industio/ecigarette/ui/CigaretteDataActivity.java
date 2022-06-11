@@ -2,7 +2,6 @@ package com.industio.ecigarette.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -14,11 +13,13 @@ import com.blankj.utilcode.util.ArrayUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.bean.CigaretteData;
@@ -104,7 +105,7 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
     }
 
     private void setChartData() {
-        List<Pair<Integer, Integer>> data;
+        int[] data;
         if (binding.radioDay.isChecked()) {
             data = DateUtils.getDataDay(list);
         } else {
@@ -115,12 +116,12 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
         setData(data); // 设置数据
     }
 
-    private void setData(List<Pair<Integer, Integer>> data) {
+    private void setData(int[] data) {
         List<ILineDataSet> sets = new ArrayList<>();
 
         List<Entry> entries1 = new ArrayList<>();
-        for (Pair<Integer, Integer> datum : data) {
-            entries1.add(new Entry(datum.first, datum.second));
+        for (int i = 0; i < data.length; i++) {
+            entries1.add(new Entry(i, data[i]));
         }
 
         LineDataSet dataSet1 = new LineDataSet(entries1, "");
@@ -133,6 +134,13 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
         dataSet1.setCircleHoleRadius(2);
         dataSet1.setCircleRadius(4);
         sets.add(dataSet1);
+        dataSet1.setValueFormatter(new ValueFormatter() {
+
+            @Override
+            public String getPointLabel(Entry entry) {
+                return "" + (int) entry.getY();
+            }
+        });
 
         LineData lineData = new LineData(sets);
         binding.chart1.clear();
@@ -143,24 +151,36 @@ public class CigaretteDataActivity extends BaseAppCompatActivity {
 
     }
 
-    private int getMax(List<Pair<Integer, Integer>> data) {
+    private int getMax(int[] data) {
         int max = 0;
-        for (Pair<Integer, Integer> datum : data) {
-            max = Math.max(max, datum.second);
+        for (int datum : data) {
+            max = Math.max(max, datum);
         }
         return max;
     }
 
-    private void setAxis(List<Pair<Integer, Integer>> data) {
+    private void setAxis(int[] data) {
 
         // x轴
         XAxis xAxis = binding.chart1.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        xAxis.setAxisMaximum(data.size());
+        xAxis.setAxisMaximum(data.length-1);
         xAxis.setAxisMinimum(0);
-        xAxis.setLabelCount(data.size());
-        xAxis.setTextSize(12f);
+        xAxis.setLabelCount(data.length-1);
+        xAxis.setTextSize(9f);
+        xAxis.setValueFormatter(new ValueFormatter() {
+
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                if (binding.radioDay.isChecked()) {
+                    return  ((int) value * 2)+"时";
+                } else {
+                    return TimeUtils.millis2String(TimeUtils.getNowMills() - 86400000L * (6 - (int) value), DateUtils.sdfyDD);
+                }
+            }
+        });
+
         int max = getMax(data);
         // 右y轴
         YAxis yAxis_right = binding.chart1.getAxisRight();
