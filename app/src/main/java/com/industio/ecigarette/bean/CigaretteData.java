@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.CacheDiskStaticUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.industio.ecigarette.util.DateUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,11 +14,13 @@ import java.util.ArrayList;
 public class CigaretteData implements Serializable {
     public CigaretteData(long time, int count, int timeLong) {
         this.time = time;
+        this.timeStr = TimeUtils.millis2String(time);
         this.count = count;
         this.timeLong = timeLong;
     }
 
     private long time;
+    private String timeStr;
     private int count;
     private int timeLong;
 
