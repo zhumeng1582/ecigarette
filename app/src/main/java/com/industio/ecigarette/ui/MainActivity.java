@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -220,6 +221,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             case 0x01:
                 int key = buf[5] & 0xff;
                 if (key == 0x0A && currentTime != 0) {
+                    Log.d("CigaretteDataSet", "抽吸完成，串口返回原始数据:" + Crc16Utils.byteTo16String(buf));
+
                     CigaretteData.add(new CigaretteData(currentTime, totalCount - endCount, totalTime - endTime));
                     initData();
                 }
@@ -251,7 +254,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 int temp2 = buf[7] & 0xff;
                 int temp3 = (((buf[8] & 0xff) << 8) & 0xff00) | (buf[9] & 0xff);
                 String text = "温度：" + temp1 + "℃" + "\n" + "口数：" + temp2 + "\n" + "时间：" + temp3 + "s\n";
-                if (totalTime == 0) {
+                if (currentTime == 0) {
                     totalTime = temp3;
                     totalCount = temp2;
                     endTime = 0;
