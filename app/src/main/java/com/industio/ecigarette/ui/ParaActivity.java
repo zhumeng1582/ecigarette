@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -39,6 +40,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private ActivityParaBinding binding;
     private DevicePara devicePara;
     private NormalAdapter adapter;
+
+    private boolean disableAllClick() {
+        //不等于0，表示在抽烟，需要禁用点击操作
+        return MainActivity.currentTime != 0;
+    }
 
     public static void newInstance(Context mContext) {
         Intent intent = new Intent(mContext, ParaActivity.class);
@@ -266,7 +272,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     }
 
 
-
     private void sendSaveCmd() {
         SerialController.getInstance().sendSync(DeviceConstant.saveCmd);
     }
@@ -275,19 +280,39 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view == binding.btnSave) {
-            sendSaveCmd();
+            if (!disableAllClick()) {
+                sendSaveCmd();
+            } else {
+                ToastUtils.showShort("抽烟模式，禁止保存");
+            }
+
         } else if (view == binding.btnImport) {
-            importCache();
+            if (!disableAllClick()) {
+                importCache();
+            } else {
+                ToastUtils.showShort("抽烟模式，禁止导入");
+            }
+
         } else if (view == binding.btnExit) {
             ClassicTemperatureUtils.saveDevicePara(devicePara);
             finish();
         } else if (view == binding.btnSaveAs) {
-            saveAs();
+            if (!disableAllClick()) {
+                saveAs();
+            } else {
+                ToastUtils.showShort("抽烟模式，禁止另存");
+            }
+
         } else if (view == binding.btnReset) {
-            devicePara = ClassicTemperatureUtils.getDefaultDevicePara();
-            ClassicTemperatureUtils.saveDevicePara(devicePara);
-            showDevicePara();
-            SerialController.getInstance().sendSync(DeviceConstant.resetCmd);
+            if (!disableAllClick()) {
+                devicePara = ClassicTemperatureUtils.getDefaultDevicePara();
+                ClassicTemperatureUtils.saveDevicePara(devicePara);
+                showDevicePara();
+                SerialController.getInstance().sendSync(DeviceConstant.resetCmd);
+            } else {
+                ToastUtils.showShort("抽烟模式，禁止重置");
+            }
+
         }
     }
 
