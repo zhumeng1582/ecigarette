@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,14 +26,9 @@ import com.industio.ecigarette.bean.DevicePara;
 import com.industio.ecigarette.databinding.ActivityParaBinding;
 import com.industio.ecigarette.serialcontroller.SerialController;
 import com.industio.ecigarette.util.BluetoothUtils;
-import com.industio.ecigarette.util.CacheDataUtils;
-import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.ClassicTemperatureUtils;
 import com.industio.ecigarette.util.DeviceConstant;
-import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.view.GridSpaceItemDecoration;
-import com.kennyc.bottomsheet.BottomSheetListener;
-import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment;
 import com.mylhyl.circledialog.CircleDialog;
 
 import java.util.ArrayList;
@@ -46,11 +39,6 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private ActivityParaBinding binding;
     private DevicePara devicePara;
     private NormalAdapter adapter;
-
-    private boolean disableAllClick() {
-        //不等于0，表示在抽烟，需要禁用点击操作
-        return MainActivity.currentTime != 0;
-    }
 
     public static void newInstance(Context mContext) {
         Intent intent = new Intent(mContext, ParaActivity.class);
@@ -277,14 +265,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (!disableAllClick()) {
-            return super.dispatchTouchEvent(ev);
-        } else {
-            return true;
-        }
-    }
+
 
     private void sendSaveCmd() {
         SerialController.getInstance().sendSync(DeviceConstant.saveCmd);

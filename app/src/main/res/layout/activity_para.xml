@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <com.industio.ecigarette.view.InterceptLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -280,7 +280,7 @@
                     android:paddingRight="@dimen/dip_5"
                     android:text="DIY模式" />
             </FrameLayout>
-        </LinearLayout>
+        </com.industio.ecigarette.view.InterceptLinearLayout>
 
 
         <LinearLayout
