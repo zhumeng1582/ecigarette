@@ -37,7 +37,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     private int endTime;
     private int totalCount;
     private int endCount;
-    private long currentTime;
+    public static long currentTime = 0;
 
 
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();

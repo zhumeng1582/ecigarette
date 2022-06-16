@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -45,6 +46,11 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
     private ActivityParaBinding binding;
     private DevicePara devicePara;
     private NormalAdapter adapter;
+
+    private boolean disableAllClick() {
+        //不等于0，表示在抽烟，需要禁用点击操作
+        return MainActivity.currentTime != 0;
+    }
 
     public static void newInstance(Context mContext) {
         Intent intent = new Intent(mContext, ParaActivity.class);
@@ -269,6 +275,15 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
 
         binding.cusSeekCountValue.setCurProgress(devicePara.getCount());
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (!disableAllClick()) {
+            return super.dispatchTouchEvent(ev);
+        } else {
+            return true;
+        }
     }
 
     private void sendSaveCmd() {
