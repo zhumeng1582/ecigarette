@@ -35,7 +35,7 @@ public class InterceptLinearLayout extends LinearLayout {
 
     private boolean disableAllClick() {
         //不等于0，表示在抽烟，需要禁用点击操作
-        return MainActivity.currentTime != 0;
+        return MainActivity.disableAllClick;
     }
 
     @Override

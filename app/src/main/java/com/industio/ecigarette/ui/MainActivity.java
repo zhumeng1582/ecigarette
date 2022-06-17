@@ -39,7 +39,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     private int endTime;
     private int totalCount;
     private int endCount;
-    public static long currentTime = 0;
+    public long currentTime = 0;
+    public static boolean disableAllClick = false;
 
 
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
@@ -233,14 +234,18 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 if (DeviceConstant.RECEVICE_TIPS.containsKey(key)) {
                     String text = DeviceConstant.RECEVICE_TIPS.get(key);
 
-                    if (key <= 0x0A) {
+                    if (key < 0x0A) {
+                        setAlarmText(text);
+                    } else if (key == 0x0A) {
                         isNeedReturn = true;
+                        disableAllClick = false;
                         setAlarmText(text);
                     } else if (key == 0x0B) {
                         int temp = (((buf[6] & 0xff) << 8) & 0xff00) | (buf[7] & 0xff);
                         setAlarmText(text + "\n" + temp + "℃");
                         if (isNeedReturn) {
                             isNeedReturn = false;
+                            disableAllClick = true;
                             Log.d("ReturnMainActivity", text + "\n" + temp + "℃");
                             startActivity(new Intent(MainActivity.this, MainActivity.class));
                         }
@@ -261,6 +266,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     totalCount = temp2;
                     endTime = 0;
                     endCount = 0;
+                    disableAllClick = true;
                     currentTime = TimeUtils.getNowMills();
                 } else {
                     endTime = temp3;
