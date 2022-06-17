@@ -31,6 +31,8 @@ import com.industio.ecigarette.view.ViewAnimate;
 
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
+    protected boolean isNeedReturn = false;
+
     private int showTimeCount = 0;
     private int clearTimeCount = 5;
     private int totalTime;
@@ -212,6 +214,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         }
         switch (buf[4] & 0xff) {
             case 0x00:
+                Log.d("ReturnMainActivity", "显示主界面--------->");
                 startActivity(new Intent(MainActivity.this, MainActivity.class));
                 break;//显示主界面;
             case 0x01:
@@ -231,11 +234,14 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                     String text = DeviceConstant.RECEVICE_TIPS.get(key);
 
                     if (key <= 0x0A) {
+                        isNeedReturn = true;
                         setAlarmText(text);
                     } else if (key == 0x0B) {
                         int temp = (((buf[6] & 0xff) << 8) & 0xff00) | (buf[7] & 0xff);
                         setAlarmText(text + "\n" + temp + "℃");
-                        if (!isFront) {
+                        if (isNeedReturn) {
+                            isNeedReturn = false;
+                            Log.d("ReturnMainActivity", text + "\n" + temp + "℃");
                             startActivity(new Intent(MainActivity.this, MainActivity.class));
                         }
                     }
