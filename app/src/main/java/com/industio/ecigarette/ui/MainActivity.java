@@ -67,6 +67,8 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             }
         });
         initData();
+
+        permission();
     }
 
     @Override
@@ -155,12 +157,6 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             public void onLoadEnd() {
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        permission();
     }
 
 
