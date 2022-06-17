@@ -241,11 +241,11 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                         disableAllClick = false;
                         setAlarmText(text);
                     } else if (key == 0x0B) {
+                        disableAllClick = true;
                         int temp = (((buf[6] & 0xff) << 8) & 0xff00) | (buf[7] & 0xff);
                         setAlarmText(text + "\n" + temp + "℃");
-                        if (isNeedReturn) {
+                        if (isNeedReturn && !isFront) {
                             isNeedReturn = false;
-                            disableAllClick = true;
                             Log.d("ReturnMainActivity", text + "\n" + temp + "℃");
                             startActivity(new Intent(MainActivity.this, MainActivity.class));
                         }

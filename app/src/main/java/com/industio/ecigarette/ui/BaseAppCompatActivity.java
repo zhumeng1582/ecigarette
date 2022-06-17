@@ -20,7 +20,7 @@ import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity implements TimerUtils.iTimer, ChargeUtils.iCharge {
-
+    protected boolean isFront = false;
     private GestureDetector mGestureDetector;
     private View llLock;
 
@@ -60,6 +60,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        isFront = true;
         ChargeUtils.addCharges(this);
         TimerUtils.addTimers(this);
 
@@ -81,6 +82,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
     @Override
     public void onPause() {
         super.onPause();
+        isFront = false;
         ChargeUtils.removeCharges(this);
         TimerUtils.removeTimers(this);
     }
