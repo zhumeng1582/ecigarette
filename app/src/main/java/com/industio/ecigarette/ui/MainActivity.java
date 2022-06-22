@@ -220,10 +220,11 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 break;//显示主界面;
             case 0x01:
                 int key = buf[5] & 0xff;
+
                 if (key == 0x0A && currentTime != 0) {
                     Log.d("CigaretteDataSet", "抽吸完成，串口返回原始数据:" + Crc16Utils.byteTo16String(buf));
 
-                    CigaretteData.add(new CigaretteData(currentTime, totalCount - endCount, totalTime - endTime));
+                    CigaretteData.add(new CigaretteData(currentTime, Crc16Utils.byteTo16String(buf), totalCount - endCount, totalTime - endTime));
                     initData();
                 }
 

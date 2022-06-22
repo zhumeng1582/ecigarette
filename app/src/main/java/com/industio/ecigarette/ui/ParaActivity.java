@@ -306,7 +306,7 @@ public class ParaActivity extends BaseAppCompatActivity implements View.OnClickL
         } else if (view == binding.btnReset) {
             if (!disableAllClick()) {
                 devicePara = ClassicTemperatureUtils.getDefaultDevicePara();
-                ClassicTemperatureUtils.saveDevicePara(devicePara);
+//                ClassicTemperatureUtils.saveDevicePara(devicePara);
                 showDevicePara();
                 SerialController.getInstance().sendSync(DeviceConstant.resetCmd);
             } else {
