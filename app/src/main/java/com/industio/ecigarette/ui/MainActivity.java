@@ -208,7 +208,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         });
     }
 
-    private void dataAnalysis(byte[] buf) {
+    private synchronized void dataAnalysis(byte[] buf) {
         if (ArrayUtils.equals(buf, DeviceConstant.startCmd)) {
             SerialController.getInstance().sendSync(DeviceConstant.startCmd);
             return;
