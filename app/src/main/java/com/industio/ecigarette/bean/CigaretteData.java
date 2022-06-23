@@ -70,7 +70,7 @@ public class CigaretteData implements Serializable {
         return newSet;
     }
 
-    public static void add(CigaretteData cigaretteData) {
+    public static synchronized void add(CigaretteData cigaretteData) {
         ArrayList<CigaretteData> hashSet = getCigaretteDataSet();
         hashSet.add(cigaretteData);
         Log.d("CigaretteDataSet", "抽吸完成，保存数据：" + GsonUtils.toJson(cigaretteData));
