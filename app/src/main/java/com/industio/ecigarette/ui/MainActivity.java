@@ -196,14 +196,10 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 return;
             }
 
-            if (Crc16Utils.dataError(subBuf)) return;
+            if (Crc16Utils.dataError(subBuf))
+                return;
 
-            ThreadUtils.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    dataAnalysis(subBuf);
-                }
-            });
+            dataAnalysis(subBuf);
 
         });
     }
@@ -216,7 +212,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
         switch (buf[4] & 0xff) {
             case 0x00:
                 Log.d("ReturnMainActivity", "显示主界面--------->");
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                returnMainActivity();
                 break;//显示主界面;
             case 0x01:
                 int key = buf[5] & 0xff;
@@ -248,7 +244,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                         if (isNeedReturn && !isFront) {
                             isNeedReturn = false;
                             Log.d("ReturnMainActivity", text + "\n" + temp + "℃");
-                            startActivity(new Intent(MainActivity.this, MainActivity.class));
+                            returnMainActivity();
                         }
                     }
                 } else {
@@ -278,9 +274,9 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 break;
             case 0x04:
                 if (buf[5] == 0x01) {
-                    ToastUtils.showShort("复位数据成功");
+                    showShort("复位数据成功");
                 } else if (buf[5] == 0x02) {
-                    ToastUtils.showShort("保存数据成功");
+                    showShort("保存数据成功");
                 }
                 break;
             case 0x10:
@@ -289,6 +285,25 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             default:
                 break;
         }
+    }
+
+    private void showShort(String text) {
+        ThreadUtils.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showShort(text);
+
+            }
+        });
+    }
+
+    private void returnMainActivity() {
+        ThreadUtils.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+            }
+        });
     }
 
     private void initData() {
@@ -301,7 +316,12 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
     private void setAlarmText(String text) {
         clearTimeCount = 5;
-        binding.textAlarm.setText(text);
+        ThreadUtils.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                binding.textAlarm.setText(text);
+            }
+        });
     }
 
     @Override
