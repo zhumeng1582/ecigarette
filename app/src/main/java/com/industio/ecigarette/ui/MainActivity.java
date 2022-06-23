@@ -28,6 +28,8 @@ import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.ViewAnimate;
 
+import java.sql.Time;
+
 
 public class MainActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ActivityMainBinding binding;
@@ -41,7 +43,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
     private int endCount;
     public long currentTime = 0;
     public static boolean disableAllClick = false;
-
+    private long lastTime = 0;
 
     ScreenBroadcastReceiver screenBroadcastReceiver = new ScreenBroadcastReceiver();
 
@@ -198,11 +200,14 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
 
             if (Crc16Utils.dataError(subBuf))
                 return;
-
+            if (((subBuf[4] & 0xff) == 0x01) && ((subBuf[5] & 0xff) == 0x0A)) {
+                Log.d("CigaretteDataSet", "收到串口数据:" + Crc16Utils.byteTo16String(subBuf));
+            }
             dataAnalysis(subBuf);
 
         });
     }
+
 
     private synchronized void dataAnalysis(byte[] buf) {
         if (ArrayUtils.equals(buf, DeviceConstant.startCmd)) {
@@ -216,12 +221,14 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 break;//显示主界面;
             case 0x01:
                 int key = buf[5] & 0xff;
+                if (TimeUtils.getNowMills() - lastTime > 2000) {
+                    lastTime = TimeUtils.getNowMills();
+                    if (key == 0x0A && currentTime != 0) {
+                        Log.d("CigaretteDataSet", "抽吸完成，串口返回原始数据:" + Crc16Utils.byteTo16String(buf));
 
-                if (key == 0x0A && currentTime != 0) {
-                    Log.d("CigaretteDataSet", "抽吸完成，串口返回原始数据:" + Crc16Utils.byteTo16String(buf));
-
-                    CigaretteData.add(new CigaretteData(currentTime, Crc16Utils.byteTo16String(buf), totalCount - endCount, totalTime - endTime));
-                    initData();
+                        CigaretteData.add(new CigaretteData(currentTime, Crc16Utils.byteTo16String(buf), totalCount - endCount, totalTime - endTime));
+                        initData();
+                    }
                 }
 
                 if (DeviceConstant.stopTime.containsKey(key)) {

@@ -19,29 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SerialController {
-    private static final String TAG ="SerialController";
+    private static final String TAG = "SerialController";
     private static final int MSG_CLEAN_SLEEP_COUNT = 0X001;
-    private volatile boolean delay_flag=true;
+    private volatile boolean delay_flag = true;
 
     private static SerialController serialController;
     private SerialControl serialControl;
-    private List<SerialReadListener> listSerialReadListener;
+    private SerialReadListener listSerialReadListener;
 
-    private Handler mHandler = new MyHandler();
 
     public void registerSerialReadListener(SerialReadListener serialReadListener) {
-        if (listSerialReadListener == null) {
-            listSerialReadListener = new ArrayList<>();
-        }
-        listSerialReadListener.add(serialReadListener);
+        listSerialReadListener = serialReadListener;
     }
 
-    public void unRegisterSerialReadListener(SerialReadListener serialReadListener) {
-        if (CollectionUtils.isEmpty(listSerialReadListener)) {
-            return;
-        }
-        listSerialReadListener.remove(serialReadListener);
-    }
 
     private SerialController() {
         initSerial();
@@ -61,16 +51,9 @@ public class SerialController {
             @Override
             protected void read(byte[] buf, int len) {
                 Log.d("uart", "rx:" + bytesToHexString(buf, len));
-                if (CollectionUtils.isNotEmpty(listSerialReadListener)) {
-                  /*  if (delay_flag) {
-                        setClsSleepCnt();
-                        mHandler.sendEmptyMessageDelayed(MSG_CLEAN_SLEEP_COUNT, 5000);
-                        delay_flag = false;
-                    }*/
+                if (listSerialReadListener != null) {
                     setClsSleepCnt();
-                    for (SerialReadListener serialReadListener : listSerialReadListener) {
-                        serialReadListener.read(buf, len);
-                    }
+                    listSerialReadListener.read(buf, len);
                 }
             }
         };
@@ -161,5 +144,7 @@ public class SerialController {
                     break;
             }
         }
-    };
+    }
+
+    ;
 }
