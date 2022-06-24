@@ -35,7 +35,7 @@ public class BatteryView extends View {
     // 高电量 默认值 21%-100% 白色
     private int highColor;
     private int headerColor;
-    private static int currentPower = -1; // 当前电量
+    public static int currentPower = -1; // 当前电量
 
     // 未充电时高电量颜色
     private int noChargingHighColor;

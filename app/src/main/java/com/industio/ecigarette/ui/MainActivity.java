@@ -27,6 +27,7 @@ import com.industio.ecigarette.util.ChargeUtils;
 import com.industio.ecigarette.util.Crc16Utils;
 import com.industio.ecigarette.util.DeviceConstant;
 import com.industio.ecigarette.view.ViewAnimate;
+import com.industio.ecigarette.view.battery.BatteryView;
 
 import java.sql.Time;
 
@@ -287,7 +288,7 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
                 }
                 break;
             case 0x10:
-                ChargeUtils.notifyCharges(buf[7] != 0, buf[6] & 0xff);
+                notifyCharges(buf[7] != 0, buf[6] & 0xff);
                 break;
             default:
                 break;
@@ -299,6 +300,20 @@ public class MainActivity extends BaseAppCompatActivity implements View.OnClickL
             @Override
             public void run() {
                 ToastUtils.showShort(text);
+
+            }
+        });
+    }
+
+
+    private void notifyCharges(boolean isCharge, int power) {
+        if (!isCharge && (power == BatteryView.currentPower)) {
+            return;
+        }
+        ThreadUtils.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ChargeUtils.notifyCharges(isCharge, power);
 
             }
         });
