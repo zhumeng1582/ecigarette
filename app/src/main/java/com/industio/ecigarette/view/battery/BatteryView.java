@@ -44,7 +44,7 @@ public class BatteryView extends View {
 
     private int width;
     private int height;
-
+    private float fullWidth;
 
     public BatteryView(Context context) {
         this(context, null);
@@ -134,6 +134,7 @@ public class BatteryView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         width = getMeasuredWidth();
         height = getMeasuredHeight();
+        fullWidth = (width - borderWidth * 2 - borderPadding * 2 - borderPadding - headerWidth) / 100f;
     }
 
     private RectF borderRf;
@@ -202,9 +203,7 @@ public class BatteryView extends View {
 
     // 电池横向的宽度
     private float getHorizontalWidth(int power) {
-        // 满电量宽度
-        float fullWidth = width - borderWidth * 2 - borderPadding * 2 - borderPadding - headerWidth;
-        return fullWidth * power / 100f;
+        return fullWidth * power;
     }
 
     // 电池头朝上
