@@ -14,8 +14,6 @@ import androidx.annotation.Nullable;
 import com.industio.ecigarette.R;
 
 public class BatteryView extends View {
-    // 电池方向
-    private BatteryViewOrientation orientation;
     // 电池边框与内部电量的间隔
     private float borderPadding;
     // 电池边框宽度
@@ -62,22 +60,6 @@ public class BatteryView extends View {
 
     private void getAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BatteryView);
-        // 默认水平头朝右
-        int orientationInt = ta.getInt(R.styleable.BatteryView_bv_orientation, 1);
-        switch (orientationInt) {
-            case 0:
-                orientation = BatteryViewOrientation.HORIZONTAL_LEFT;
-                break;
-            case 1:
-                orientation = BatteryViewOrientation.HORIZONTAL_RIGHT;
-                break;
-            case 2:
-                orientation = BatteryViewOrientation.VERTICAL_TOP;
-                break;
-            case 3:
-                orientation = BatteryViewOrientation.VERTICAL_BOTTOM;
-                break;
-        }
         // 电池内边距
         borderPadding = ta.getDimensionPixelSize(R.styleable.BatteryView_bv_border_padding, 2);
         // 电池边框厚度
@@ -143,38 +125,9 @@ public class BatteryView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (orientation == BatteryViewOrientation.HORIZONTAL_LEFT) {
-            drawHorizontalLeft(canvas);
-        } else if (orientation == BatteryViewOrientation.HORIZONTAL_RIGHT) {
-            drawHorizontalRight(canvas);
-        } else if (orientation == BatteryViewOrientation.VERTICAL_TOP) {
-            drawVerticalTop(canvas);
-        } else if (orientation == BatteryViewOrientation.VERTICAL_BOTTOM) {
-            drawVerticalBottom(canvas);
-        }
+        drawHorizontalRight(canvas);
     }
 
-    // 朝左的电池
-    private void drawHorizontalLeft(Canvas canvas) {
-        // 绘制边框
-        if (borderRf == null) {
-            borderRf = new RectF(headerWidth + borderPadding + borderWidth, borderWidth, width - borderWidth, height - borderWidth);
-        }
-        canvas.drawRoundRect(borderRf, radis, radis, borderPaint);
-        // 绘制实心区域
-        if (powerRf == null) {
-            setPower(currentPower);
-        }
-        canvas.drawRoundRect(powerRf, radis, radis, powerPaint);
-
-        // 绘制电池头
-        if (headerRf == null) {
-            float headerHeight = height / 3f;
-            headerRf = new RectF(0, headerHeight, headerWidth, headerHeight * 2);
-        }
-
-        canvas.drawRoundRect(headerRf, radis, radis, headerPaint);
-    }
 
     // 朝右的电池
     private void drawHorizontalRight(Canvas canvas) {
@@ -201,58 +154,6 @@ public class BatteryView extends View {
 
     }
 
-    // 电池横向的宽度
-    private float getHorizontalWidth(int power) {
-        return fullWidth * power;
-    }
-
-    // 电池头朝上
-    private void drawVerticalTop(Canvas canvas) {
-        // 绘制边框
-        if (borderRf == null) {
-            borderRf = new RectF(borderWidth, headerWidth + borderPadding + borderWidth, width - borderWidth, height - borderWidth);
-        }
-        canvas.drawRoundRect(borderRf, radis, radis, borderPaint);
-        // 绘制实心区域
-        if (powerRf == null) {
-            setPower(currentPower);
-        }
-        canvas.drawRoundRect(powerRf, radis, radis, powerPaint);
-
-        // 绘制电池头
-        if (headerRf == null) {
-            float headerWidth1 = width / 3f;
-            headerRf = new RectF(headerWidth1, 0, headerWidth1 * 2, headerWidth);
-        }
-        canvas.drawRoundRect(headerRf, radis, radis, headerPaint);
-    }
-
-    // 电池头朝下
-    private void drawVerticalBottom(Canvas canvas) {
-        // 绘制边框
-        if (borderRf == null) {
-            borderRf = new RectF(borderWidth, borderWidth, width - borderWidth, height - headerWidth - borderPadding - borderWidth);
-        }
-        canvas.drawRoundRect(borderRf, radis, radis, borderPaint);
-        // 绘制实心区域
-        if (powerRf == null) {
-            setPower(currentPower);
-        }
-        canvas.drawRoundRect(powerRf, radis, radis, powerPaint);
-
-        // 绘制电池头
-        if (headerRf == null) {
-            float headerWidth1 = width / 3f;
-            headerRf = new RectF(headerWidth1, height - headerWidth, headerWidth1 * 2, height);
-        }
-        canvas.drawRoundRect(headerRf, radis, radis, headerPaint);
-    }
-
-    private float getVerticalHeight(int power) {
-        // 满电量宽度
-        float fullHeight = height - borderWidth * 2 - borderPadding * 3 - headerWidth;
-        return fullHeight * power / 100f;
-    }
 
     public void setPower(int power) {
         currentPower = power;
@@ -264,22 +165,8 @@ public class BatteryView extends View {
             powerPaint.setColor(noChargingHighColor);
         }
 
-        if (orientation == BatteryViewOrientation.HORIZONTAL_RIGHT) {
-            float realWidth = getHorizontalWidth(power);
-            powerRf = new RectF(borderWidth + borderPadding, borderWidth + borderPadding, borderWidth + borderPadding + realWidth, height - borderWidth - borderPadding);
-            postInvalidate();
-        } else if (orientation == BatteryViewOrientation.HORIZONTAL_LEFT) {
-            float realWidth = getHorizontalWidth(power);
-            powerRf = new RectF(width - borderWidth - borderPadding - realWidth, borderWidth + borderPadding, width - borderWidth - borderPadding, height - borderWidth - borderPadding);
-            postInvalidate();
-        } else if (orientation == BatteryViewOrientation.VERTICAL_TOP) {
-            float realHeight = getVerticalHeight(power);
-            powerRf = new RectF(borderWidth + borderPadding, height - borderWidth - borderPadding - realHeight, width - borderWidth - borderPadding, height - borderWidth - borderPadding);
-            postInvalidate();
-        } else if (orientation == BatteryViewOrientation.VERTICAL_BOTTOM) {
-            float realHeight = getVerticalHeight(power);
-            powerRf = new RectF(borderWidth + borderPadding, borderWidth + borderPadding, width - borderWidth - borderPadding, borderWidth + borderPadding + realHeight);
-            postInvalidate();
-        }
+        float realWidth =fullWidth * power;
+        powerRf = new RectF(borderWidth + borderPadding, borderWidth + borderPadding, borderWidth + borderPadding + realWidth, height - borderWidth - borderPadding);
+        postInvalidate();
     }
 }
