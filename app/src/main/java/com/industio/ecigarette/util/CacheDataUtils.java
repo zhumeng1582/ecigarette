@@ -29,7 +29,7 @@ public class CacheDataUtils {
     }
 
     public static int getLockScreenTime() {
-        return (int) CacheDiskStaticUtils.getSerializable("LockScreenTime", 0);
+        return (int) CacheDiskStaticUtils.getSerializable("LockScreenTime", 10);
     }
 
     public static String getShoutDownTimeText() {

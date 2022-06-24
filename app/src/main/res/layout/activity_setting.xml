@@ -152,7 +152,7 @@
                 android:drawablePadding="@dimen/dip_10"
                 android:padding="@dimen/dip_15"
                 android:textColor="#090D16"
-                tools:text="5分钟" />
+                tools:text="10秒" />
         </LinearLayout>
 
         <com.industio.ecigarette.view.ProSeekBar
