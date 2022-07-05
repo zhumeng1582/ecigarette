@@ -6,13 +6,8 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.view.WindowManager;
 
-import com.blankj.utilcode.util.BrightnessUtils;
-import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class SettingUtils {
     public static void openWIFISettings() {

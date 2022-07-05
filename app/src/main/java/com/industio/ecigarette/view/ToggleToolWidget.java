@@ -21,14 +21,12 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.BrightnessUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.ThreadUtils;
 import com.industio.ecigarette.R;
 import com.industio.ecigarette.util.BluetoothUtils;
 import com.industio.ecigarette.util.SettingUtils;
 import com.industio.ecigarette.util.TimerUtils;
 import com.industio.ecigarette.util.WifiUtils;
 
-import java.util.concurrent.TimeUnit;
 
 public class ToggleToolWidget extends FrameLayout implements OnClickListener {
 

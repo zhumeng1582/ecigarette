@@ -1,27 +1,17 @@
 package com.industio.ecigarette.serialcontroller;
 
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import android.view.View;
 
-import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.industio.ecigarette.util.DeviceConstant;
 
 import org.ido.iface.SerialControl;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SerialController {
-    private static final String TAG = "SerialController";
-    private static final int MSG_CLEAN_SLEEP_COUNT = 0X001;
-    private volatile boolean delay_flag = true;
 
     private static SerialController serialController;
     private SerialControl serialControl;
@@ -133,18 +123,4 @@ public class SerialController {
             }
         }
     }
-
-    class MyHandler extends Handler {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_CLEAN_SLEEP_COUNT:
-                    Log.i(TAG, "clean sleep count");
-                    setClsSleepCnt();
-                    delay_flag = true;
-                    break;
-            }
-        }
-    }
-
-    ;
 }

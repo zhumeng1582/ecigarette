@@ -3,14 +3,8 @@ package com.industio.ecigarette.util;
 import static android.content.Context.WIFI_SERVICE;
 
 import android.net.wifi.WifiManager;
-import android.util.Log;
-import android.util.TimeUtils;
 
-import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.Utils;
-
-import java.util.concurrent.TimeUnit;
 
 public class WifiUtils {
 
